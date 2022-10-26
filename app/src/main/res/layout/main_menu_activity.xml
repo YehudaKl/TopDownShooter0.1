@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".classes.activities.MainMenuActivity">
+
+    <TextView
+        android:id="@+id/txt_helloPlayer"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+
+        android:text="hello player"
+        android:textStyle="italic" />
+
+    <LinearLayout android:id="@+id/gl_buttonsMenu"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/txt_helloPlayer"
+        android:layout_marginTop="200dp"
+
+        android:orientation="vertical"
+        >
+
+        <Button
+            android:id="@+id/btn_singlePlayer"
+
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Single Player"
+
+            />
+
+        <Button android:id="@+id/btn_multiPlayer"
+
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Multi Player"
+
+            />
+
+        <Button android:id="@+id/btn_settings"
+
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+
+            />
+
+
+    </LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>
