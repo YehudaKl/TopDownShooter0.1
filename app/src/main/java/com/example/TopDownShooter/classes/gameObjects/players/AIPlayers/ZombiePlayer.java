@@ -5,6 +5,7 @@ import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Zombie;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
+import com.example.TopDownShooter.dataTypes.enums.ZombieObjective;
 
 import java.util.ArrayList;
 
@@ -18,10 +19,12 @@ public class ZombiePlayer extends AIPlayer {
 
     private Character trackedCharacter;
     private Zombie myZombie;// A saved reference to my pawn as Zombie
+    private ZombieObjective objective;
 
     public ZombiePlayer(Game myGame, Pawn myPawn) {
         super(myGame, myPawn, 5/*conf*/);
         this.myZombie = (Zombie)myPawn;
+        this.objective = ZombieObjective.TRACK;// A default objective
     }
 
     @Override
@@ -35,16 +38,27 @@ public class ZombiePlayer extends AIPlayer {
     public void updatePawn(){
         super.updatePawn();
 
-        if(trackedCharacter != null){
-            System.out.println(myZombie.getDistanceBetween(trackedCharacter));
-        }
+        objective = generateObjective();
 
-        if(trackedCharacter != null && trackedCharacter.getHealthState() == CharacterHealthState.ALIVE && myZombie.getDistanceBetween(trackedCharacter) <= myZombie.BITE_RANGE){
-            System.out.println("Trying to bite: ");
-            myZombie.bite(trackedCharacter);
-        }
-        else{
-            trackedCharacter = findNewTrackedCharacter();
+
+        switch(objective){
+
+            case TRACK:
+                Character newTrackedCharacter = findNewTrackedCharacter();
+                if(trackedCharacter != null && newTrackedCharacter != trackedCharacter){
+                    // Shout something funny
+                }
+                trackedCharacter = newTrackedCharacter;
+                break;
+
+            case BITE:
+                if(trackedCharacter != null){
+                    myZombie.bite(trackedCharacter);
+                }
+                break;
+
+            default:
+                break;
         }
 
 
@@ -59,7 +73,7 @@ public class ZombiePlayer extends AIPlayer {
 
     @Override
     protected void updateVelocity() {
-
+        if(objective == ZombieObjective.BITE){return;}
         // Update the pawn that it goes towards what it is faced to(the tracked character)
         myPawn.getVelocity().setCoordinateX(Math.cos(myPawn.getDirection()) * MAX_PAWN_SPEED );
         myPawn.getVelocity().setCoordinateY(Math.sin(myPawn.getDirection()) * MAX_PAWN_SPEED );
@@ -80,5 +94,19 @@ public class ZombiePlayer extends AIPlayer {
     @Override
     public void onGameQuit() {
 
+    }
+
+    // Method that generates a new objective for the zombie player by a set of logic rules. May be extended to a full objective-generation system
+    // for all pawns
+    private ZombieObjective generateObjective(){
+
+        // If a tracked character exists and in the range of bite: bite
+        if(trackedCharacter != null && myZombie.isInRangeOfBite(trackedCharacter)){
+            return ZombieObjective.BITE;
+        }
+        // else: track
+        else{
+            return ZombieObjective.TRACK;
+        }
     }
 }

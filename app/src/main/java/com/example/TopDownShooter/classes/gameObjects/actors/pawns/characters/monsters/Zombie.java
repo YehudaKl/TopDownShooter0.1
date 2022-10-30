@@ -76,6 +76,12 @@ public class Zombie extends Monster {
     public void setCanBite(boolean canBite){
         this.canBite = canBite;
     }
+
+    // Returns weather some character is in range of the zombie bite, while ignoring the bite cooldown
+    // Should be used by the player in order to determine what to do.
+    public boolean isInRangeOfBite(Character character){
+        return getDistanceBetween(character) <= BITE_RANGE;
+    }
 }
 
 // TODO make it more efficient and for all classes
