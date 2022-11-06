@@ -2,6 +2,7 @@ package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.m
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
@@ -29,8 +30,8 @@ public class Zombie extends Monster {
 
         this.health = 1;//conf
         this.BITE_DAMAGE = 50;//conf
-        this.BITE_COOLDOWN_TIME = 2;//conf
-        this.BITE_RANGE = 20;//conf
+        this.BITE_COOLDOWN_TIME = 1500;//conf
+        this.BITE_RANGE = 100;//conf
 
         this.canBite = true;
 
@@ -40,14 +41,14 @@ public class Zombie extends Monster {
 
     public void bite(Character character){
         double distance = getDistanceBetween(character);
-        if(distance <= BITE_RANGE || !canBite){ return;}
+        if(distance >= BITE_RANGE || !canBite){ return;}
 
-        System.out.println("Bite");
+        Log.e("ZombieDebug", "Bite!");
 
         character.reduceHealth(BITE_DAMAGE);
 
         // Flash effect
-        myGame.getEffectsSystem().signNewEffect(new FlashScreen(new Paint(R.color.red)));
+//        myGame.getEffectsSystem().signNewEffect(new FlashScreen(new Paint(R.color.red)));
 
 
         // Start the cooldown process

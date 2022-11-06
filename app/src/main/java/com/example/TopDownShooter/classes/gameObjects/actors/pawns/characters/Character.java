@@ -55,7 +55,11 @@ public abstract class Character extends Pawn {
 
     protected void die(){
         this.healthState = CharacterHealthState.DEAD;
-        // TODO ...
+
+        // Invalidating the character in order to make it deleted next frame
+        team.OnMemberDied();
+        owner.OnPawnDied();
+        Invalidate();
 
     }
 
@@ -86,7 +90,7 @@ public abstract class Character extends Pawn {
     // By default a Character is considered as dead if the health equals or below 0.
     // In case of an exception for that, the method should be Overridden by the child class with an alternative implementation
     // Should be used by the character in his update method
-    public boolean isDead(){
+    private boolean isDead(){
         return (health <= 0);
     }
 

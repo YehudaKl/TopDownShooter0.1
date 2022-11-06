@@ -1,4 +1,6 @@
 package com.example.TopDownShooter.classes.gameObjects.players.AIPlayers;
+import android.util.Log;
+
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
@@ -73,10 +75,19 @@ public class ZombiePlayer extends AIPlayer {
 
     @Override
     protected void updateVelocity() {
-        if(objective == ZombieObjective.BITE){return;}
-        // Update the pawn that it goes towards what it is faced to(the tracked character)
-        myPawn.getVelocity().setCoordinateX(Math.cos(myPawn.getDirection()) * MAX_PAWN_SPEED );
-        myPawn.getVelocity().setCoordinateY(Math.sin(myPawn.getDirection()) * MAX_PAWN_SPEED );
+
+        double x = 0;
+        double y = 0;
+        if(objective == ZombieObjective.TRACK){
+            // Update the pawn that it goes towards what it is faced to(the tracked character)
+            x = Math.cos(myPawn.getDirection()) * MAX_PAWN_SPEED;
+            y = Math.sin(myPawn.getDirection()) * MAX_PAWN_SPEED;
+        }
+
+
+
+        myPawn.getVelocity().setCoordinateX(x);
+        myPawn.getVelocity().setCoordinateY(y);
     }
 
     // Search for a closer character to track

@@ -39,4 +39,10 @@ public class Team {
     public static void clearUsedId(int id){
         idsUsed.remove(id);
     }
+
+    // TODO ...
+    public void OnMemberDied() {
+
+
+    }
 }

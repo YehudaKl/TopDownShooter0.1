@@ -21,6 +21,7 @@ import com.example.TopDownShooter.classes.interfaces.GameParticipant;
 import com.example.TopDownShooter.classes.systems.Effects.EffectsSystem;
 import com.example.TopDownShooter.classes.systems.GameLoop;
 import com.example.TopDownShooter.classes.gameObjects.actors.*;
+import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
 
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.gameState = GameState.LOAD;
         this.actors = actors;
         this.gameParticipants = new ArrayList<>();
+        this.timer = new Timer();
 
 
     }
@@ -109,9 +111,18 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     public void update(){
         if(actors == null){return;}
 
-        for(Actor actor: actors){
-            actor.update();
+        for(Iterator<Actor> iterator = actors.iterator(); iterator.hasNext();){
+            Actor actor = iterator.next();
+
+            if(actor.getIsValid() == true){
+                actor.update();
+            }
+            else{// Deleting invalid actors
+                iterator.remove();
+            }
         }
+
+
 
     }
 
@@ -234,6 +245,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         actors.add(actor);
         return true;
     }
+
 
     protected boolean signNewGameParticipant(GameParticipant gameParticipant){
         gameParticipants.add(gameParticipant);

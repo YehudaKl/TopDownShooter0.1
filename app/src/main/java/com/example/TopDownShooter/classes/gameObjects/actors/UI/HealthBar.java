@@ -57,22 +57,23 @@ public class HealthBar extends Actor {
 
     @Override
     public void draw(Canvas canvas){
+
         // drawing the border
-        float left = (float)position.getX() - width/2;
-        float top = (float)position.getY() + DEFAULT_DISTANCE_TO_PLAYER + height;
-
-        float right = (float)position.getX() + width/2;
-        float bottom = (float)position.getY() + DEFAULT_DISTANCE_TO_PLAYER;
-
-
-        canvas.drawRect(left, top, right, bottom, borderPaint);
-
-        left += margin;
-        top += margin;
-        right = (right - margin) * progressPercent;
-        bottom -= margin;
-
-        canvas.drawRect(left, top, right, bottom, paint);
+//        float left = (float)position.getX() - width/2;
+//        float top = (float)position.getY() + DEFAULT_DISTANCE_TO_PLAYER + height;
+//
+//        float right = (float)position.getX() + width/2;
+//        float bottom = (float)position.getY() + DEFAULT_DISTANCE_TO_PLAYER;
+//
+//
+//        canvas.drawRect(left, top, right, bottom, borderPaint);
+//
+//        left += margin;
+//        top += margin;
+//        right = (right - margin) * progressPercent;
+//        bottom -= margin;
+//
+//        canvas.drawRect(left, top, right, bottom, paint);
     }
 
 

@@ -65,6 +65,10 @@ public abstract class Player extends GameObject implements GameParticipant {
 
     }
 
+    public void OnPawnDied(){
+        Invalidate();
+    }
+
     // Method that each child class implements in order to specify the updating of the direction
     protected abstract void updateDirection();
 
