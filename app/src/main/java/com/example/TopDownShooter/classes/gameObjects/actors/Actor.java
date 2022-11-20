@@ -9,13 +9,19 @@ import android.widget.ImageView;
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.assets.ActorAsset;
+import com.example.TopDownShooter.classes.gameObjects.ActorProperties.ActorProperty;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
+import java.util.ArrayList;
+
 /**
  * An Actor is a GameObject that has a position and can be seen by the user during the game
  */
+// event bus
+    // live data
+
 
 public abstract class Actor extends GameObject {
 
@@ -24,6 +30,7 @@ public abstract class Actor extends GameObject {
     protected Game myGame;
     private boolean isVisible;
     private ActorAsset asset;
+    private ArrayList<ActorProperty> properties;
     private int resourceId;
 
 

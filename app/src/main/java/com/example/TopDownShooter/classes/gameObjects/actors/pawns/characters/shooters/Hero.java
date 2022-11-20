@@ -1,4 +1,4 @@
-package com.example.TopDownShooter.classes.gameObjects.actors;
+package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters;
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;

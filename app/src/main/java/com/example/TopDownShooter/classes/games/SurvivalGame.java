@@ -1,17 +1,14 @@
 package com.example.TopDownShooter.classes.games;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
-
-import androidx.core.content.ContextCompat;
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.gameObjects.actors.UI.Joystick;
-import com.example.TopDownShooter.classes.gameObjects.actors.Hero;
+import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Hero;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Zombie;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;

@@ -1,12 +1,8 @@
 package com.example.TopDownShooter.classes.gameObjects.players.AIPlayers;
 
-import com.example.TopDownShooter.classes.gameObjects.actors.Hero;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
-import com.example.TopDownShooter.dataTypes.Position;
-
-import java.util.ArrayList;
 
 public abstract class AIPlayer extends Player {
 

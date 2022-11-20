@@ -16,13 +16,15 @@ import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Monster;
+import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Hero;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
 import com.example.TopDownShooter.classes.interfaces.GameParticipant;
 import com.example.TopDownShooter.classes.systems.Effects.EffectsSystem;
 import com.example.TopDownShooter.classes.systems.GameLoop;
 import com.example.TopDownShooter.classes.gameObjects.actors.*;
-import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,8 +37,7 @@ import java.util.Timer;
  * Generally different classes of games function as different game modes that can be played
  */
 public abstract class Game extends SurfaceView implements SurfaceHolder.Callback{
-
-
+    
 
     private GameLoop gameLoop;
     private EffectsSystem effectsSystem;
@@ -65,6 +66,8 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.actors = actors;
         this.gameParticipants = new ArrayList<>();
         this.timer = new Timer();
+
+
 
 
     }
@@ -105,7 +108,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
             actor.draw(canvas);
         }
 
-        effectsSystem.draw(canvas);
     }
 
     public void update(){
