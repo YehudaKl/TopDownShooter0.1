@@ -40,6 +40,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
 
     private GameLoop gameLoop;
+    private EventBus eventBus;
     private EffectsSystem effectsSystem;
     private Context context;
     private boolean isDebugging;
@@ -59,6 +60,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         surfaceHolder.addCallback(this);
 
         this.gameLoop = new GameLoop(this, surfaceHolder);
+        this.eventBus = EventBus.getDefault();
         this.effectsSystem = new EffectsSystem(this);
         this.context = getContext();
         this.isDebugging = false;
@@ -126,6 +128,10 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
 
 
+    }
+
+    public EventBus getEventBus(){
+        return eventBus;
     }
 
     //* I tried to do the following methods generic but it was to hard for me :(
