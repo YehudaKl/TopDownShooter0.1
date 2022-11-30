@@ -37,7 +37,7 @@ import java.util.Timer;
  * Generally different classes of games function as different game modes that can be played
  */
 public abstract class Game extends SurfaceView implements SurfaceHolder.Callback{
-    
+
 
     private GameLoop gameLoop;
     private EffectsSystem effectsSystem;
