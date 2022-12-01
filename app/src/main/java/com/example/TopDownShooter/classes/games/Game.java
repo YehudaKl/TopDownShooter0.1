@@ -15,6 +15,10 @@ import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnDraw;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+import com.example.TopDownShooter.classes.events.GameStatusEvents.GameStatus;
+import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStatusChanged;
+import com.example.TopDownShooter.classes.events.OnGameEnd;
+import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Monster;
@@ -47,6 +51,10 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     private PublishSubject<OnUpdate> onUpdateObservable;
     private PublishSubject<OnDraw> onDrawObservable;
+    private PublishSubject<OnGameStart> onGameStartObservable;
+    private PublishSubject<OnGameEnd> onGameEndObservable;
+    private PublishSubject<OnGameStatusChanged> onGameStatusChangedObservable;
+
 
     private GameLoop gameLoop;
     private EffectsSystem effectsSystem;
@@ -68,6 +76,9 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
         this.onUpdateObservable = PublishSubject.create();
         this.onDrawObservable = PublishSubject.create();
+        this.onGameStartObservable = PublishSubject.create();
+        this.onGameEndObservable = PublishSubject.create();
+        this.onGameStatusChangedObservable = PublishSubject.create();
 
         this.gameLoop = new GameLoop(this, surfaceHolder);
         this.effectsSystem = new EffectsSystem(this);
@@ -143,11 +154,19 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     // This method must me called at the child class not before all objects have been created!!
     // It is recommended to call this method at the end of the constructor
     protected void startGame(){
+        onGameStartObservable.onNext(new OnGameStart(this));
+    }
 
+    protected void endGame(){
+        onGameEndObservable.onNext(new OnGameEnd(this));
+    }
+
+    protected void continueGame(){
+        onGameStatusChangedObservable.onNext(new OnGameStatusChanged(this, GameStatus.RUN));
     }
 
     protected void pauseGame(){
-
+        onGameStatusChangedObservable.onNext(new OnGameStatusChanged(this, GameStatus.PAUSED));
     }
 
     //--------------------------------------------------------
