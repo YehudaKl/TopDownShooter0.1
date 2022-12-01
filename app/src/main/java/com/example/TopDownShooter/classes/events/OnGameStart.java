@@ -1,4 +1,4 @@
-package com.example.TopDownShooter.classes.events.GameStatusEvents;
+package com.example.TopDownShooter.classes.events;
 
 import com.example.TopDownShooter.classes.events.OnEvent;
 import com.example.TopDownShooter.classes.games.Game;
