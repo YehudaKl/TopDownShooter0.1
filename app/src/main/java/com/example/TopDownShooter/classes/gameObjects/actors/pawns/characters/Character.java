@@ -3,6 +3,7 @@ package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters;
 import android.graphics.Canvas;
 
 import com.example.TopDownShooter.classes.Team;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.gameObjects.actors.UI.HealthBar;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.games.Game;
@@ -34,13 +35,12 @@ public abstract class Character extends Pawn {
         this.healthState = CharacterHealthState.ALIVE;
 
         this.healthBar = new HealthBar(myGame, this);
-        myGame.signNewActor(healthBar);
 
     }
 
     @Override
-    public void update(){
-        super.update();
+    public void onUpdate(OnUpdate onUpdate){
+        super.onUpdate(onUpdate);
 
         if(isDead()){
             die();

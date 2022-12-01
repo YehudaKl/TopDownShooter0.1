@@ -1,6 +1,8 @@
 package com.example.TopDownShooter.classes.gameObjects.players.AIPlayers;
 import android.util.Log;
 
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
@@ -30,15 +32,15 @@ public class ZombiePlayer extends AIPlayer {
     }
 
     @Override
-    public void onGameStart() {
-        super.onGameStart();
+    public void onGameStart(OnGameStart onGameStart) {
+        super.onGameStart(onGameStart);
         trackedCharacter = findNewTrackedCharacter();
     }
 
 
     @Override
-    public void updatePawn(){
-        super.updatePawn();
+    public void updatePawn(OnUpdate onUpdate){
+        super.updatePawn(onUpdate);
 
         objective = generateObjective();
 

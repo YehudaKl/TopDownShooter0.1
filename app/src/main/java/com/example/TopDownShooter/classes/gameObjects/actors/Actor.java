@@ -73,21 +73,16 @@ public abstract class Actor extends GameObject {
 
     }
 
-    public void update(OnUpdate onUpdate){
-
-    }
 
 
 
-    public void draw(OnDraw onDraw){
+
+
+
+    public void onDraw(OnDraw onDraw){
         if(!isVisible){return;}
 
         asset.draw(onDraw.getCanvas());
-
-
-
-
-
 
     }
 

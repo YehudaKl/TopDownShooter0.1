@@ -1,5 +1,6 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.projectiles;
 
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
@@ -27,9 +28,9 @@ public abstract class Projectile extends Actor {
 
     }
 
-    @Override
-    public void update(){
-        super.update();
+
+    public void onUpdate(OnUpdate onUpdate){
+
         updateVelocity();
 
         double x = position.getX() + velocity.getCoordinateX();

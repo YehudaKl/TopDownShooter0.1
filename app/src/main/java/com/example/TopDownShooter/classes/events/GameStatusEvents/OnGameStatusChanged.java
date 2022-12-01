@@ -15,4 +15,8 @@ public class OnGameStatusChanged extends OnEvent {
 
         this.newStatus = newStatus;
     }
+
+    public GameStatus getNewStatus(){
+        return newStatus;
+    }
 }

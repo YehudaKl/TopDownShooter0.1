@@ -14,20 +14,7 @@ public abstract class AIPlayer extends Player {
 
 
 
-    @Override
-    public void onGameStart() {
-        super.onGameStart();
-    }
 
-    @Override
-    public void onGamePause() {
-
-    }
-
-    @Override
-    public void onGameQuit() {
-
-    }
 
 
 

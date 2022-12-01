@@ -1,5 +1,9 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns;
 
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStatusChanged;
+import com.example.TopDownShooter.classes.events.OnGameEnd;
+import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
@@ -11,7 +15,7 @@ import com.example.TopDownShooter.dataTypes.Vector;
 /**
  * A Pawn is an actor that can be controlled by a player or an AI.
  */
-public abstract class Pawn extends Actor implements GameParticipant {
+public abstract class Pawn extends Actor{
 
 
     protected Player owner;
@@ -36,21 +40,22 @@ public abstract class Pawn extends Actor implements GameParticipant {
         this.velocity = new Vector(0, 0);
     }
 
-    @Override
-    public void update(){
-        super.update();
-
-        owner.updatePawn();
+    public void onUpdate(OnUpdate onUpdate){
+        owner.updatePawn(onUpdate);
     }
 
-    @Override
-    public void onGameStart(){
-        owner.onGameStart();
+
+    public void onGameStart(OnGameStart onGameStart){
+        owner.onGameStart(onGameStart);
     }
 
-    @Override
-    public void onGamePause(){
-        owner.onGamePause();
+    public void onGameEnd(OnGameEnd onGameEnd){
+        owner.onGameEnd(onGameEnd);
+    }
+
+
+    public void onGameStatusChanged(OnGameStatusChanged onGameStatusChanged){
+        owner.onGameStatusChanged(onGameStatusChanged);
     }
 
     public void setOwner(Player owner){

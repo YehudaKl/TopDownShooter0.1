@@ -38,7 +38,7 @@ public class SurvivalGame extends Game{
         teams = initializeTeams();
 
         this.joystick = new Joystick(this, new Position(150, 950), 70, 40);
-        
+
         this.hero = new Hero(this, new Position(400, 400));
         hero.setOwner(new UserPlayer(this, hero, joystick));
 

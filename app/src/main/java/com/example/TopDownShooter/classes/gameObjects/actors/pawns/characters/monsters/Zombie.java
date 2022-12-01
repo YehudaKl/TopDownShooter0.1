@@ -60,19 +60,6 @@ public class Zombie extends Monster {
 
 
 
-    @Override
-    public void onGameStart(){
-        super.onGameStart();
-    }
-    @Override
-    public void onGamePause() {
-
-    }
-
-    @Override
-    public void onGameQuit() {
-
-    }
 
     public void setCanBite(boolean canBite){
         this.canBite = canBite;

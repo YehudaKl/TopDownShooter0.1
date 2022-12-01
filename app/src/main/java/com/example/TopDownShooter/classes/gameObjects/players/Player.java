@@ -1,5 +1,9 @@
 package com.example.TopDownShooter.classes.gameObjects.players;
 
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStatusChanged;
+import com.example.TopDownShooter.classes.events.OnGameEnd;
+import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
@@ -17,7 +21,7 @@ import java.util.Calendar;
  * a GUI controlling system such as joystick or buttons attached to him.
  * On the other hand, an AIPlayer determines his pawn actions by logical algorithms
  */
-public abstract class Player extends GameObject implements GameParticipant {
+public abstract class Player extends GameObject{
 
     public final float MAX_PAWN_SPEED;
 
@@ -36,18 +40,30 @@ public abstract class Player extends GameObject implements GameParticipant {
 
     }
 
-    @Override
-    public void onGameStart(){
+
+    public void onGameStart(OnGameStart onGameStart){
         this.motionState = PawnMotionState.MOVING;
     }
 
-    @Override
-    public void onGamePause(){
-        this.motionState = PawnMotionState.STANDING;
+    public void onGameEnd(OnGameEnd onGameEnd){}
+
+    public void onGameStatusChanged(OnGameStatusChanged onGameStatusChanged){
+        switch (onGameStatusChanged.getNewStatus()){
+            case RUN:
+                // Code for game continue after a pause
+                this.motionState = PawnMotionState.MOVING;
+                break;
+            case PAUSED:
+                this.motionState = PawnMotionState.STANDING;
+                break;
+            default:
+                break;
+        }
     }
 
+
     // The function is used by the pawn in order to update himself
-    public void updatePawn(){
+    public void updatePawn(OnUpdate onUpdate){
 
         updateDirection();
         // Update velocity

@@ -24,20 +24,7 @@ public class Hero extends Shooter {
 
     }
 
-    @Override
-    public void onGameStart() {
-        super.onGameStart();
-    }
 
-    @Override
-    public void onGamePause() {
-        super.onGameStart();
-    }
-
-    @Override
-    public void onGameQuit() {
-
-    }
 
 
 

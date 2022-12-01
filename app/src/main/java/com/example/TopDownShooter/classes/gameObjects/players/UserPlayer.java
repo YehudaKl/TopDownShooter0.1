@@ -1,5 +1,6 @@
 package com.example.TopDownShooter.classes.gameObjects.players;
 
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.UI.Joystick;
 import com.example.TopDownShooter.classes.games.Game;
@@ -18,14 +19,10 @@ public class UserPlayer extends Player{
 
     }
 
-    @Override
-    public void onGameStart() {
-        super.onGameStart();
-    }
 
     @Override
-    public void updatePawn(){
-        super.updatePawn();
+    public void updatePawn(OnUpdate onUpdate){
+        super.updatePawn(onUpdate);
 
     }
 
@@ -52,13 +49,5 @@ public class UserPlayer extends Player{
 
 
 
-    @Override
-    public void onGamePause() {
 
-    }
-
-    @Override
-    public void onGameQuit() {
-
-    }
 }
