@@ -38,12 +38,6 @@ public abstract class Character extends Pawn {
 
     }
 
-
-    @Override
-    public void draw(Canvas canvas){
-        super.draw(canvas);
-    }
-
     @Override
     public void update(){
         super.update();

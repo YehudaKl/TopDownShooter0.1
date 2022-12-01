@@ -17,6 +17,9 @@
         android:text="hello player"
         android:textStyle="italic" />
 
+    
+    
+
     <LinearLayout android:id="@+id/gl_buttonsMenu"
 
         android:layout_width="wrap_content"

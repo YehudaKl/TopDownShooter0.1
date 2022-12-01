@@ -29,6 +29,10 @@ public class GameLoop extends Thread{
         return averageFPS;
     }
 
+    public float getDeltaTime(){
+        return 1/(float)averageFPS;
+    }
+
     public void startLoop() {
         isRunning = true;
         start();

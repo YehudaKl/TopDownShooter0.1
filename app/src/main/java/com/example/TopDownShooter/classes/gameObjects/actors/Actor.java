@@ -9,12 +9,19 @@ import android.widget.ImageView;
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.assets.ActorAsset;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnDraw;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.gameObjects.ActorProperties.ActorProperty;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
 import java.util.ArrayList;
+
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * An Actor is a GameObject that has a position and can be seen by the user during the game
@@ -30,7 +37,6 @@ public abstract class Actor extends GameObject {
     protected Game myGame;
     private boolean isVisible;
     private ActorAsset asset;
-    private ArrayList<ActorProperty> properties;
     private int resourceId;
 
 
@@ -63,16 +69,20 @@ public abstract class Actor extends GameObject {
         this.direction = direction;
         this.asset = new ActorAsset(myGame, this, BitmapFactory.decodeResource(myGame.getContext().getResources(), resourceId));
 
-    }
 
-    public void update(){
 
     }
 
-    public void draw(Canvas canvas){
+    public void update(OnUpdate onUpdate){
+
+    }
+
+
+
+    public void draw(OnDraw onDraw){
         if(!isVisible){return;}
 
-        asset.draw(canvas);
+        asset.draw(onDraw.getCanvas());
 
 
 
