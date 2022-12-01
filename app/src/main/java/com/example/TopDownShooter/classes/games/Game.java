@@ -65,7 +65,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     public Timer timer;// A timer for all classes in the game.
 
 
-    public Game(Context context, ArrayList<Actor> actors){
+    public Game(Context context){
         super(context);
 
         //Get surface holder and add the game class as a callback so the game loop

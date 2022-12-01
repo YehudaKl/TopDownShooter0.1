@@ -27,30 +27,20 @@ public class SurvivalGame extends Game{
 
     private  HashMap<String, Team> teams;
 
-
     private Hero hero;
     private Joystick joystick;
-
     private int joystickPointerId;
 
 
-
-
     public SurvivalGame(Context context){// *Note the survival game dose not need pre given actors
-
-        super(context, new ArrayList<Actor>());
+        super(context);
 
         teams = initializeTeams();
 
         this.joystick = new Joystick(this, new Position(150, 950), 70, 40);
-        signNewActor(joystick);
-
-
-
+        
         this.hero = new Hero(this, new Position(400, 400));
         hero.setOwner(new UserPlayer(this, hero, joystick));
-        signNewActor(hero);
-        signNewGameParticipant(hero);
 
         setIsDebugging(true);
 
@@ -136,8 +126,6 @@ public class SurvivalGame extends Game{
         Zombie zombie = new Zombie(this, position);
 
         zombie.setOwner(new ZombiePlayer(this, zombie));
-        signNewActor(zombie);
-        signNewGameParticipant(zombie);
     }
 
 
