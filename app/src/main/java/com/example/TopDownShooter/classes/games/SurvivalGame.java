@@ -126,6 +126,8 @@ public class SurvivalGame extends Game{
         Zombie zombie = new Zombie(this, position);
 
         zombie.setOwner(new ZombiePlayer(this, zombie));
+
+
     }
 
 

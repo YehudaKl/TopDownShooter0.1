@@ -19,6 +19,8 @@ import com.example.TopDownShooter.classes.events.GameStatusEvents.GameStatus;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStatusChanged;
 import com.example.TopDownShooter.classes.events.OnGameEnd;
 import com.example.TopDownShooter.classes.events.OnGameStart;
+import com.example.TopDownShooter.classes.events.surveys.Survey;
+import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Monster;
@@ -54,6 +56,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     private PublishSubject<OnGameStart> onGameStartObservable;
     private PublishSubject<OnGameEnd> onGameEndObservable;
     private PublishSubject<OnGameStatusChanged> onGameStatusChangedObservable;
+    private PublishSubject<Survey<? extends GameObject>> onSurveyObservable;
 
 
     private GameLoop gameLoop;
@@ -79,6 +82,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.onGameStartObservable = PublishSubject.create();
         this.onGameEndObservable = PublishSubject.create();
         this.onGameStatusChangedObservable = PublishSubject.create();
+        this.onSurveyObservable = PublishSubject.create();
 
         this.gameLoop = new GameLoop(this, surfaceHolder);
         this.effectsSystem = new EffectsSystem(this);
@@ -169,7 +173,11 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         onGameStatusChangedObservable.onNext(new OnGameStatusChanged(this, GameStatus.PAUSED));
     }
 
-    //--------------------------------------------------------
+    // A getter for Surveys observable in order post surveys by other classes
+    // If the provided type dose not exist in game, the function will return null !
+    public PublishSubject<Survey<? extends GameObject>> getSurveyPublisher(){
+        return onSurveyObservable;
+    }
 
 
 

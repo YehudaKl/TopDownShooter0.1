@@ -99,16 +99,6 @@ public class ZombiePlayer extends AIPlayer {
     }
 
 
-    @Override
-    public void onGamePause() {
-
-    }
-
-    @Override
-    public void onGameQuit() {
-
-    }
-
     // Method that generates a new objective for the zombie player by a set of logic rules. May be extended to a full objective-generation system
     // for all pawns
     private ZombieObjective generateObjective(){

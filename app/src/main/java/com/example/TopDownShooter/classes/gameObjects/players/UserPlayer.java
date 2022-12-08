@@ -1,6 +1,10 @@
 package com.example.TopDownShooter.classes.gameObjects.players;
 
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+import com.example.TopDownShooter.classes.events.surveys.Survey;
+import com.example.TopDownShooter.classes.events.surveys.SurveyContract;
+import com.example.TopDownShooter.classes.gameObjects.GameObject;
+import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.UI.Joystick;
 import com.example.TopDownShooter.classes.games.Game;
