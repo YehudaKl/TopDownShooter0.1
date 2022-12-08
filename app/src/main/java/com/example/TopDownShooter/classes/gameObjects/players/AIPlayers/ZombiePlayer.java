@@ -95,7 +95,7 @@ public class ZombiePlayer extends AIPlayer {
     // Search for a closer character to track
     private Character findNewTrackedCharacter(){
         // returning the closest character while ignoring our team
-        return getClosestCharacter(myGame.getTeam(myZombie.getTeam()));
+        return getClosestCharacter();
     }
 
 
