@@ -27,7 +27,6 @@ import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.mo
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Hero;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
 import com.example.TopDownShooter.classes.interfaces.GameParticipant;
-import com.example.TopDownShooter.classes.systems.Effects.EffectsSystem;
 import com.example.TopDownShooter.classes.systems.GameLoop;
 import com.example.TopDownShooter.classes.gameObjects.actors.*;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
@@ -143,15 +142,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     public Observable<OnUpdate> getOnUpdateObservable(){
         return onUpdateObservable;
     }
-
-
-
-
-    public EffectsSystem getEffectsSystem(){
-        return effectsSystem;
-    }
-
-
 
     // This method must me called at the child class not before all objects have been created!!
     // It is recommended to call this method at the end of the constructor
