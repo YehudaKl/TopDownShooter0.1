@@ -60,7 +60,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
 
     private GameLoop gameLoop;
-    private EffectsSystem effectsSystem;
     private Context context;
     private boolean isDebugging;
     private GameState gameState;
@@ -85,7 +84,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.onSurveyObservable = PublishSubject.create();
 
         this.gameLoop = new GameLoop(this, surfaceHolder);
-        this.effectsSystem = new EffectsSystem(this);
         this.context = getContext();
         this.isDebugging = false;
         this.gameState = GameState.LOAD;
