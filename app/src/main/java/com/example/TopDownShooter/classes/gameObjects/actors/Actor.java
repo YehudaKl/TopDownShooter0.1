@@ -1,27 +1,12 @@
 package com.example.TopDownShooter.classes.gameObjects.actors;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
 
-import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.assets.ActorAsset;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnDraw;
-import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
-import com.example.TopDownShooter.classes.gameObjects.ActorProperties.ActorProperty;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
-
-import java.util.ArrayList;
-
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * An Actor is a GameObject that has a position and can be seen by the user during the game
