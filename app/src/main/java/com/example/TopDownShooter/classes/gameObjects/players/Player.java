@@ -8,12 +8,10 @@ import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.games.Game;
-import com.example.TopDownShooter.classes.interfaces.GameParticipant;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.dataTypes.enums.PawnMotionState;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * A Player is a class that owns a pawn or pawns in the game, and in charge of "telling" them

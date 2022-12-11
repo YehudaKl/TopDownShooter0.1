@@ -21,25 +21,14 @@ import com.example.TopDownShooter.classes.events.OnGameEnd;
 import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.events.surveys.Survey;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
-import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
-import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Monster;
-import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Hero;
-import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
-import com.example.TopDownShooter.classes.interfaces.GameParticipant;
 import com.example.TopDownShooter.classes.systems.GameLoop;
-import com.example.TopDownShooter.classes.gameObjects.actors.*;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Timer;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
 /**

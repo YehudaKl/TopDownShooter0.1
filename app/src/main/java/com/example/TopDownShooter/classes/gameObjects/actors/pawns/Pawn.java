@@ -7,7 +7,6 @@ import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
-import com.example.TopDownShooter.classes.interfaces.GameParticipant;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.Vector;
 ;
