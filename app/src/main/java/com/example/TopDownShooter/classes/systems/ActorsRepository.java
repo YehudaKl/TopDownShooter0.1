@@ -28,11 +28,19 @@ public class ActorsRepository <T extends Actor>{
         this.myGame = myGame;
         this.actorsList = new ArrayList();
 
+        // Subscribing to the needed observables
+        myGame.getOnActorValidObservable().subscribe(this::OnActorValid);
+        myGame.getOnActorInvalidObservable().subscribe(this::OnActorInvalid);
+
     }
 
     public ActorsRepository(Game myGame, ArrayList<T> actorsList){
         this.myGame = myGame;
         this.actorsList = actorsList;
+
+        // Subscribing to the needed observables
+        myGame.getOnActorValidObservable().subscribe(this::OnActorValid);
+        myGame.getOnActorInvalidObservable().subscribe(this::OnActorInvalid);
 
     }
 

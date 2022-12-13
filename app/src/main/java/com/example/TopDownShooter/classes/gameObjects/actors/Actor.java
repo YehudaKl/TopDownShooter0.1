@@ -31,7 +31,6 @@ public abstract class Actor extends GameObject {
 
 
 
-
     public Actor(Game myGame, Position initPosition, int resourceId){
         super();
         this.myGame = myGame;

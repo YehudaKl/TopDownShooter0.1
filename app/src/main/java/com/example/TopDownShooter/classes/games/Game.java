@@ -19,6 +19,8 @@ import com.example.TopDownShooter.classes.events.GameStatusEvents.GameStatus;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStatusChanged;
 import com.example.TopDownShooter.classes.events.OnGameEnd;
 import com.example.TopDownShooter.classes.events.OnGameStart;
+import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorInvalid;
+import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;
 import com.example.TopDownShooter.classes.events.surveys.Survey;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
@@ -44,15 +46,27 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     private PublishSubject<OnGameStart> onGameStartObservable;
     private PublishSubject<OnGameEnd> onGameEndObservable;
     private PublishSubject<OnGameStatusChanged> onGameStatusChangedObservable;
-    private PublishSubject<Survey<? extends GameObject>> onSurveyObservable;
+    private PublishSubject<OnActorValid> onActorValidObservable;
 
+
+    private PublishSubject<OnActorInvalid> onActorInvalidObservable;
+    private PublishSubject<Survey<? extends GameObject>> onSurveyObservable;
 
     private GameLoop gameLoop;
     private Context context;
     private boolean isDebugging;
     private GameState gameState;
-
     public Timer timer;// A timer for all classes in the game.
+
+
+    // Setters and Getters
+    public PublishSubject<OnActorValid> getOnActorValidObservable() {
+        return onActorValidObservable;
+    }
+
+    public PublishSubject<OnActorInvalid> getOnActorInvalidObservable() {
+        return onActorInvalidObservable;
+    }
 
 
     public Game(Context context){
