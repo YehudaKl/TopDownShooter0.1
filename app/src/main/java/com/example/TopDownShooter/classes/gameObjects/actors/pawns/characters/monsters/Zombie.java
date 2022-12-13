@@ -7,7 +7,6 @@ import android.util.Log;
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.games.Game;
-import com.example.TopDownShooter.classes.systems.Effects.FlashScreen;
 import com.example.TopDownShooter.dataTypes.Position;
 import java.util.Timer;
 import java.util.TimerTask;
