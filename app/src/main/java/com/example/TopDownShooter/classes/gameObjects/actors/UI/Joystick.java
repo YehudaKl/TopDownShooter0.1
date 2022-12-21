@@ -66,7 +66,6 @@ public class Joystick extends Actor {
 
         // Draw inner circle
         canvas.drawCircle((float)innerCircleCenterPositionX, (float)innerCircleCenterPositionY, innerCircleRadius, innerCirclePaint);
-
     }
 
     public void update(){
