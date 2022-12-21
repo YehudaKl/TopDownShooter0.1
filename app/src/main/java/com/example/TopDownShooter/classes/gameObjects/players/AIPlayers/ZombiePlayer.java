@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class ZombiePlayer extends AIPlayer {
 
     private Character trackedCharacter;
-    private Zombie myZombie;// A saved reference to my pawn as Zombie
+    private final Zombie myZombie;// A saved reference to my pawn as Zombie
     private ZombieObjective objective;
 
     public ZombiePlayer(Game myGame, Pawn myPawn) {
@@ -95,10 +95,14 @@ public class ZombiePlayer extends AIPlayer {
     // Search for a closer character to track
     private Character findNewTrackedCharacter(){
         // returning the closest character while ignoring our team
-        return getClosestCharacter();
+        return getClosestCharacter(myZombie);
     }
 
+    // Method for getting the closest character to a provided zombie
+    // The method is in chara
+    private static Character getClosestCharacter(Zombie zombie){
 
+    }
     // Method that generates a new objective for the zombie player by a set of logic rules. May be extended to a full objective-generation system
     // for all pawns
     private ZombieObjective generateObjective(){
@@ -112,4 +116,5 @@ public class ZombiePlayer extends AIPlayer {
             return ZombieObjective.TRACK;
         }
     }
+
 }

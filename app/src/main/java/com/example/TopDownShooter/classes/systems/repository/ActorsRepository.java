@@ -1,4 +1,4 @@
-package com.example.TopDownShooter.classes.systems;
+package com.example.TopDownShooter.classes.systems.repository;
 
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorInvalid;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;

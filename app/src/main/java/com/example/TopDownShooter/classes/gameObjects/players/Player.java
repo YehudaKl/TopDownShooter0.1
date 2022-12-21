@@ -89,16 +89,13 @@ public abstract class Player extends GameObject{
     // Method that each child class implements in order to specify the updating of the velocity(movement)
     protected abstract void updateVelocity();
 
-    // The following methods returns the closest child class of actor next to the pawn
-    // myPawn is added to the ignored actors by default
-    //------------------------------------------------------------
-    protected Actor getClosestActor(ArrayList<Actor> toIgnore){
-        toIgnore.add((Actor)myPawn);
-        ArrayList<Actor> list  = myGame.getActors(toIgnore);
-        Actor toReturn = list.get(0);
+
+    // Method for getting the closest actor to you from a provided list of actors
+    protected Actor getClosestActor(ArrayList<Actor> actors){
+        Actor toReturn = actors.get(0);
         double minDistance = toReturn.getDistanceBetween(myPawn);
 
-        for(Actor actor: list){
+        for(Actor actor: actors){
             double distance = actor.getDistanceBetween(myPawn);
             if(distance < minDistance){
                 minDistance = distance;
@@ -109,57 +106,5 @@ public abstract class Player extends GameObject{
         return toReturn;
 
     }
-
-    protected Pawn getClosestPawn(ArrayList<Pawn> toIgnore){
-
-        //Ignore myPawn
-        toIgnore.add(myPawn);
-
-        ArrayList<Pawn> list  = myGame.getPawns(toIgnore);
-
-        Pawn toReturn = list.get(0);
-        double minDistance = toReturn.getDistanceBetween(myPawn);
-
-        for(Pawn pawn: list){
-            double distance = pawn.getDistanceBetween(myPawn);
-            if(distance < minDistance){
-                minDistance = distance;
-                toReturn = pawn;
-            }
-        }
-
-        return toReturn;
-
-    }
-
-    protected Character getClosestCharacter(ArrayList<Character> toIgnore){
-        //Ignore myPawn
-        if((Character)myPawn != null) {
-            toIgnore.add((Character) myPawn);
-        }
-
-
-
-        ArrayList<Character> list = myGame.getCharacters(toIgnore);
-
-        Character toReturn = list.get(0);
-        if(toReturn == null){return null;}
-        double minDistance = toReturn.getDistanceBetween(myPawn);
-
-        for(Character character: list){
-            double distance = character.getDistanceBetween(myPawn);
-            if(distance < minDistance){
-                minDistance = distance;
-                toReturn = character;
-            }
-        }
-
-        return toReturn;
-
-    }
-
-
-    //------------------------------------------------------------
-
 
 }

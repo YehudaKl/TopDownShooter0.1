@@ -1,13 +1,13 @@
-package com.example.TopDownShooter.classes.systems;
+package com.example.TopDownShooter.classes.systems.repository;
 
 import com.example.TopDownShooter.classes.events.surveys.Survey;
-import com.example.TopDownShooter.classes.events.surveys.SurveyContract;
+import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.games.Game;
+import com.example.TopDownShooter.classes.systems.repository.ActorsRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The actors manager class injects the dependencies of the actors repo into the game class.
@@ -17,7 +17,7 @@ import java.util.Map;
 public class ActorsReposManager {
 
     private final Game myGame;
-    private final HashMap<String, ActorsRepository<?>> repos;
+    private final HashMap<String, ActorsRepository<? extends Actor>> repos;
 
 
     public ActorsReposManager(Game myGame){
@@ -28,22 +28,31 @@ public class ActorsReposManager {
     }
 
     // Method for stating a repository associated with a name.
-    public <T extends Actor> void startRepo(String name, T generator){
+    public <T extends Actor> void startRepo(String name){
 
         ArrayList<T> initialActors = new ArrayList<>();
-        myGame.getSurveyPublisher().onNext(new Survey<T>(myGame, initialActors, generator, obj -> true));
+        myGame.getSurveyPublisher().onNext(new Survey<T>(myGame, initialActors, null, obj -> true));
         repos.put(name, new ActorsRepository<T>(myGame, initialActors));
 
     }
 
-    // Method for getting your repo;
-    public ArrayList<?> getMyRepo(String name){
-        return repos.get(name).getActors();
+    // Method for getting your repo
+    public ArrayList<? extends  Actor> getActors(String name){
+        ActorsRepository<? extends Actor> repository = repos.get(name);
+        if(repository != null){
+            return repository.getActors();
+        }
+
+        return null;
     }
 
     // Method for removing the repository if there is no more need for it.
     // It is important to call this method in order to reduce the amount of active repos;
     public void endRepo(String name){
         repos.remove(name);
+    }
+
+    public <T extends Integer> T foo(T number){
+         return number;
     }
 }

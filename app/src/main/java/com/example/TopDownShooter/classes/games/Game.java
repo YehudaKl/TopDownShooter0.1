@@ -23,10 +23,15 @@ import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorIn
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;
 import com.example.TopDownShooter.classes.events.surveys.Survey;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
+import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
+import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.systems.GameLoop;
+import com.example.TopDownShooter.classes.systems.repository.ActorsReposManager;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 
@@ -38,22 +43,23 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
  * A Game class is a view that the activity of the game uses as its content view.
  * Generally different classes of games function as different game modes that can be played
  */
-public abstract class Game extends SurfaceView implements SurfaceHolder.Callback{
+public abstract class Game<T> extends SurfaceView implements SurfaceHolder.Callback{
 
 
-    private PublishSubject<OnUpdate> onUpdateObservable;
-    private PublishSubject<OnDraw> onDrawObservable;
-    private PublishSubject<OnGameStart> onGameStartObservable;
-    private PublishSubject<OnGameEnd> onGameEndObservable;
-    private PublishSubject<OnGameStatusChanged> onGameStatusChangedObservable;
+    private final PublishSubject<OnUpdate> onUpdateObservable;
+    private final PublishSubject<OnDraw> onDrawObservable;
+    private final PublishSubject<OnGameStart> onGameStartObservable;
+    private final PublishSubject<OnGameEnd> onGameEndObservable;
+    private final PublishSubject<OnGameStatusChanged> onGameStatusChangedObservable;
     private PublishSubject<OnActorValid> onActorValidObservable;
 
 
     private PublishSubject<OnActorInvalid> onActorInvalidObservable;
     private PublishSubject<Survey<? extends GameObject>> onSurveyObservable;
 
-    private GameLoop gameLoop;
-    private Context context;
+    private final GameLoop gameLoop;
+    private final ActorsReposManager actorsReposManager;
+    private final Context context;
     private boolean isDebugging;
     private GameState gameState;
     public Timer timer;// A timer for all classes in the game.
@@ -86,6 +92,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.onSurveyObservable = PublishSubject.create();
 
         this.gameLoop = new GameLoop(this, surfaceHolder);
+        this.actorsReposManager = new ActorsReposManager(this);
         this.context = getContext();
         this.isDebugging = false;
         this.gameState = GameState.LOAD;
@@ -144,6 +151,31 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     public Observable<OnUpdate> getOnUpdateObservable(){
         return onUpdateObservable;
+    }
+
+
+    public <T extends Actor> ArrayList<? extends Actor> getActors(String nameOfRepository) {
+
+        ArrayList<T> toReturn = null;
+        try {
+            toReturn = (ArrayList<T>) actorsReposManager.getActors(nameOfRepository);
+        } catch (ClassCastException e) {
+
+        }
+        // The name dose not match, Create new repository with the same name
+        if(toReturn == null){
+            actorsReposManager.startRepo(nameOfRepository);
+            try {
+                toReturn = (ArrayList<T>) actorsReposManager.getActors(nameOfRepository);
+            } catch (ClassCastException e) {
+
+
+            }
+        }
+
+
+
+        return toReturn;
     }
 
     // This method must me called at the child class not before all objects have been created!!
