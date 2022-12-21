@@ -1,10 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters;
 
-import android.graphics.Canvas;
-
 import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
-import com.example.TopDownShooter.classes.gameObjects.actors.UI.HealthBar;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
@@ -22,7 +19,6 @@ public abstract class Character extends Pawn {
     protected Team team;
     protected float  health;
     private CharacterHealthState healthState;
-    private HealthBar healthBar;
 
 
     public Character(Game myGame, Position initPosition, int resourceId){
@@ -33,8 +29,6 @@ public abstract class Character extends Pawn {
         this.team = myGame.findMyTeam(this);
         this.health = MAX_HEALTH;
         this.healthState = CharacterHealthState.ALIVE;
-
-        this.healthBar = new HealthBar(myGame, this);
 
     }
 
@@ -65,7 +59,6 @@ public abstract class Character extends Pawn {
         float opt_health =  health + amount;
         if(opt_health > MAX_HEALTH){return false;}
 
-        healthBar.updateProgressPercent();
         return true;
 
     }
@@ -76,7 +69,7 @@ public abstract class Character extends Pawn {
 
         health -= amount;
 
-        healthBar.updateProgressPercent();
+
         return true;
     }
 
