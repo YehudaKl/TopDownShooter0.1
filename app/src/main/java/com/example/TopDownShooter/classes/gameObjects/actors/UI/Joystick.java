@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnDraw;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
@@ -53,12 +55,24 @@ public class Joystick extends Actor {
         this.actuatorY = 0.0;
 
 
+        // Subscribing to events
+        myGame.getOnUpdateObservable().subscribe(this::onUpdate);
+        myGame.getOnDrawObservable().subscribe(this::onDraw);
+
 
 
 
     }
 
-    @Override
+    public void onDraw(OnDraw onDraw){
+        draw(onDraw.getCanvas());
+    }
+
+    public void onUpdate(OnUpdate onUpdate){
+        update();
+    }
+
+
     public void draw(Canvas canvas){
 
         // Draw outer circle
