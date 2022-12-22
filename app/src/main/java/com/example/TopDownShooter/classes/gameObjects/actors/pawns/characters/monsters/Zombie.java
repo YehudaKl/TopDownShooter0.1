@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
+import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 import java.util.Timer;
@@ -25,7 +26,7 @@ public class Zombie extends Monster {
 
 
     public Zombie(Game myGame, Position initPosition){
-        super(myGame, initPosition,  R.drawable.zombie1_stand);
+        super(myGame, initPosition, R.drawable.zombie1_stand);
 
         this.health = 1;//conf
         this.BITE_DAMAGE = 50;//conf

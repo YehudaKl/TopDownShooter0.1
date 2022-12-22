@@ -1,12 +1,18 @@
 package com.example.TopDownShooter.classes.gameObjects.actors;
 
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 
 import com.example.TopDownShooter.classes.assets.ActorAsset;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnDraw;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorInvalid;
+import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
+
+import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * An Actor is a GameObject that has a position and can be seen by the user during the game
@@ -19,55 +25,51 @@ public abstract class Actor extends GameObject {
 
     protected Position position;
     protected double direction;// In radians only!!
-    protected Game myGame;
     private boolean isVisible;
     private ActorAsset asset;
     private int resourceId;
 
 
 
-
-
-
-
-
-    public Actor(Game myGame, Position initPosition, int resourceId){
-        super();
-        this.myGame = myGame;
-        this.position = initPosition;
-        isVisible = true;
-        this.resourceId = resourceId;
-        this.direction = 0;
-
-        this.asset = new ActorAsset(myGame, this, BitmapFactory.decodeResource(myGame.getContext().getResources(), resourceId));
-
-    }
-
     // Constructor with direction param
     public Actor(Game myGame, Position initPosition, int resourceId, double direction){
-        super();
-        this.myGame = myGame;
+        super(myGame);
         this.position = initPosition;
         isVisible = true;
         this.resourceId = resourceId;
         this.direction = direction;
         this.asset = new ActorAsset(myGame, this, BitmapFactory.decodeResource(myGame.getContext().getResources(), resourceId));
 
+        // Subscribing to the OnDraw
+        myGame.getOnUpdateObservable().subscribe((Consumer<OnDraw>) onDraw -> onDraw(onDraw));
+        // Declare the new actor as valid
+        myGame.getOnActorValidObservable().onNext(new OnActorValid(myGame, this));
 
 
+    }
+
+    public Actor(Game myGame, Position initPosition, int resourceId){
+        this(myGame, initPosition, resourceId, 0);
     }
 
 
 
 
 
-
+    @Override
+    protected void invalidate() {
+        super.invalidate();
+        myGame.getOnActorInvalidObservable().onNext(new OnActorInvalid(myGame, this));
+    }
 
     public void onDraw(OnDraw onDraw){
-        if(!isVisible){return;}
+        draw(onDraw.getCanvas());
+    }
 
-        asset.draw(onDraw.getCanvas());
+    protected void draw(Canvas canvas){
+        if(!isVisible || asset == null){return;}
 
+        asset.draw(canvas);
     }
 
     public Position getPosition(){
@@ -99,8 +101,6 @@ public abstract class Actor extends GameObject {
 
         this.direction = Math.atan2(y, x);
     }
-
-
 
 
     protected void setVisibility(boolean isVisible){

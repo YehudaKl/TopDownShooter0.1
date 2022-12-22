@@ -24,18 +24,14 @@ public abstract class Player extends GameObject{
     public final float MAX_PAWN_SPEED;
 
     protected Pawn myPawn;
-    protected Game myGame;
     protected PawnMotionState motionState;
 
     public Player(Game myGame, Pawn myPawn, float maxSpeed){
+        super(myGame);
+
         this.MAX_PAWN_SPEED = maxSpeed;
-
         this.myPawn = myPawn;
-        this.myGame = myGame;
-
         this.motionState = PawnMotionState.STANDING;
-
-
     }
 
 
@@ -61,7 +57,7 @@ public abstract class Player extends GameObject{
 
 
     // The function is used by the pawn in order to update himself
-    public void updatePawn(OnUpdate onUpdate){
+    public void updatePawn(){
 
         updateDirection();
         // Update velocity
@@ -80,7 +76,7 @@ public abstract class Player extends GameObject{
     }
 
     public void OnPawnDied(){
-        Invalidate();
+        invalidate();
     }
 
     // Method that each child class implements in order to specify the updating of the direction
@@ -91,7 +87,7 @@ public abstract class Player extends GameObject{
 
 
     // Method for getting the closest actor to you from a provided list of actors
-    protected Actor getClosestActor(ArrayList<Actor> actors){
+    protected Actor getClosestActor(ArrayList<? extends Actor> actors){
         Actor toReturn = actors.get(0);
         double minDistance = toReturn.getDistanceBetween(myPawn);
 

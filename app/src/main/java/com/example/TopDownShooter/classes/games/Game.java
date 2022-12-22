@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Timer;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
 /**
@@ -50,12 +51,12 @@ public abstract class Game<T> extends SurfaceView implements SurfaceHolder.Callb
     private final PublishSubject<OnDraw> onDrawObservable;
     private final PublishSubject<OnGameStart> onGameStartObservable;
     private final PublishSubject<OnGameEnd> onGameEndObservable;
+
+
     private final PublishSubject<OnGameStatusChanged> onGameStatusChangedObservable;
-    private PublishSubject<OnActorValid> onActorValidObservable;
-
-
-    private PublishSubject<OnActorInvalid> onActorInvalidObservable;
-    private PublishSubject<Survey<? extends GameObject>> onSurveyObservable;
+    private final PublishSubject<OnActorValid> onActorValidObservable;
+    private final PublishSubject<OnActorInvalid> onActorInvalidObservable;
+    private final PublishSubject<Survey<? extends GameObject>> onSurveyObservable;
 
     private final GameLoop gameLoop;
     private final ActorsReposManager actorsReposManager;
@@ -74,6 +75,23 @@ public abstract class Game<T> extends SurfaceView implements SurfaceHolder.Callb
         return onActorInvalidObservable;
     }
 
+    public PublishSubject<OnGameStart> getOnGameStartObservable(){
+        return onGameStartObservable;
+    }
+
+    public PublishSubject<OnGameEnd> getOnGameEndObservable() {
+        return onGameEndObservable;
+    }
+
+    public PublishSubject<OnGameStatusChanged> getOnGameStatusChangedObservable() {
+        return onGameStatusChangedObservable;
+    }
+
+    public PublishSubject<Survey<? extends GameObject>> getOnSurveyObservable() {
+        return onSurveyObservable;
+    }
+
+
 
     public Game(Context context){
         super(context);
@@ -89,6 +107,8 @@ public abstract class Game<T> extends SurfaceView implements SurfaceHolder.Callb
         this.onGameStartObservable = PublishSubject.create();
         this.onGameEndObservable = PublishSubject.create();
         this.onGameStatusChangedObservable = PublishSubject.create();
+        this.onActorValidObservable = PublishSubject.create();
+        this.onActorInvalidObservable = PublishSubject.create();
         this.onSurveyObservable = PublishSubject.create();
 
         this.gameLoop = new GameLoop(this, surfaceHolder);
@@ -178,7 +198,7 @@ public abstract class Game<T> extends SurfaceView implements SurfaceHolder.Callb
         return toReturn;
     }
 
-    // This method must me called at the child class not before all objects have been created!!
+    // This method must be called at the child class not before all objects have been created!!
     // It is recommended to call this method at the end of the constructor
     protected void startGame(){
         onGameStartObservable.onNext(new OnGameStart(this));

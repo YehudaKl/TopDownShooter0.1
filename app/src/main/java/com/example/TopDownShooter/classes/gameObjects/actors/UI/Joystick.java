@@ -11,7 +11,12 @@ import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
-public class Joystick extends Actor {
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+
+public class Joystick extends Actor{
 
     private double outerCircleCenterPositionX;
     private double outerCircleCenterPositionY;
@@ -29,7 +34,7 @@ public class Joystick extends Actor {
     private double actuatorX;
     private double actuatorY;
 
-    public Joystick(Game myGame, Position position, int outerCircleRadius, int innerCircleRadius){
+    public Joystick(Game myGame, Position position, int outerCircleRadius, int innerCircleRadius) {
         super(myGame, position, 0);
 
         this.outerCircleCenterPositionX = position.getX();
@@ -56,17 +61,12 @@ public class Joystick extends Actor {
 
 
         // Subscribing to events
-        myGame.getOnUpdateObservable().subscribe(this::onUpdate);
-        myGame.getOnDrawObservable().subscribe(this::onDraw);
-
+        myGame.getOnUpdateObservable().subscribe((Consumer<OnUpdate>) onUpdate -> onUpdate(onUpdate));
 
 
 
     }
 
-    public void onDraw(OnDraw onDraw){
-        draw(onDraw.getCanvas());
-    }
 
     public void onUpdate(OnUpdate onUpdate){
         update();
@@ -147,3 +147,4 @@ public class Joystick extends Actor {
     }
 
 }
+

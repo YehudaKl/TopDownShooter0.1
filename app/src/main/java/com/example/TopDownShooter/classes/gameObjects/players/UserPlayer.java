@@ -25,8 +25,8 @@ public class UserPlayer extends Player{
 
 
     @Override
-    public void updatePawn(OnUpdate onUpdate){
-        super.updatePawn(onUpdate);
+    public void updatePawn(){
+        super.updatePawn();
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.TopDownShooter.classes.systems.repository;
 
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnDraw;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorInvalid;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
@@ -7,6 +8,11 @@ import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.games.Game;
 
 import java.util.ArrayList;
+
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * ActorsRepository is a repository that holds references to all valid actor from the same type in a game.
@@ -29,23 +35,24 @@ public class ActorsRepository <T extends Actor>{
         this.actorsList = new ArrayList();
 
         // Subscribing to the needed observables
-        myGame.getOnActorValidObservable().subscribe(this::OnActorValid);
-        myGame.getOnActorInvalidObservable().subscribe(this::OnActorInvalid);
-
+        myGame.getOnActorValidObservable().subscribe((Consumer<OnActorValid>) onActorValid -> onActorValid(onActorValid));
+        myGame.getOnActorInvalidObservable().subscribe((Consumer<OnActorInvalid>) onActorInvalid -> onActorInvalid(onActorInvalid));
     }
+
+
 
     public ActorsRepository(Game myGame, ArrayList<T> actorsList){
         this.myGame = myGame;
         this.actorsList = actorsList;
 
         // Subscribing to the needed observables
-        myGame.getOnActorValidObservable().subscribe(this::OnActorValid);
-        myGame.getOnActorInvalidObservable().subscribe(this::OnActorInvalid);
+        myGame.getOnActorValidObservable().subscribe((Consumer<OnActorValid>) onActorValid -> onActorValid(onActorValid));
+        myGame.getOnActorInvalidObservable().subscribe((Consumer<OnActorInvalid>) onActorInvalid -> onActorInvalid(onActorInvalid));
 
     }
 
     // Method to be executed when OnActorValid event is triggered
-    public void OnActorValid(OnActorValid onActorValid){
+    public void onActorValid(OnActorValid onActorValid){
         // Try to cast the actor to the repository's type
         try{
             addActor((T)onActorValid.getValidActor());
@@ -56,7 +63,7 @@ public class ActorsRepository <T extends Actor>{
     }
 
     // Method to be executed when OnActorInvalid event is triggered
-    public void OnActorInvalid(OnActorInvalid onActorInvalid){
+    public void onActorInvalid(OnActorInvalid onActorInvalid){
         // Try to cast the actor to the repository's type
         try{
             removeActor((T)onActorInvalid.getInvalidActor());

@@ -13,6 +13,7 @@ import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Ch
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Zombie;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
 import com.example.TopDownShooter.classes.gameObjects.players.AIPlayers.ZombiePlayer;
+import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.gameObjects.players.UserPlayer;
 import com.example.TopDownShooter.dataTypes.Position;
 
@@ -32,7 +33,7 @@ public class SurvivalGame extends Game{
     private int joystickPointerId;
 
 
-    public SurvivalGame(Context context){// *Note the survival game dose not need pre given actors
+    public SurvivalGame(Context context){
         super(context);
 
         teams = initializeTeams();
@@ -123,6 +124,8 @@ public class SurvivalGame extends Game{
 
     // The function adds a new enemy to the enemies array and to the actors-array of the parent class
     private void spawnZombie(Position position){
+        // TODO decide how to spawn the zombie better
+
         Zombie zombie = new Zombie(this, position);
 
         zombie.setOwner(new ZombiePlayer(this, zombie));

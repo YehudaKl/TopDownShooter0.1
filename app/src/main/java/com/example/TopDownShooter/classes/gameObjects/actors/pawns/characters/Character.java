@@ -1,8 +1,11 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters;
 
+import android.graphics.Canvas;
+
 import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
+import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
@@ -33,8 +36,8 @@ public abstract class Character extends Pawn {
     }
 
     @Override
-    public void onUpdate(OnUpdate onUpdate){
-        super.onUpdate(onUpdate);
+    public void update(){
+        super.update();
 
         if(isDead()){
             die();
@@ -47,7 +50,7 @@ public abstract class Character extends Pawn {
         // Invalidating the character in order to make it deleted next frame
         team.OnMemberDied();
         owner.OnPawnDied();
-        Invalidate();
+        invalidate();
 
     }
 

@@ -1,6 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters;
 
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
+import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
