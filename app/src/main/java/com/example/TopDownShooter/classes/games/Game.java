@@ -38,25 +38,26 @@ import java.util.Timer;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.ReplaySubject;
 
 /**
  * A Game is a generic class for all games that can be played by the user.
  * A Game class is a view that the activity of the game uses as its content view.
  * Generally different classes of games function as different game modes that can be played
  */
-public abstract class Game<T> extends SurfaceView implements SurfaceHolder.Callback{
+public abstract class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
     private final PublishSubject<OnUpdate> onUpdateObservable;
     private final PublishSubject<OnDraw> onDrawObservable;
     private final PublishSubject<OnGameStart> onGameStartObservable;
     private final PublishSubject<OnGameEnd> onGameEndObservable;
-
-
     private final PublishSubject<OnGameStatusChanged> onGameStatusChangedObservable;
-    private final PublishSubject<OnActorValid> onActorValidObservable;
-    private final PublishSubject<OnActorInvalid> onActorInvalidObservable;
     private final PublishSubject<Survey<? extends GameObject>> onSurveyObservable;
+
+    private final ReplaySubject<OnActorValid> onActorValidObservable;
+    private final ReplaySubject<OnActorInvalid> onActorInvalidObservable;
+
 
     private final GameLoop gameLoop;
     private final ActorsReposManager actorsReposManager;
@@ -67,11 +68,11 @@ public abstract class Game<T> extends SurfaceView implements SurfaceHolder.Callb
 
 
     // Setters and Getters
-    public PublishSubject<OnActorValid> getOnActorValidObservable() {
+    public ReplaySubject<OnActorValid> getOnActorValidObservable() {
         return onActorValidObservable;
     }
 
-    public PublishSubject<OnActorInvalid> getOnActorInvalidObservable() {
+    public ReplaySubject<OnActorInvalid> getOnActorInvalidObservable() {
         return onActorInvalidObservable;
     }
 
@@ -107,8 +108,8 @@ public abstract class Game<T> extends SurfaceView implements SurfaceHolder.Callb
         this.onGameStartObservable = PublishSubject.create();
         this.onGameEndObservable = PublishSubject.create();
         this.onGameStatusChangedObservable = PublishSubject.create();
-        this.onActorValidObservable = PublishSubject.create();
-        this.onActorInvalidObservable = PublishSubject.create();
+        this.onActorValidObservable = ReplaySubject.create();
+        this.onActorInvalidObservable = ReplaySubject.create();
         this.onSurveyObservable = PublishSubject.create();
 
         this.gameLoop = new GameLoop(this, surfaceHolder);

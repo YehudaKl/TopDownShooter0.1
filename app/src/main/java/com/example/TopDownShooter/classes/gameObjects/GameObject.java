@@ -26,12 +26,12 @@ public abstract class GameObject {
         this.myGame = myGame;
 
         // TODO make it subscribe to the actual type of the object at run time
-        myGame.getOnSurveyObservable().subscribe((Consumer<Survey<GameObject>>) survey -> onSurvey(survey));
+        //myGame.getOnSurveyObservable().subscribe((Consumer<Survey<? extends GameObject>>) survey -> onSurvey(survey));
     }
 
 
-    private void onSurvey (Survey<GameObject> survey){
-        survey.check(this);
+    private void onSurvey (Survey<? extends GameObject> survey){
+        //survey.check(this);
     }
 
     public boolean getIsValid(){
