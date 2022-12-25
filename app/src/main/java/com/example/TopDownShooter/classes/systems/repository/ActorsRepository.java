@@ -16,7 +16,9 @@ import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * ActorsRepository is a repository that holds references to all valid actor from the same type in a game.
- * Each actor that needs a reference to other actor must get it from a repository
+ * Each actor that needs a reference to other actor must get it from a repository.
+ * Actors that should be ignored by the repository (for example the objects that uses the repository),
+ * must be included in the actors to ignore arrayList.
  */
 public class ActorsRepository <T extends Actor>{
 
@@ -25,9 +27,11 @@ public class ActorsRepository <T extends Actor>{
     //TODO Adam
     /**
      * @param classOfType
-     * the Class object of the generic type must be provided in order to perform casts
+     *  Class object of the generic type must be provided in order to perform casts
      */
+
     private final ArrayList<T> actorsList;
+    private final ArrayList<T> actorsToIgnore;
 
     private void addActor(T actor){
         actorsList.add(actor);
@@ -36,15 +40,16 @@ public class ActorsRepository <T extends Actor>{
         return actorsList.remove(actor);
     }
 
+    // Constructor with no actorsToIgnore
     public ActorsRepository(Game myGame, Class<T> classOfType){
        this(myGame, classOfType, new ArrayList<>());
     }
 
-
-    public ActorsRepository(Game myGame, Class<T> classOfType, ArrayList<T> actorsList){
+    public ActorsRepository(Game myGame, Class<T> classOfType, ArrayList<T> actorsToIgnore){
         this.myGame = myGame;
         this.classOfType = classOfType;
-        this.actorsList = actorsList;
+        this.actorsToIgnore = actorsToIgnore;
+        this.actorsList = new ArrayList<>();
 
         // Subscribing to the needed observables
         myGame.getOnActorValidObservable().subscribe((Consumer<OnActorValid>) onActorValid -> onActorValid(onActorValid));
@@ -54,11 +59,20 @@ public class ActorsRepository <T extends Actor>{
 
     // Method to be executed when OnActorValid event is triggered
     public void onActorValid(OnActorValid onActorValid){
-        // Try to cast the actor to the repository's type
+
 
         try{
             // Try to cast the actor to the repository's type
-            addActor(classOfType.cast(onActorValid.getValidActor()));
+            T actorToAdd = classOfType.cast(onActorValid.getValidActor());
+
+            // Ensure that the actor is not in the actorsToIgnore list
+            for(T ignoredActor:actorsToIgnore){
+                if(ignoredActor == actorToAdd){
+                    return;
+                }
+            }
+            // Try to cast the actor to the repository's type
+            addActor(actorToAdd);
         }catch(ClassCastException e){
             // failed to cast
         }
@@ -79,6 +93,15 @@ public class ActorsRepository <T extends Actor>{
     // Return a copy of the actors list
     public ArrayList<T> getActors(){
         return new ArrayList<>(actorsList);
+    }
+
+
+    public int getSize(){
+        return actorsList.size();
+    }
+
+    public boolean isEmpty(){
+        return(getSize() == 0);
     }
 
 }

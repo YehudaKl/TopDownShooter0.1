@@ -31,7 +31,10 @@ public class ZombiePlayer extends AIPlayer {
     public ZombiePlayer(Game myGame, Pawn myPawn) {
         super(myGame, myPawn, 5/*conf*/);
         this.myZombie = (Zombie)myPawn;
-        this.repository = new ActorsRepository<>(myGame, Character.class);
+        // Adding myZombie to the ignored actors of the repository
+        ArrayList<Character> list = new ArrayList<>();
+        list.add(myZombie);
+        this.repository = new ActorsRepository<>(myGame, Character.class, list);
         this.objective = ZombieObjective.TRACK;// A default objective
     }
 
@@ -75,7 +78,10 @@ public class ZombiePlayer extends AIPlayer {
 
     @Override
     protected void updateDirection() {
-        if(trackedCharacter == null){return;}
+        if(trackedCharacter == null){
+            objective = ZombieObjective.WAIT;
+            return;
+        }
         myPawn.facePosition(trackedCharacter.getPosition());
     }
 
@@ -99,7 +105,10 @@ public class ZombiePlayer extends AIPlayer {
 
     // Search for a closer character to track
     private Character findNewTrackedCharacter(){
-        // returning the closest character while ignoring our team
+        // Return null if the repository is empty
+        if(repository.isEmpty()){ return null; }
+
+        // returning the closest character
         return (Character) getClosestActor(repository.getActors());
     }
 

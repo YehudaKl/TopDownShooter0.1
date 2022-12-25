@@ -47,10 +47,6 @@ public class Zombie extends Monster {
 
         character.reduceHealth(BITE_DAMAGE);
 
-        // Flash effect
-//        myGame.getEffectsSystem().signNewEffect(new FlashScreen(new Paint(R.color.red)));
-
-
         // Start the cooldown process
         canBite = false;
         myGame.timer.schedule(new BiteCooldownTask(this), (long) BITE_COOLDOWN_TIME);
