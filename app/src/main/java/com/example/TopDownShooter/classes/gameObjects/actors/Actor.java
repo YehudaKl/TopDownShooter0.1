@@ -12,6 +12,7 @@ import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.functions.Consumer;
 
 /**
@@ -57,9 +58,10 @@ public abstract class Actor extends GameObject {
 
 
     @Override
-    protected void invalidate() {
+    public void invalidate() {
         super.invalidate();
         myGame.getOnActorInvalidObservable().onNext(new OnActorInvalid(myGame, this));
+        myGame.getOnActorValidObservable().unsubscribeOn(AndroidSchedulers.mainThread());
     }
 
     public void onDraw(OnDraw onDraw){
@@ -106,7 +108,6 @@ public abstract class Actor extends GameObject {
     protected void setVisibility(boolean isVisible){
         this.isVisible = isVisible;
     }
-
 
 
 

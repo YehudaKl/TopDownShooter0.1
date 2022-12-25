@@ -39,8 +39,15 @@ public class ZombiePlayer extends AIPlayer {
     }
 
     @Override
+    public void invalidate(){
+        super.invalidate();
+        repository.end();
+    }
+
+    @Override
     public void onGameStart(OnGameStart onGameStart) {
         super.onGameStart(onGameStart);
+        repository.start();
         trackedCharacter = findNewTrackedCharacter();
     }
 

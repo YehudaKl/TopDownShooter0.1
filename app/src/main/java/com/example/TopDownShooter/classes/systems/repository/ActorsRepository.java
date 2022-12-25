@@ -9,6 +9,7 @@ import com.example.TopDownShooter.classes.games.Game;
 
 import java.util.ArrayList;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -24,6 +25,7 @@ public class ActorsRepository <T extends Actor>{
 
     private final Game myGame;
     private final Class<T> classOfType;
+    private boolean isInAction;
     //TODO Adam
     /**
      * @param classOfType
@@ -50,10 +52,7 @@ public class ActorsRepository <T extends Actor>{
         this.classOfType = classOfType;
         this.actorsToIgnore = actorsToIgnore;
         this.actorsList = new ArrayList<>();
-
-        // Subscribing to the needed observables
-        myGame.getOnActorValidObservable().subscribe((Consumer<OnActorValid>) onActorValid -> onActorValid(onActorValid));
-        myGame.getOnActorInvalidObservable().subscribe((Consumer<OnActorInvalid>) onActorInvalid -> onActorInvalid(onActorInvalid));
+        this.isInAction = false;
 
     }
 
@@ -95,6 +94,27 @@ public class ActorsRepository <T extends Actor>{
         return new ArrayList<>(actorsList);
     }
 
+    // Method for stopping the repository's work (unsubscribing to the observables)
+    // Must be called when the last user-object goes invalid
+    public void end(){
+        if(this.isInAction == false){return;}
+
+        myGame.getOnActorValidObservable().unsubscribeOn(AndroidSchedulers.mainThread());
+        myGame.getOnActorInvalidObservable().unsubscribeOn(AndroidSchedulers.mainThread());
+    }
+
+    // Method for starting the repository's work (subscribing to the observables)
+    // Must be called in order start use the repository
+
+    public void start(){
+        if(this.isInAction == true){return;}
+
+        myGame.getOnActorValidObservable().subscribe((Consumer<OnActorValid>) onActorValid -> onActorValid(onActorValid));
+        myGame.getOnActorInvalidObservable().subscribe((Consumer<OnActorInvalid>) onActorInvalid -> onActorInvalid(onActorInvalid));
+
+        this.isInAction = true;
+
+    }
 
     public int getSize(){
         return actorsList.size();

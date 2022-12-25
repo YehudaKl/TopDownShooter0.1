@@ -11,6 +11,7 @@ import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -65,6 +66,13 @@ public class Joystick extends Actor{
 
 
 
+    }
+
+    @Override
+    public void invalidate(){
+        super.invalidate();
+
+        myGame.getOnUpdateObservable().unsubscribeOn(AndroidSchedulers.mainThread());
     }
 
 

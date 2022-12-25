@@ -30,6 +30,8 @@ public abstract class GameObject {
     }
 
 
+
+
     private void onSurvey (Survey<? extends GameObject> survey){
         //survey.check(this);
     }
@@ -38,8 +40,8 @@ public abstract class GameObject {
         return isValid;
     }
 
-
-    protected void invalidate(){
+    //TODO adam 
+    public void invalidate(){
         isValid = false;
 
     }
