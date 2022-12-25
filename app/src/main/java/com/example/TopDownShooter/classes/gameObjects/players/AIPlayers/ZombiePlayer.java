@@ -9,6 +9,7 @@ import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Ch
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Zombie;
 import com.example.TopDownShooter.classes.games.Game;
+import com.example.TopDownShooter.classes.systems.repository.ActorsRepository;
 import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
 import com.example.TopDownShooter.dataTypes.enums.ZombieObjective;
 
@@ -24,11 +25,13 @@ public class ZombiePlayer extends AIPlayer {
 
     private Character trackedCharacter;
     private final Zombie myZombie;// A saved reference to my pawn as Zombie
+    private final ActorsRepository<Character> repository;
     private ZombieObjective objective;
 
     public ZombiePlayer(Game myGame, Pawn myPawn) {
         super(myGame, myPawn, 5/*conf*/);
         this.myZombie = (Zombie)myPawn;
+        this.repository = new ActorsRepository<>(myGame);
         this.objective = ZombieObjective.TRACK;// A default objective
     }
 
@@ -81,30 +84,25 @@ public class ZombiePlayer extends AIPlayer {
 
         double x = 0;
         double y = 0;
-        return;
-//        if(objective == ZombieObjective.TRACK){
-//            // Update the pawn that it goes towards what it is faced to(the tracked character)
-//            x = Math.cos(myPawn.getDirection()) * MAX_PAWN_SPEED;
-//            y = Math.sin(myPawn.getDirection()) * MAX_PAWN_SPEED;
-//        }
-//
-//
-//
-//        myPawn.getVelocity().setCoordinateX(x);
-//        myPawn.getVelocity().setCoordinateY(y);
+
+        if(objective == ZombieObjective.TRACK){
+            // Update the pawn that it goes towards what it is faced to(the tracked character)
+            x = Math.cos(myPawn.getDirection()) * MAX_PAWN_SPEED;
+            y = Math.sin(myPawn.getDirection()) * MAX_PAWN_SPEED;
+        }
+
+
+
+        myPawn.getVelocity().setCoordinateX(x);
+        myPawn.getVelocity().setCoordinateY(y);
     }
 
     // Search for a closer character to track
     private Character findNewTrackedCharacter(){
         // returning the closest character while ignoring our team
-        return null;
+        return (Character) getClosestActor(repository.getActors());
     }
 
-    // Method for getting the closest character to a provided zombie
-    // The method is in chara
-    private  Character getClosestCharacter(Zombie zombie){
-        return (Character) getClosestActor(myGame.getActors("moshe"));
-    }
     // Method that generates a new objective for the zombie player by a set of logic rules. May be extended to a full objective-generation system
     // for all pawns
     private ZombieObjective generateObjective(){
