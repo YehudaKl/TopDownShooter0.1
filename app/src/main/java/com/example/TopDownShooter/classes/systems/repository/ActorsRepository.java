@@ -16,7 +16,7 @@ import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * ActorsRepository is a repository that holds references to all valid actor from the same type in a game.
- * Each actor that needs a reference to other actor must get it from the repository
+ * Each actor that needs a reference to other actor must get it from a repository
  */
 public class ActorsRepository <T extends Actor>{
 
@@ -31,12 +31,7 @@ public class ActorsRepository <T extends Actor>{
     }
 
     public ActorsRepository(Game myGame){
-        this.myGame = myGame;
-        this.actorsList = new ArrayList();
-
-        // Subscribing to the needed observables
-        myGame.getOnActorValidObservable().subscribe((Consumer<OnActorValid>) onActorValid -> onActorValid(onActorValid));
-        myGame.getOnActorInvalidObservable().subscribe((Consumer<OnActorInvalid>) onActorInvalid -> onActorInvalid(onActorInvalid));
+       this(myGame, new ArrayList<>());
     }
 
 
