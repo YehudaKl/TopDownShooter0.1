@@ -60,7 +60,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
 
     private final GameLoop gameLoop;
-    private final ActorsReposManager actorsReposManager;
     private final Context context;
     private boolean isDebugging;
     private GameState gameState;
@@ -113,7 +112,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.onSurveyObservable = PublishSubject.create();
 
         this.gameLoop = new GameLoop(this, surfaceHolder);
-        this.actorsReposManager = new ActorsReposManager(this);
         this.context = getContext();
         this.isDebugging = false;
         this.gameState = GameState.LOAD;
@@ -174,30 +172,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         return onUpdateObservable;
     }
 
-
-    public <T extends Actor> ArrayList<? extends Actor> getActors(String nameOfRepository) {
-
-        ArrayList<T> toReturn = null;
-        try {
-            toReturn = (ArrayList<T>) actorsReposManager.getActors(nameOfRepository);
-        } catch (ClassCastException e) {
-
-        }
-        // The name dose not match, Create new repository with the same name
-        if(toReturn == null){
-            actorsReposManager.startRepo(nameOfRepository);
-            try {
-                toReturn = (ArrayList<T>) actorsReposManager.getActors(nameOfRepository);
-            } catch (ClassCastException e) {
-
-
-            }
-        }
-
-
-
-        return toReturn;
-    }
 
     // This method must be called at the child class not before all objects have been created!!
     // It is recommended to call this method at the end of the constructor
