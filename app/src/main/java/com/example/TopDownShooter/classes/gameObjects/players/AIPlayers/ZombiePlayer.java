@@ -31,7 +31,7 @@ public class ZombiePlayer extends AIPlayer {
     public ZombiePlayer(Game myGame, Pawn myPawn) {
         super(myGame, myPawn, 5/*conf*/);
         this.myZombie = (Zombie)myPawn;
-        this.repository = new ActorsRepository<>(myGame);
+        this.repository = new ActorsRepository<>(myGame, Character.class);
         this.objective = ZombieObjective.TRACK;// A default objective
     }
 

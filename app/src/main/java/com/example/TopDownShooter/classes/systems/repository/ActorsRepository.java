@@ -21,6 +21,12 @@ import io.reactivex.rxjava3.functions.Consumer;
 public class ActorsRepository <T extends Actor>{
 
     private final Game myGame;
+    private final Class<T> classOfType;
+    //TODO Adam
+    /**
+     * @param classOfType
+     * the Class object of the generic type must be provided in order to perform casts
+     */
     private final ArrayList<T> actorsList;
 
     private void addActor(T actor){
@@ -30,14 +36,14 @@ public class ActorsRepository <T extends Actor>{
         return actorsList.remove(actor);
     }
 
-    public ActorsRepository(Game myGame){
-       this(myGame, new ArrayList<>());
+    public ActorsRepository(Game myGame, Class<T> classOfType){
+       this(myGame, classOfType, new ArrayList<>());
     }
 
 
-
-    public ActorsRepository(Game myGame, ArrayList<T> actorsList){
+    public ActorsRepository(Game myGame, Class<T> classOfType, ArrayList<T> actorsList){
         this.myGame = myGame;
+        this.classOfType = classOfType;
         this.actorsList = actorsList;
 
         // Subscribing to the needed observables
@@ -49,10 +55,12 @@ public class ActorsRepository <T extends Actor>{
     // Method to be executed when OnActorValid event is triggered
     public void onActorValid(OnActorValid onActorValid){
         // Try to cast the actor to the repository's type
-        try{
-            addActor((T)onActorValid.getValidActor());
-        }catch(ClassCastException e){
 
+        try{
+            // Try to cast the actor to the repository's type
+            addActor(classOfType.cast(onActorValid.getValidActor()));
+        }catch(ClassCastException e){
+            // failed to cast
         }
 
     }
@@ -61,9 +69,9 @@ public class ActorsRepository <T extends Actor>{
     public void onActorInvalid(OnActorInvalid onActorInvalid){
         // Try to cast the actor to the repository's type
         try{
-            removeActor((T)onActorInvalid.getInvalidActor());
+            removeActor(classOfType.cast(onActorInvalid.getInvalidActor()));
         }catch(ClassCastException e){
-
+            // failed to cast
         }
 
     }

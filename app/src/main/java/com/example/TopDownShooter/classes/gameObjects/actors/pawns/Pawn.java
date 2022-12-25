@@ -9,7 +9,10 @@ import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.Vector;
-;import io.reactivex.rxjava3.functions.Consumer;
+;import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * A Pawn is an actor that can be controlled by a player or an AI.
@@ -25,7 +28,28 @@ public abstract class Pawn extends Actor{
 
         this.owner = owner;
         this.velocity = new Vector(0, 0);
-        myGame.getOnUpdateObservable().subscribe((Consumer<OnUpdate>) onUpdate -> onUpdate(onUpdate));
+        myGame.getOnUpdateObservable().subscribe(new Observer<OnUpdate>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull OnUpdate onUpdate) {
+                update();
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
         myGame.getOnGameStartObservable().subscribe((Consumer<OnGameStart>) onGameStart -> onGameStart(onGameStart));
         myGame.getOnGameEndObservable().subscribe((Consumer<OnGameEnd>) onGameEnd -> onGameEnd(onGameEnd));
         myGame.getOnGameStatusChangedObservable().subscribe((Consumer<OnGameStatusChanged>) onGameStatusChanged -> onGameStatusChanged(onGameStatusChanged));
@@ -33,13 +57,32 @@ public abstract class Pawn extends Actor{
 
     // Constructor for with direction for pawns that has to be initialized to current direction.
     public Pawn(Game myGame, Position initPosition, int resourceId, double direction){
-        super(myGame, initPosition, resourceId,direction);
+        super(myGame, initPosition, resourceId, direction);
 
-        this.owner = owner;
         this.velocity = new Vector(0, 0);
 
         // TODO avoid code duplication
-        myGame.getOnUpdateObservable().subscribe((Consumer<OnUpdate>) onUpdate -> onUpdate(onUpdate));
+        myGame.getOnUpdateObservable().subscribe(new Observer<OnUpdate>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull OnUpdate onUpdate) {
+                update();
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
         myGame.getOnGameStartObservable().subscribe((Consumer<OnGameStart>) onGameStart -> onGameStart(onGameStart));
         myGame.getOnGameEndObservable().subscribe((Consumer<OnGameEnd>) onGameEnd -> onGameEnd(onGameEnd));
         myGame.getOnGameStatusChangedObservable().subscribe((Consumer<OnGameStatusChanged>) onGameStatusChanged -> onGameStatusChanged(onGameStatusChanged));

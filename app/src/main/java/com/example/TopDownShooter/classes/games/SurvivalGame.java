@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
+import androidx.annotation.NonNull;
+
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
@@ -71,7 +73,7 @@ public class SurvivalGame extends Game{
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event){
+    public boolean onTouchEvent(@NonNull MotionEvent event){
 
         // TODO replace with full event-GUI system(without the joystick)
 

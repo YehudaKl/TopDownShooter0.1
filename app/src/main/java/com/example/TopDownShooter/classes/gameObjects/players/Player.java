@@ -93,7 +93,7 @@ public abstract class Player extends GameObject{
 
         for(Actor actor: actors){
             double distance = actor.getDistanceBetween(myPawn);
-            if(distance < minDistance){
+            if(distance < minDistance && actor != (Actor)myPawn){
                 minDistance = distance;
                 toReturn = actor;
             }

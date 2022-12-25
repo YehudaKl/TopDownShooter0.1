@@ -32,7 +32,7 @@ public class ActorsReposManager {
 
         ArrayList<T> initialActors = new ArrayList<>();
         myGame.getSurveyPublisher().onNext(new Survey<T>(myGame, initialActors, null, obj -> true));
-        repos.put(name, new ActorsRepository<T>(myGame, initialActors));
+        //repos.put(name, new ActorsRepository<T>(myGame, initialActors,));
 
     }
 
