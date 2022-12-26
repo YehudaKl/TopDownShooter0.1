@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -115,8 +116,23 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
 
     // Update the position of the top of the joystick according to a touch position and render the joystick
     private void adjustJoystickToTouchPosition(float positionX, float positionY){
-        topX = positionX;
-        topY = positionY;
+        float distance = distance(baseX, baseY, positionX, positionY);
+        float deltaX = positionX - baseX;
+        float deltaY = positionY - baseY;
+
+
+        if(distance > baseRadius){// position is out of bounds
+            deltaX *= baseRadius/distance;
+            deltaY *= baseRadius/distance;
+
+
+            topX = deltaX + baseX;
+            topY = deltaY + baseY;
+        }
+        else{
+            topX = positionX;
+            topY = positionY;
+        }
 
         updateJoystick();
     }
@@ -142,6 +158,10 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         return true;
 
 
+    }
+
+    private float distance(float x1, float y1, float x2, float y2){
+        return (float)Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
 }
