@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 
 public class JoystickView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
 
-    private final short BASE_TOP_RATIO = 8;
+    private final float BASE_TOP_RATIO = 0.5f;
 
     private float baseX;
     private float baseY;
@@ -28,6 +28,8 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     public JoystickView(Context context) {
         super(context);
 
+        this.baseTopRatio = BASE_TOP_RATIO;
+
         getHolder().addCallback(this);
         setOnTouchListener(this);
 
@@ -36,6 +38,8 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
 
     public JoystickView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        this.baseTopRatio = BASE_TOP_RATIO;
 
         getHolder().addCallback(this);
         setOnTouchListener(this);
@@ -46,7 +50,10 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         setUpDimensions();
         // Getting drawn to the screen
-        updateJoystick();
+        Canvas canvas = getHolder().lockCanvas();
+        draw(canvas);
+        getHolder().unlockCanvasAndPost(canvas);
+
 
 
 
@@ -66,15 +73,15 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        //Draw base
         Paint paint = new Paint();
-        paint.setARGB(255, 50, 50, 50);
+
+        //Draw base
+        paint.setARGB(255, 50, 100, 50);
         canvas.drawCircle(baseX, baseY, baseRadius, paint);
 
         // Draw top
         paint.setARGB(255, 0, 0, 255);
         canvas.drawCircle(topX, topY, topRadius, paint);
-
 
     }
 
@@ -101,7 +108,7 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         // Make sure that the joystick will not go outbound
         float radius = Math.min(getWidth(), getHeight())/2;
         baseRadius = radius;
-        topRadius = radius * baseTopRatio;
+        topRadius = baseRadius * baseTopRatio;
 
 
     }
