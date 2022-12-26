@@ -34,7 +34,14 @@
 
         <activity android:name=".classes.activities.gameActivities.SurvivalGameActivity"
             android:exported="true"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape">
+
+        </activity>
+
+        <activity android:name=".classes.activities.JoystickTestActivity"
+            android:exported="true">
+
+        </activity>
 
 
 

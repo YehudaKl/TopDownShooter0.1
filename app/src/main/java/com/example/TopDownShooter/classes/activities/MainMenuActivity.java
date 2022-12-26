@@ -2,8 +2,10 @@ package com.example.TopDownShooter.classes.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     private Button singlePlayer;
     private Button multiPlayer;
     private Button settings;
+    private Button joystickTest;
 
 
     @Override
@@ -31,8 +34,12 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         singlePlayer = findViewById(R.id.btn_singlePlayer);
         multiPlayer = findViewById(R.id.btn_multiPlayer);
         settings = findViewById(R.id.btn_multiPlayer);
+        joystickTest = findViewById(R.id.btn_joystickTest);
 
         singlePlayer.setOnClickListener(this);
+        joystickTest.setOnClickListener(this);
+
+
         // Setting the helloPlayer text to the player's name
         if(helloPlayer != null){
 
@@ -47,6 +54,10 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         switch(view.getId()){
             case R.id.btn_singlePlayer:
                 navigateToSingleGame();
+                break;
+            case R.id.btn_joystickTest:
+                Intent intent = new Intent(getApplicationContext(), JoystickTestActivity.class);
+                startActivity(intent);
                 break;
             default:
                 Toast.makeText(this, "Could not detect the button", Toast.LENGTH_SHORT).show();
