@@ -8,18 +8,15 @@ import androidx.annotation.NonNull;
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.Team;
-import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
-import com.example.TopDownShooter.classes.gameObjects.actors.UI.Joystick;
+import com.example.TopDownShooter.classes.UI.Joystick;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Hero;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Zombie;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
 import com.example.TopDownShooter.classes.gameObjects.players.AIPlayers.ZombiePlayer;
-import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.gameObjects.players.UserPlayer;
 import com.example.TopDownShooter.dataTypes.Position;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

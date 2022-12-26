@@ -1,4 +1,4 @@
-package com.example.TopDownShooter.classes.gameObjects.actors.UI;
+package com.example.TopDownShooter.classes.UI;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
