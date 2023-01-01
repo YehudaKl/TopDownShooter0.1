@@ -103,6 +103,17 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         return true;
     }
 
+    // Method that returns the actuators in each direction in order to use the joy stick for any purpose
+    public float getActuatorX(){
+        float distanceX = topX - baseX;
+        return distanceX/baseRadius;
+    }
+
+    public float getActuatorY(){
+        float distanceY = topY - baseY;
+        return distanceY/baseRadius;
+    }
+
     // Calculate the initial position for the base and the radius of the size of the joystick
     private void setUpDimensions(){
         baseX = getWidth()/2;
