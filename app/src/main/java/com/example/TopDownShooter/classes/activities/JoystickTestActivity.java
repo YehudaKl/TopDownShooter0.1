@@ -14,10 +14,8 @@ public class JoystickTestActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        RelativeLayout layout = new RelativeLayout(this);
-        joystick = new JoystickView(this);
-        layout.addView(joystick);
-        setContentView(layout);
+
+        setContentView(R.layout.joystick_test_activity);
 
 
 

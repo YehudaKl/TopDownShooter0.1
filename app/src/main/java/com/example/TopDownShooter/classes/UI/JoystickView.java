@@ -3,6 +3,7 @@ package com.example.TopDownShooter.classes.UI;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -39,6 +40,7 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
 
     public JoystickView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        parseAttributes(attrs);
 
         this.baseTopRatio = BASE_TOP_RATIO;
 
@@ -47,9 +49,11 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
 
     }
 
+
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         setUpDimensions();
+        getHolder().setFormat(PixelFormat.TRANSPARENT);
         // Getting drawn to the screen
         Canvas canvas = getHolder().lockCanvas();
         draw(canvas);
@@ -162,6 +166,12 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
 
     private float distance(float x1, float y1, float x2, float y2){
         return (float)Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+    private void parseAttributes(AttributeSet attrs) {
+
+
+
     }
 
 }
