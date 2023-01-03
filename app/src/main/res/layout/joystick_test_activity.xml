@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.TopDownShooter.classes.UI.JoystickView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+   <com.example.TopDownShooter.classes.UI.JoystickView
+       android:layout_width="156dp"
+       android:layout_height="157dp"
+       android:layout_alignParentEnd="true"
+       android:layout_alignParentBottom="true"
+       android:layout_marginEnd="130dp"
+       android:layout_marginBottom="483dp"
+       android:paddingLeft="100dp" />
+
 
 </RelativeLayout>
