@@ -49,7 +49,7 @@ public class Zombie extends Monster {
 
         // Start the cooldown process
         canBite = false;
-        myGame.timer.schedule(new BiteCooldownTask(this), (long) BITE_COOLDOWN_TIME);
+        myGame.getTimer().schedule(new BiteCooldownTask(this), (long) BITE_COOLDOWN_TIME);
     }
 
 

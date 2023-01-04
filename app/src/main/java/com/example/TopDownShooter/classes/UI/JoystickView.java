@@ -17,6 +17,11 @@ import androidx.annotation.NonNull;
 
 import com.example.TopDownShooter.R;
 
+/**
+ * Joystick that can be used in xml file as a view subclass.
+ * The output of the joystick is provided by the methods getActuatorX/Y()
+ */
+
 public class JoystickView extends View{
 
     private static final float TOP_BASE_RATIO = 0.5f;

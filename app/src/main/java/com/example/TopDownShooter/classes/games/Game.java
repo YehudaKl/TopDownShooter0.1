@@ -19,6 +19,7 @@ import com.example.TopDownShooter.classes.events.GameStatusEvents.GameStatus;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStatusChanged;
 import com.example.TopDownShooter.classes.events.OnGameEnd;
 import com.example.TopDownShooter.classes.events.OnGameStart;
+import com.example.TopDownShooter.classes.events.UIEvents.OnShoot;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorInvalid;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;
 import com.example.TopDownShooter.classes.events.surveys.Survey;
@@ -53,6 +54,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     private final PublishSubject<OnGameStart> onGameStartObservable;
     private final PublishSubject<OnGameEnd> onGameEndObservable;
     private final PublishSubject<OnGameStatusChanged> onGameStatusChangedObservable;
+    private final PublishSubject<OnShoot> onShootObservable;
     private final PublishSubject<Survey<? extends GameObject>> onSurveyObservable;
 
     private final ReplaySubject<OnActorValid> onActorValidObservable;
@@ -63,7 +65,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     private final Context context;
     private boolean isDebugging;
     private GameState gameState;
-    public Timer timer;// A timer for all classes in the game.
+    private Timer timer;// A timer for all classes in the game.
 
 
     // Setters and Getters
@@ -87,8 +89,17 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         return onGameStatusChangedObservable;
     }
 
+    public PublishSubject<OnShoot> getOnShootObservable(){
+        return onShootObservable;
+    }
+
     public PublishSubject<Survey<? extends GameObject>> getOnSurveyObservable() {
         return onSurveyObservable;
+    }
+
+
+    public Timer getTimer(){
+        return timer;
     }
 
 
@@ -109,6 +120,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.onGameStatusChangedObservable = PublishSubject.create();
         this.onActorValidObservable = ReplaySubject.create();
         this.onActorInvalidObservable = ReplaySubject.create();
+        this.onShootObservable = PublishSubject.create();
         this.onSurveyObservable = PublishSubject.create();
 
         this.gameLoop = new GameLoop(this, surfaceHolder);
