@@ -79,6 +79,12 @@ public abstract class Pawn extends Actor{
         owner.onGameStatusChanged(onGameStatusChanged);
     }
 
+    // Method for a a pawn that was added after the game has already stared.
+    // Must be called by the creator of the pawn
+    public void onJoinedGame(){
+        owner.onJoinedGame();
+    }
+
     public void setOwner(Player owner){
         this.owner = owner;
     }

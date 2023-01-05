@@ -56,6 +56,10 @@ public abstract class Player extends GameObject{
         }
     }
 
+    public void onJoinedGame(){
+        this.motionState = PawnMotionState.MOVING;
+    }
+
 
     // The function is used by the pawn in order to update himself
     public void updatePawn(UpdateTrace updateTrace){

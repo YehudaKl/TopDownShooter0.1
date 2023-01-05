@@ -12,6 +12,7 @@ import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.mo
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.classes.systems.repository.ActorsRepository;
 import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
+import com.example.TopDownShooter.dataTypes.enums.PawnMotionState;
 import com.example.TopDownShooter.dataTypes.enums.ZombieObjective;
 
 import java.util.ArrayList;
@@ -36,7 +37,6 @@ public class ZombiePlayer extends AIPlayer {
         ArrayList<Character> list = new ArrayList<>();
         list.add(myZombie);
         this.repository = new ActorsRepository<>(myGame, Character.class, list);
-        repository.start();
         this.objective = ZombieObjective.TRACK;// A default objective
     }
 
@@ -49,9 +49,16 @@ public class ZombiePlayer extends AIPlayer {
     @Override
     public void onGameStart(OnGameStart onGameStart) {
         super.onGameStart(onGameStart);
+        repository.start();
         trackedCharacter = findNewTrackedCharacter();
     }
 
+    @Override
+    public void onJoinedGame() {
+        super.onJoinedGame();
+        repository.start();
+        trackedCharacter = findNewTrackedCharacter();
+    }
 
     @Override
     public void updatePawn(UpdateTrace updateTrace){

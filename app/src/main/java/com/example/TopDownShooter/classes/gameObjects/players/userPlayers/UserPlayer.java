@@ -5,6 +5,7 @@ import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
+import com.example.TopDownShooter.dataTypes.enums.PawnMotionState;
 
 /**
  * User player is a player that controls a character owned by the user of the app
@@ -51,7 +52,8 @@ public class UserPlayer extends Player {
     }
 
     @Override
-    public void onGameStart(OnGameStart onGameStart) {
+    public void onGameStart(OnGameStart onGameStart){
         super.onGameStart(onGameStart);
+        this.motionState = PawnMotionState.MOVING;
     }
 }
