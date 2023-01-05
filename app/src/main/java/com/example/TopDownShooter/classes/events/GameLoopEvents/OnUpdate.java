@@ -8,16 +8,16 @@ import com.example.TopDownShooter.classes.games.Game;
  */
 public class OnUpdate extends OnEvent {
 
-    protected final float deltaTime;
 
+    protected final UpdateTrace updateTrace;
 
-    public OnUpdate(Game game, float deltaTime){
+    public OnUpdate(Game game, UpdateTrace updateTrace){
         super(game);
 
-        this.deltaTime = deltaTime;
+        this.updateTrace = updateTrace;
     }
 
-    public float getDeltaTime(){
-        return this.deltaTime;
+    public UpdateTrace getUpdateTrace(){
+        return updateTrace;
     }
 }

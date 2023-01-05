@@ -15,6 +15,7 @@ import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnDraw;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.GameStatus;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStatusChanged;
 import com.example.TopDownShooter.classes.events.OnGameEnd;
@@ -60,6 +61,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     private boolean isDebugging;
     private GameState gameState;
     private Timer timer;// A timer for all classes in the game.
+    private UpdateTrace updateTrace;
 
 
     // Setters and Getters
@@ -94,6 +96,12 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     public Timer getTimer(){
         return timer;
+    }
+
+    // This method must be used by any UI element that wants to identify the game
+    // The UI element pass himself as an argument to the update notify method for its type;
+    public UpdateTrace getUpdateTrace(){
+        return updateTrace;
     }
 
 
@@ -167,7 +175,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     public void update(){
 
-        onUpdateObservable.onNext(new OnUpdate(this, gameLoop.getDeltaTime()));
+        onUpdateObservable.onNext(new OnUpdate(this, updateTrace));
     }
 
     public Observable<OnDraw> getOnDrawObservable(){

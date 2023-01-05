@@ -1,7 +1,11 @@
 package com.example.TopDownShooter.classes.events.GameLoopEvents;
 
+import com.example.TopDownShooter.classes.UI.Joystick;
+
 /**
  * A trace for storing values and information about each update cycle in the game.
+ * Each UI element that wants to update the values must the notify method for its type
+ * Usually a game should use one permanent update trace and let other objects to edit its content
  */
 public class UpdateTrace {
     private float deltaTime;
@@ -12,6 +16,10 @@ public class UpdateTrace {
         return deltaTime;
     }
 
+    public void setDeltaTime(float deltaTime){
+        this.deltaTime = deltaTime;
+    }
+
     public float getJoystickActuatorX() {
         return joystickActuatorX;
     }
@@ -20,21 +28,26 @@ public class UpdateTrace {
         return joystickActuatorY;
     }
 
-    public void setDeltaTime(float deltaTime) {
-        this.deltaTime = deltaTime;
-    }
+   public void joystickNotify(Joystick joystick){
+        joystickActuatorX = joystick.getActuatorX();
+        joystickActuatorY = joystick.getActuatorY();
+   }
 
-    public void setJoystickActuatorX(float joystickActuatorX) {
-        this.joystickActuatorX = joystickActuatorX;
-    }
+   // Default constructor. uses the init method
+   public UpdateTrace(){
+        init();
+   }
 
-    public void setJoystickActuatorY(float joystickActuatorY) {
-        this.joystickActuatorY = joystickActuatorY;
-    }
-
-    public UpdateTrace(float deltaTime, float joystickActuatorX, float joystickActuatorY) {
+   public UpdateTrace(float deltaTime, float joystickActuatorX, float joystickActuatorY) {
         this.deltaTime = deltaTime;
         this.joystickActuatorX = joystickActuatorX;
         this.joystickActuatorY = joystickActuatorY;
     }
+
+    // Method for erasing the content of the updateTrace and assigning 0 to all values
+   public void init(){
+        deltaTime = 0;
+        joystickActuatorX = 0;
+        joystickActuatorY = 0;
+   }
 }
