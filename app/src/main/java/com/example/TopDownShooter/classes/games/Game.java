@@ -24,20 +24,14 @@ import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorIn
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;
 import com.example.TopDownShooter.classes.events.surveys.Survey;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
-import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
-import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.systems.GameLoop;
-import com.example.TopDownShooter.classes.systems.repository.ActorsReposManager;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.ReplaySubject;
 

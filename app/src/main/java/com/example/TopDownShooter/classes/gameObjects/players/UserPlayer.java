@@ -1,20 +1,13 @@
 package com.example.TopDownShooter.classes.gameObjects.players;
 
-import com.example.TopDownShooter.classes.UI.Joystick;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.games.Game;
 
 public class UserPlayer extends Player{
 
-    //Temporary-----------
-    //TODO replace with a full control UI system
-    private Joystick joystick;
-    //-------------------
-
-    public UserPlayer(Game game, Pawn pawn, Joystick joystick){
+    public UserPlayer(Game game, Pawn pawn){
         super(game, pawn, 10/*conf*/);
 
-        this.joystick = joystick;
 
     }
 
@@ -36,13 +29,9 @@ public class UserPlayer extends Player{
 
     @Override
     public void updateVelocity(){
-        myPawn.getVelocity().setCoordinateX(joystick.getActuatorX() * MAX_PAWN_SPEED);
-        myPawn.getVelocity().setCoordinateY(joystick.getActuatorY() * MAX_PAWN_SPEED);
+        myPawn.getVelocity().setCoordinateX(0.5* MAX_PAWN_SPEED);
+        myPawn.getVelocity().setCoordinateY(0.5 * MAX_PAWN_SPEED);
 
-    }
-
-    public Joystick getJoystick(){
-        return joystick;
     }
 
 

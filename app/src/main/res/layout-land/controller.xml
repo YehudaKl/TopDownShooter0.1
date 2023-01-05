@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     tools:ignore="MissingDefaultResource">
 
-    <com.example.TopDownShooter.classes.UI.JoystickView
-        android:id="@+id/joystickView"
+    <com.example.TopDownShooter.classes.UI.Joystick
+        android:id="@+id/joystick"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:layout_marginStart="40dp"

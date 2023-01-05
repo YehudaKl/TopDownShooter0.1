@@ -1,158 +1,198 @@
 package com.example.TopDownShooter.classes.UI;
 
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 
-import com.example.TopDownShooter.classes.events.GameLoopEvents.OnDraw;
-import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
-import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
-import com.example.TopDownShooter.classes.games.Game;
-import com.example.TopDownShooter.dataTypes.Position;
+import androidx.annotation.NonNull;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
+import com.example.TopDownShooter.R;
 
-public class Joystick extends Actor{
+/**
+ * Joystick that can be used in xml file as a view subclass.
+ * The output of the joystick is provided by the methods getActuatorX/Y()
+ */
 
-    private double outerCircleCenterPositionX;
-    private double outerCircleCenterPositionY;
-    private double innerCircleCenterPositionX;
-    private double innerCircleCenterPositionY;
+public class Joystick extends View{
 
-    private int outerCircleRadius;
-    private int innerCircleRadius;
+    private static final float TOP_BASE_RATIO = 0.5f;
+    private static final int defaultSize = 50;
+    private int size;// The edge of the "box" that encapsulates the joystick. Equivalent to the min of view's width and height
+    private float baseX;
+    private float baseY;
+    private float topX;
+    private float topY;
+    private float baseRadius;
+    private float topRadius;
+    private Paint basePaint;
+    private Paint topPaint;
 
-    private Paint outerCirclePaint;
-    private Paint innerCirclePaint;
-
-    private boolean isPressed;
-
-    private double actuatorX;
-    private double actuatorY;
-
-    public Joystick(Game myGame, Position position, int outerCircleRadius, int innerCircleRadius) {
-        super(myGame, position, 0);
-
-        this.outerCircleCenterPositionX = position.getX();
-        this.outerCircleCenterPositionY = position.getY();
-        this.innerCircleCenterPositionX = position.getX();
-        this.innerCircleCenterPositionY = position.getY();
-
-        this.outerCircleRadius = outerCircleRadius;
-        this.innerCircleRadius = innerCircleRadius;
-
-        this.outerCirclePaint = new Paint();
-        this.innerCirclePaint = new Paint();
-
-        outerCirclePaint.setColor(Color.GRAY);
-        outerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-
-        innerCirclePaint.setColor(Color.BLUE);
-        innerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-
-        this.isPressed = false;
-
-        this.actuatorX = 0.0;
-        this.actuatorY = 0.0;
+    private float topBaseRatio;// The size ratio between the base and the top of the joystick
 
 
-        // Subscribing to events
-        myGame.getOnUpdateObservable().subscribe((Consumer<OnUpdate>) onUpdate -> onUpdate(onUpdate));
+    public Joystick(Context context) {
+        super(context);
+        initJoystickView();
+    }
 
-
+    public Joystick(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initJoystickView();
 
     }
 
     @Override
-    public void invalidate(){
-        super.invalidate();
-
-        myGame.getOnUpdateObservable().unsubscribeOn(AndroidSchedulers.mainThread());
-    }
-
-
-    public void onUpdate(OnUpdate onUpdate){
-        update();
-    }
-
-
-    public void draw(Canvas canvas){
-
-        // Draw outer circle
-        canvas.drawCircle((float)outerCircleCenterPositionX, (float)outerCircleCenterPositionY, outerCircleRadius, outerCirclePaint);
-
-        // Draw inner circle
-        canvas.drawCircle((float)innerCircleCenterPositionX, (float)innerCircleCenterPositionY, innerCircleRadius, innerCirclePaint);
-    }
-
-    public void update(){
-        updateInnerCirclePosition();
-    }
-
-    public boolean isPressed(double touchPositionX, double touchPositionY) {
-
-        // Calculating the distance from the point of touching to the center of the joystick
-        double joystickCenterToTouchDistance = Math.sqrt(
-                Math.pow(outerCircleCenterPositionX - touchPositionX, 2) +
-                        Math.pow(outerCircleCenterPositionY - touchPositionY, 2)
-
-        );
-        return joystickCenterToTouchDistance < outerCircleRadius;
+    public void onFinishInflate(){
+        super.onFinishInflate();
 
     }
 
-    public void setIsPressed(boolean isPressed) {
-        this.isPressed = isPressed;
+
+    @Override
+    public void onDraw(Canvas canvas) {
+
+       // Draw base
+        canvas.drawCircle(baseX, baseY, baseRadius, basePaint);
+
+      // Draw paint         
+        canvas.drawCircle(topX, topY, topRadius, topPaint);
+
     }
 
-    public boolean getIsPressed(){
-        return isPressed;
+    @Override
+    protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec){
+
+        // Setting the size to be the shortest from the width and height spec, by convention
+        size = Math.min(measure(widthMeasureSpec), measure(heightMeasureSpec));
+        setMeasuredDimension(size, size);
+        setUpDimensions();
     }
 
-    public void setActuator(double touchPositionX, double touchPositionY){
+    @Override
+    protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+        super.onSizeChanged(width, height, oldWidth, oldHeight);
+        size = Math.min(measure(width), measure(height));
+    }
 
-        double deltaX = touchPositionX - outerCircleCenterPositionX;
-        double deltaY = touchPositionY - outerCircleCenterPositionY;
-        double deltaDistance = Math.sqrt(
-                Math.pow(deltaX, 2) +
-                        Math.pow(deltaY, 2)
-        );
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        switch(motionEvent.getAction()){
+            case MotionEvent.ACTION_UP:
+                resetJoystick();
+                break;
+            default:
+                adjustJoystickToTouchPosition(motionEvent.getX(), motionEvent.getY());
+                break;
+        }
+        return true;
+    }
 
-        if(deltaDistance < outerCircleRadius){
-            actuatorX = deltaX/outerCircleRadius;
-            actuatorY = deltaY/outerCircleRadius;
+
+
+    // Method that returns the actuators in each direction in order to use the joy stick for any purpose
+    public float getActuatorX(){
+        float distanceX = topX - baseX;
+        return distanceX/baseRadius;
+    }
+
+    public float getActuatorY(){
+        float distanceY = topY - baseY;
+        return distanceY/baseRadius;
+    }
+
+    private void initJoystickView(){
+        this.topBaseRatio = TOP_BASE_RATIO;
+
+        basePaint = new Paint();
+        basePaint.setColor(Color.RED);
+
+        topPaint = new Paint();
+        topPaint.setColor(Color.GRAY);
+    }
+
+    // Method for generating a fixed size from the width/height specification
+    private int measure(int measureSpec){
+
+        // Decode the measurement specifications.
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+
+        if (specMode == MeasureSpec.UNSPECIFIED) {
+            // Return a default size of 50 if no bounds are specified.
+            return defaultSize;
+        }
+        else {
+
+            return specSize;
+        }
+
+    }
+
+    // Calculate the initial position for the base and the radius of the size of the joystick
+    private void setUpDimensions(){
+        baseX = size/2;
+        baseY = size/2;
+
+        topX = baseX;
+        topY = baseY;
+
+        // Make sure that the joystick will not go outbound
+        // The formula for the calculation of the radius was found using algebra on paper
+        // (1) topRadius + baseRadius == size/2
+        // (2) topRadius/baseRadius == topBaseRatio
+
+        topRadius = ((size * topBaseRatio)/(2 + 2 *topBaseRatio));
+        baseRadius = size/2 - topRadius;
+
+    }
+
+    // Update the position of the top of the joystick according to a touch position and render the joystick
+    private void adjustJoystickToTouchPosition(float positionX, float positionY){
+        float distance = distance(baseX, baseY, positionX, positionY);
+        float deltaX = positionX - baseX;
+        float deltaY = positionY - baseY;
+
+
+        if(distance > baseRadius){// position is out of bounds
+            deltaX *= baseRadius/distance;
+            deltaY *= baseRadius/distance;
+
+
+            topX = deltaX + baseX;
+            topY = deltaY + baseY;
         }
         else{
-            actuatorX = deltaX/deltaDistance;
-            actuatorY = deltaY/deltaDistance;
-
+            topX = positionX;
+            topY = positionY;
         }
-
+        invalidate();
     }
 
-
-    public void resetActuator() {
-        actuatorX = 0.0;
-        actuatorY = 0.0;
+    // Return the joystick top to the middle and redraw the joystick and render the joystick
+    private void resetJoystick(){
+        topX = baseX;
+        topY = baseY;
+        invalidate();
     }
 
-    public double getActuatorX(){
-        return actuatorX;
+    // Re-render the joystick again according to the values of topX and topY
+
+
+    private float distance(float x1, float y1, float x2, float y2){
+        return (float)Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
-    public double getActuatorY(){
-        return actuatorY;
-    }
+    private void parseAttributes(AttributeSet attrs) {
 
-    private void updateInnerCirclePosition(){
-        innerCircleCenterPositionX = (int)(outerCircleCenterPositionX + actuatorX*outerCircleRadius);
-        innerCircleCenterPositionY = (int)(outerCircleCenterPositionY + actuatorY*outerCircleRadius);
     }
 
 }
-

@@ -10,6 +10,7 @@ public class OnUpdate extends OnEvent {
 
     protected final float deltaTime;
 
+
     public OnUpdate(Game game, float deltaTime){
         super(game);
 

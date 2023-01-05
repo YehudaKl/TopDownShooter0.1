@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
 
-   <com.example.TopDownShooter.classes.UI.JoystickView
+   <com.example.TopDownShooter.classes.UI.Joystick
        android:layout_width="100dp"
        android:layout_height="100dp"/>
 
