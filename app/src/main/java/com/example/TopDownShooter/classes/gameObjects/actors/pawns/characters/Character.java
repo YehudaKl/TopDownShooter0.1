@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 
 import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
@@ -36,8 +37,8 @@ public abstract class Character extends Pawn {
     }
 
     @Override
-    public void update(){
-        super.update();
+    public void update(UpdateTrace updateTrace){
+        super.update(updateTrace);
 
         if(isDead()){
             die();

@@ -1,6 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.players;
 
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStatusChanged;
 import com.example.TopDownShooter.classes.events.OnGameEnd;
 import com.example.TopDownShooter.classes.events.OnGameStart;
@@ -57,7 +58,7 @@ public abstract class Player extends GameObject{
 
 
     // The function is used by the pawn in order to update himself
-    public void updatePawn(){
+    public void updatePawn(UpdateTrace updateTrace){
 
         updateDirection();
         // Update velocity

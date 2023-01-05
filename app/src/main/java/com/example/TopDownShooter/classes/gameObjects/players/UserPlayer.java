@@ -1,5 +1,6 @@
 package com.example.TopDownShooter.classes.gameObjects.players;
 
+import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.games.Game;
 
@@ -13,8 +14,8 @@ public class UserPlayer extends Player{
 
 
     @Override
-    public void updatePawn(){
-        super.updatePawn();
+    public void updatePawn(UpdateTrace updateTrace){
+        super.updatePawn(updateTrace);
 
     }
 

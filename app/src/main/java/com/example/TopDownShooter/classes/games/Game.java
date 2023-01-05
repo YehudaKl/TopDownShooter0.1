@@ -130,6 +130,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.isDebugging = false;
         this.gameState = GameState.LOAD;
         this.timer = new Timer();
+        this.updateTrace = new UpdateTrace();
 
 
 
@@ -174,7 +175,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void update(){
-
+        updateTrace.setDeltaTime(gameLoop.getDeltaTime());
         onUpdateObservable.onNext(new OnUpdate(this, updateTrace));
     }
 

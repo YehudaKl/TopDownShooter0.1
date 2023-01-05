@@ -1,6 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns;
 
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStatusChanged;
 import com.example.TopDownShooter.classes.events.OnGameEnd;
 import com.example.TopDownShooter.classes.events.OnGameStart;
@@ -62,11 +63,11 @@ public abstract class Pawn extends Actor{
     }
 
     public void onUpdate(OnUpdate onUpdate){
-        update();
+        update(onUpdate.getUpdateTrace());
     }
 
-    protected void update(){
-        owner.updatePawn();
+    protected void update(UpdateTrace updateTrace){
+        owner.updatePawn(updateTrace);
     }
 
 
