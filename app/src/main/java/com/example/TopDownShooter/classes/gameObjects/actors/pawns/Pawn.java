@@ -38,12 +38,13 @@ public abstract class Pawn extends Actor{
         super(myGame, initPosition, resourceId, direction);
 
         this.velocity = new Vector(0, 0);
+        this.disposableContainer = new CompositeDisposable();
 
 
         disposableContainer.add(myGame.getOnUpdateObservable().subscribe(this::onUpdate));
-        disposableContainer.add(myGame.getOnGameStartObservable().subscribe(onGameStart -> onGameStart(onGameStart)));
-        disposableContainer.add(myGame.getOnGameEndObservable().subscribe(onGameEnd -> onGameEnd(onGameEnd)));
-        disposableContainer.add(myGame.getOnGameStatusChangedObservable().subscribe(onGameStatusChanged -> onGameStatusChanged(onGameStatusChanged)));
+        disposableContainer.add(myGame.getOnGameStartObservable().subscribe(this::onGameStart));
+        disposableContainer.add(myGame.getOnGameEndObservable().subscribe(this::onGameEnd));
+        disposableContainer.add(myGame.getOnGameStatusChangedObservable().subscribe(this::onGameStatusChanged));
     }
 
     @Override
@@ -61,6 +62,7 @@ public abstract class Pawn extends Actor{
     }
 
     protected void update(UpdateTrace updateTrace){
+        if(owner == null){return;}
         owner.updatePawn(updateTrace);
     }
 

@@ -16,13 +16,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.TopDownShooter.R;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnPreUpdate;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
+import com.example.TopDownShooter.classes.games.Game;
 
 /**
  * Joystick that can be used in xml file as a view subclass.
- * The output of the joystick is provided by the methods getActuatorX/Y()
+ * At the joystick must be provided a game in the setGame method in order to unable it to post its values
+ * on the game's updateTrace;
  */
 
 public class Joystick extends View{
+
+    private Game myGame;
 
     private static final float TOP_BASE_RATIO = 0.5f;
     private static final int defaultSize = 50;
@@ -37,6 +44,11 @@ public class Joystick extends View{
     private Paint topPaint;
 
     private float topBaseRatio;// The size ratio between the base and the top of the joystick
+
+    public void setMyGame(Game myGame){
+        this.myGame = myGame;
+        myGame.getOnPreUpdateObservable().subscribe(this::onPreUpdate);
+    }
 
 
     public Joystick(Context context) {
@@ -66,6 +78,10 @@ public class Joystick extends View{
       // Draw paint         
         canvas.drawCircle(topX, topY, topRadius, topPaint);
 
+    }
+
+    public void onPreUpdate(OnPreUpdate onPreUpdate){
+        onPreUpdate.getUpdateTrace().joystickNotify(this);
     }
 
     @Override
@@ -98,6 +114,7 @@ public class Joystick extends View{
 
 
 
+
     // Method that returns the actuators in each direction in order to use the joy stick for any purpose
     public float getActuatorX(){
         float distanceX = topX - baseX;
@@ -110,6 +127,7 @@ public class Joystick extends View{
     }
 
     private void initJoystickView(){
+
         this.topBaseRatio = TOP_BASE_RATIO;
 
         basePaint = new Paint();

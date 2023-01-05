@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * A Player is a class that owns a pawn or pawns in the game, and in charge of "telling" them
  * what to do in each update().Usually a UserPlayer determines how to update the pawn by
- * a GUI controlling system such as joystick or buttons attached to him.
+ * a UI controllers such as joystick or buttons.
  * On the other hand, an AIPlayer determines his pawn actions by logical algorithms
  */
 public abstract class Player extends GameObject{
@@ -79,6 +79,8 @@ public abstract class Player extends GameObject{
     public void OnPawnDied(){
         invalidate();
     }
+
+    // TODO use one method for updating the velocity. maybe with converting all for this to vectors
 
     // Method that each child class implements in order to specify the updating of the direction
     protected abstract void updateDirection();

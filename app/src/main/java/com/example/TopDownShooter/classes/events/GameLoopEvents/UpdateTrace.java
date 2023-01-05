@@ -1,6 +1,7 @@
 package com.example.TopDownShooter.classes.events.GameLoopEvents;
 
 import com.example.TopDownShooter.classes.UI.Joystick;
+import com.example.TopDownShooter.classes.systems.GameLoop;
 
 /**
  * A trace for storing values and information about each update cycle in the game.
@@ -16,10 +17,6 @@ public class UpdateTrace {
         return deltaTime;
     }
 
-    public void setDeltaTime(float deltaTime){
-        this.deltaTime = deltaTime;
-    }
-
     public float getJoystickActuatorX() {
         return joystickActuatorX;
     }
@@ -32,6 +29,10 @@ public class UpdateTrace {
         joystickActuatorX = joystick.getActuatorX();
         joystickActuatorY = joystick.getActuatorY();
    }
+
+    public void deltaTimeNotify(GameLoop gameLoop){
+        this.deltaTime = gameLoop.getDeltaTime();
+    }
 
    // Default constructor. uses the init method
    public UpdateTrace(){

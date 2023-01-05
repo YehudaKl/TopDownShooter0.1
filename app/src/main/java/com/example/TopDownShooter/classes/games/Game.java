@@ -3,6 +3,7 @@ package com.example.TopDownShooter.classes.games;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnDraw;
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnPreUpdate;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.GameStatus;
@@ -44,20 +46,21 @@ import io.reactivex.rxjava3.subjects.ReplaySubject;
 public abstract class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
-    private final PublishSubject<OnUpdate> onUpdateObservable;
-    private final PublishSubject<OnDraw> onDrawObservable;
-    private final PublishSubject<OnGameStart> onGameStartObservable;
-    private final PublishSubject<OnGameEnd> onGameEndObservable;
-    private final PublishSubject<OnGameStatusChanged> onGameStatusChangedObservable;
-    private final PublishSubject<OnShoot> onShootObservable;
-    private final PublishSubject<Survey<? extends GameObject>> onSurveyObservable;
+    private PublishSubject<OnUpdate> onUpdateObservable;
+    private PublishSubject<OnPreUpdate> onPreUpdateObservable;
+    private PublishSubject<OnDraw> onDrawObservable;
+    private PublishSubject<OnGameStart> onGameStartObservable;
+    private PublishSubject<OnGameEnd> onGameEndObservable;
+    private PublishSubject<OnGameStatusChanged> onGameStatusChangedObservable;
+    private PublishSubject<OnShoot> onShootObservable;
+    private PublishSubject<Survey<? extends GameObject>> onSurveyObservable;
 
-    private final ReplaySubject<OnActorValid> onActorValidObservable;
-    private final ReplaySubject<OnActorInvalid> onActorInvalidObservable;
+    private ReplaySubject<OnActorValid> onActorValidObservable;
+    private ReplaySubject<OnActorInvalid> onActorInvalidObservable;
 
 
-    private final GameLoop gameLoop;
-    private final Context context;
+    private GameLoop gameLoop;
+    private Context context;
     private boolean isDebugging;
     private GameState gameState;
     private Timer timer;// A timer for all classes in the game.
@@ -89,6 +92,11 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         return onShootObservable;
     }
 
+    public PublishSubject<OnPreUpdate> getOnPreUpdateObservable() {
+        return onPreUpdateObservable;
+    }
+
+
     public PublishSubject<Survey<? extends GameObject>> getOnSurveyObservable() {
         return onSurveyObservable;
     }
@@ -108,33 +116,12 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     public Game(Context context){
         super(context);
+        init();
+    }
 
-        //Get surface holder and add the game class as a callback so the game loop
-        // will be able to lock the canvas between frames
-
-        SurfaceHolder surfaceHolder = getHolder();
-        surfaceHolder.addCallback(this);
-
-        this.onUpdateObservable = PublishSubject.create();
-        this.onDrawObservable = PublishSubject.create();
-        this.onGameStartObservable = PublishSubject.create();
-        this.onGameEndObservable = PublishSubject.create();
-        this.onGameStatusChangedObservable = PublishSubject.create();
-        this.onActorValidObservable = ReplaySubject.create();
-        this.onActorInvalidObservable = ReplaySubject.create();
-        this.onShootObservable = PublishSubject.create();
-        this.onSurveyObservable = PublishSubject.create();
-
-        this.gameLoop = new GameLoop(this, surfaceHolder);
-        this.context = getContext();
-        this.isDebugging = false;
-        this.gameState = GameState.LOAD;
-        this.timer = new Timer();
-        this.updateTrace = new UpdateTrace();
-
-
-
-
+    public Game(Context context, AttributeSet attrs){
+        super(context, attrs);
+        init();
     }
 
 
@@ -175,7 +162,8 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void update(){
-        updateTrace.setDeltaTime(gameLoop.getDeltaTime());
+        onPreUpdateObservable.onNext(new OnPreUpdate(this, updateTrace));
+        updateTrace.deltaTimeNotify(gameLoop);
         onUpdateObservable.onNext(new OnUpdate(this, updateTrace));
     }
 
@@ -235,6 +223,34 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     // Each child class must be able to return a map of its teams.
     // Note! it's up to the child class to implement the team management
     public abstract HashMap<String, Team> getTeamsMap();
+
+    private void init(){
+
+        //Get surface holder and add the game class as a callback so the game loop
+        // will be able to lock the canvas between frames
+
+        SurfaceHolder surfaceHolder = getHolder();
+        surfaceHolder.addCallback(this);
+
+        this.onUpdateObservable = PublishSubject.create();
+        this.onPreUpdateObservable = PublishSubject.create();
+        this.onDrawObservable = PublishSubject.create();
+        this.onGameStartObservable = PublishSubject.create();
+        this.onGameEndObservable = PublishSubject.create();
+        this.onGameStatusChangedObservable = PublishSubject.create();
+        this.onActorValidObservable = ReplaySubject.create();
+        this.onActorInvalidObservable = ReplaySubject.create();
+        this.onShootObservable = PublishSubject.create();
+        this.onSurveyObservable = PublishSubject.create();
+
+        this.gameLoop = new GameLoop(this, surfaceHolder);
+        this.context = getContext();
+        this.isDebugging = false;
+        this.gameState = GameState.LOAD;
+        this.timer = new Timer();
+        this.updateTrace = new UpdateTrace();
+
+    }
 
     // Debug methods -------------------------------------------------------
     private void drawUPS(Canvas canvas){

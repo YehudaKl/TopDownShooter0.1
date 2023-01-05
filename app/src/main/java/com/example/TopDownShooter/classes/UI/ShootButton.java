@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 
 import androidx.appcompat.widget.AppCompatImageButton;
 
+import com.example.TopDownShooter.classes.events.GameLoopEvents.OnPreUpdate;
 import com.example.TopDownShooter.classes.events.UIEvents.OnShoot;
 import com.example.TopDownShooter.classes.games.Game;
 
@@ -48,10 +49,12 @@ public class ShootButton extends AppCompatImageButton {
 
     public ShootButton(Context context) {
         super(context);
+        init();
     }
 
     public ShootButton(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     @Override
@@ -63,14 +66,14 @@ public class ShootButton extends AppCompatImageButton {
         return true;
     }
 
-    private void initialButton(){
+    private void init(){
         reloadTime = DEFAULT_RELOAD_TIME;
         isReload = false;
     }
 
     //TODO adam not synchronize
     private void shoot(){
-        if(myGame == null || isReload == true ){return;}
+        if(myGame == null || isReload){return;}
 
         myGame.getOnShootObservable().onNext(new OnShoot(myGame));
 
@@ -80,7 +83,7 @@ public class ShootButton extends AppCompatImageButton {
     // TODO adam do it lambda
     private void reload(){
 
-        if(isReload == true){return;}
+        if(isReload){return;}
 
         isReload = true;
 

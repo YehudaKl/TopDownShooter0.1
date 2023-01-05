@@ -6,6 +6,9 @@ import android.text.Layout;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.TopDownShooter.R;
+import com.example.TopDownShooter.classes.UI.Joystick;
+import com.example.TopDownShooter.classes.UI.ShootButton;
 import com.example.TopDownShooter.classes.games.SurvivalGame;
 
 public class SurvivalGameActivity extends Activity {
@@ -18,8 +21,14 @@ public class SurvivalGameActivity extends Activity {
         Window window = getWindow();
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        setContentView(R.layout.survival_game_root);
 
-        setContentView(new SurvivalGame(this));
+        Joystick joystick = findViewById(R.id.controller_joystick);
+        joystick.setMyGame(findViewById(R.id.survival_game));
+
+        ShootButton shootButton = findViewById(R.id.controller_shootButton);
+        shootButton.setMyGame(findViewById(R.id.survival_game));
+
 
 
     }

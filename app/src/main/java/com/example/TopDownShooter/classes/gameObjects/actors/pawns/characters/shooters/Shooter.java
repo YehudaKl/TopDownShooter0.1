@@ -1,5 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters;
 
+import android.widget.Toast;
+
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
@@ -12,4 +14,10 @@ public abstract class Shooter extends Character {
     public Shooter(Game myGame, Position initPosition, int resourceId) {
         super(myGame, initPosition, resourceId);
     }
+
+    // Method for shooting, must be used only by the owner!
+    public void shoot(){
+        Toast.makeText(myGame.getContext(), "Shoot !", Toast.LENGTH_SHORT).show();
+    }
+
 }

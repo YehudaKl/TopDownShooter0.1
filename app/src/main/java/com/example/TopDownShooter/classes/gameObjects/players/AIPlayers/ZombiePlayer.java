@@ -36,6 +36,7 @@ public class ZombiePlayer extends AIPlayer {
         ArrayList<Character> list = new ArrayList<>();
         list.add(myZombie);
         this.repository = new ActorsRepository<>(myGame, Character.class, list);
+        repository.start();
         this.objective = ZombieObjective.TRACK;// A default objective
     }
 
@@ -48,7 +49,6 @@ public class ZombiePlayer extends AIPlayer {
     @Override
     public void onGameStart(OnGameStart onGameStart) {
         super.onGameStart(onGameStart);
-        repository.start();
         trackedCharacter = findNewTrackedCharacter();
     }
 

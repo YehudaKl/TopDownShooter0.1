@@ -2,6 +2,10 @@ package com.example.TopDownShooter.classes.games;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.AttributeSet;
+import android.view.SurfaceHolder;
+
+import androidx.annotation.NonNull;
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.Team;
@@ -10,7 +14,8 @@ import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Ch
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Zombie;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
 import com.example.TopDownShooter.classes.gameObjects.players.AIPlayers.ZombiePlayer;
-import com.example.TopDownShooter.classes.gameObjects.players.UserPlayer;
+import com.example.TopDownShooter.classes.gameObjects.players.userPlayers.ShooterUserPlayer;
+import com.example.TopDownShooter.classes.gameObjects.players.userPlayers.UserPlayer;
 import com.example.TopDownShooter.dataTypes.Position;
 
 import java.util.HashMap;
@@ -28,17 +33,24 @@ public class SurvivalGame extends Game{
 
     public SurvivalGame(Context context){
         super(context);
+    }
+
+    public SurvivalGame(Context context, AttributeSet attrs){
+        super(context, attrs);
+    }
+
+    @Override
+    public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+        super.surfaceCreated(surfaceHolder);
 
         teams = initializeTeams();
 
 
 
         this.hero = new Hero(this, new Position(400, 400));
-        hero.setOwner(new UserPlayer(this, hero));
+        hero.setOwner(new ShooterUserPlayer(this, hero));
 
         setIsDebugging(true);
-
-        spawnZombie(new Position(150, 150));
 
         startGame();
     }
@@ -62,8 +74,11 @@ public class SurvivalGame extends Game{
 
     public Hero getHero(){return this.hero;}
 
-
-
+    @Override
+    protected void startGame() {
+        super.startGame();
+        spawnZombie(new Position(100, 100));
+    }
 
     // The function adds a new enemy to the enemies array and to the actors-array of the parent class
     private void spawnZombie(Position position){

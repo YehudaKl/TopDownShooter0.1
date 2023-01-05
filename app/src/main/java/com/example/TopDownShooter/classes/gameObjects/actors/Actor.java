@@ -42,7 +42,7 @@ public abstract class Actor extends GameObject {
         this.asset = new ActorAsset(myGame, this, BitmapFactory.decodeResource(myGame.getContext().getResources(), resourceId));
 
         // Subscribing to the OnDraw
-        myGame.getOnDrawObservable().subscribe((Consumer<OnDraw>) onDraw -> onDraw(onDraw));
+        myGame.getOnDrawObservable().subscribe(this::onDraw);
         // Declare the new actor as valid
         myGame.getOnActorValidObservable().onNext(new OnActorValid(myGame, this));
 
