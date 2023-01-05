@@ -32,6 +32,7 @@ public class ActorsRepository <T extends Actor>{
      *  Class object of the generic type must be provided in order to perform casts
      */
 
+
     private final ArrayList<T> actorsList;
     private final ArrayList<T> actorsToIgnore;
 
@@ -58,7 +59,6 @@ public class ActorsRepository <T extends Actor>{
 
     // Method to be executed when OnActorValid event is triggered
     public void onActorValid(OnActorValid onActorValid){
-
 
         try{
             // Try to cast the actor to the repository's type

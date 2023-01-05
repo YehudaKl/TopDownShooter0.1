@@ -22,7 +22,7 @@ public abstract class Projectile extends Actor {
 
 
     public Projectile(Game myGame, Position initPosition, int resourceId){
-        super(myGame, initPosition, resourceId);
+        super(myGame, initPosition, resourceId, 0);
 
         this.speed = 40;//conf
 

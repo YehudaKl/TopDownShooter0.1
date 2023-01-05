@@ -40,7 +40,7 @@ public abstract class GameObject {
         return isValid;
     }
 
-    //TODO adam
+
     public void invalidate(){
         isValid = false;
 

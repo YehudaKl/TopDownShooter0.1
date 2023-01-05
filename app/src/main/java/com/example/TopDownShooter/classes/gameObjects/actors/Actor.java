@@ -49,9 +49,6 @@ public abstract class Actor extends GameObject {
 
     }
 
-    public Actor(Game myGame, Position initPosition, int resourceId){
-        this(myGame, initPosition, resourceId, 0);
-    }
 
 
 
