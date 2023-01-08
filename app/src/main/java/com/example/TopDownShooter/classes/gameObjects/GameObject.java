@@ -3,6 +3,8 @@ package com.example.TopDownShooter.classes.gameObjects;
 import com.example.TopDownShooter.classes.events.surveys.Survey;
 import com.example.TopDownShooter.classes.games.Game;
 
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 
 /**
@@ -11,6 +13,8 @@ import io.reactivex.rxjava3.functions.Consumer;
  */
 
 public abstract class GameObject {
+
+    CompositeDisposable compositeDisposable;
 
     /**
      * @param isValid determines the validation of the object in the context of its game.
@@ -24,6 +28,7 @@ public abstract class GameObject {
     public GameObject(Game myGame){
         this.isValid = true;
         this.myGame = myGame;
+        this.compositeDisposable = new CompositeDisposable();
 
         // TODO make it subscribe to the actual type of the object at run time
         //myGame.getOnSurveyObservable().subscribe((Consumer<Survey<? extends GameObject>>) survey -> onSurvey(survey));
@@ -36,6 +41,15 @@ public abstract class GameObject {
         //survey.check(this);
     }
 
+    // Method for subscribing to events in game class in order to make sure that the object
+    // unsubscribes when it gets invalid
+    // In order to use the method the subscription code must be done in the method argument so the
+    // disposable will be caught
+
+    protected void subscribeToGameObservable(Disposable d){
+        compositeDisposable.add(d);
+    }
+
     public boolean getIsValid(){
         return isValid;
     }
@@ -43,6 +57,7 @@ public abstract class GameObject {
 
     public void invalidate(){
         isValid = false;
+        compositeDisposable.clear();
 
     }
 }

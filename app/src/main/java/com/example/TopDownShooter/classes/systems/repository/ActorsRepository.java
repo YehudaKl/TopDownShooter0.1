@@ -21,9 +21,8 @@ import io.reactivex.rxjava3.functions.Consumer;
  * Actors that should be ignored by the repository (for example the objects that uses the repository),
  * must be included in the actors to ignore arrayList.
  */
-public class ActorsRepository <T extends Actor>{
+public class ActorsRepository <T extends Actor> extends GameObject{
 
-    private final Game myGame;
     private final Class<T> classOfType;
     private boolean isInAction;
     //TODO Adam
@@ -49,7 +48,7 @@ public class ActorsRepository <T extends Actor>{
     }
 
     public ActorsRepository(Game myGame, Class<T> classOfType, ArrayList<T> actorsToIgnore){
-        this.myGame = myGame;
+        super(myGame);
         this.classOfType = classOfType;
         this.actorsToIgnore = actorsToIgnore;
         this.actorsList = new ArrayList<>();
@@ -97,20 +96,19 @@ public class ActorsRepository <T extends Actor>{
     // Method for stopping the repository's work (unsubscribing to the observables)
     // Must be called when the last user-object goes invalid
     public void end(){
-        if(this.isInAction == false){return;}
+        if(!this.isInAction){return;}
 
-        myGame.getOnActorValidObservable().unsubscribeOn(AndroidSchedulers.mainThread());
-        myGame.getOnActorInvalidObservable().unsubscribeOn(AndroidSchedulers.mainThread());
+      invalidate();
     }
 
     // Method for starting the repository's work (subscribing to the observables)
     // Must be called in order start use the repository
 
     public void start(){
-        if(this.isInAction == true){return;}
+        if(this.isInAction){return;}
 
-        myGame.getOnActorValidObservable().subscribe(this::onActorValid);
-        myGame.getOnActorInvalidObservable().subscribe(this::onActorInvalid);
+        subscribeToGameObservable(myGame.getOnActorValidObservable().subscribe(this::onActorValid));
+        subscribeToGameObservable(myGame.getOnActorInvalidObservable().subscribe(this::onActorInvalid));
 
         this.isInAction = true;
 

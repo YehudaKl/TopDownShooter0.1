@@ -26,7 +26,6 @@ public abstract class Pawn extends Actor{
 
     protected Player owner;
     protected Vector velocity;
-    private CompositeDisposable disposableContainer;
 
     public Pawn(Game myGame, Position initPosition, int resourceId){
         this(myGame, initPosition, resourceId, 0);
@@ -38,21 +37,19 @@ public abstract class Pawn extends Actor{
         super(myGame, initPosition, resourceId, direction);
 
         this.velocity = new Vector(0, 0);
-        this.disposableContainer = new CompositeDisposable();
 
 
-        disposableContainer.add(myGame.getOnUpdateObservable().subscribe(this::onUpdate));
-        disposableContainer.add(myGame.getOnGameStartObservable().subscribe(this::onGameStart));
-        disposableContainer.add(myGame.getOnGameEndObservable().subscribe(this::onGameEnd));
-        disposableContainer.add(myGame.getOnGameStatusChangedObservable().subscribe(this::onGameStatusChanged));
+
+        subscribeToGameObservable(myGame.getOnUpdateObservable().subscribe(this::onUpdate));
+        subscribeToGameObservable(myGame.getOnGameStartObservable().subscribe(this::onGameStart));
+        subscribeToGameObservable(myGame.getOnGameEndObservable().subscribe(this::onGameEnd));
+        subscribeToGameObservable(myGame.getOnGameStatusChangedObservable().subscribe(this::onGameStatusChanged));
     }
 
     @Override
     public void invalidate(){
-        super.invalidate();
         owner.invalidate();
-
-        disposableContainer.clear();
+        super.invalidate();
 
 
     }

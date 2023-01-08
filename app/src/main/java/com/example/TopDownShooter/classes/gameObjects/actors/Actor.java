@@ -42,7 +42,7 @@ public abstract class Actor extends GameObject {
         this.asset = new ActorAsset(myGame, this, BitmapFactory.decodeResource(myGame.getContext().getResources(), resourceId));
 
         // Subscribing to the OnDraw
-        myGame.getOnDrawObservable().subscribe(this::onDraw);
+        subscribeToGameObservable(myGame.getOnDrawObservable().subscribe(this::onDraw));
         // Declare the new actor as valid
         myGame.getOnActorValidObservable().onNext(new OnActorValid(myGame, this));
 
@@ -56,9 +56,8 @@ public abstract class Actor extends GameObject {
 
     @Override
     public void invalidate() {
-        super.invalidate();
         myGame.getOnActorInvalidObservable().onNext(new OnActorInvalid(myGame, this));
-        myGame.getOnActorValidObservable().unsubscribeOn(AndroidSchedulers.mainThread());
+        super.invalidate();
     }
 
     public void onDraw(OnDraw onDraw){
