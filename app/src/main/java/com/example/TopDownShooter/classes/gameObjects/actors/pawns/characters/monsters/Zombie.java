@@ -48,8 +48,12 @@ public class Zombie extends Monster {
         character.reduceHealth(BITE_DAMAGE);
 
         // Start the cooldown process
+        //TODO adam do it with lambda
         canBite = false;
-        myGame.getTimer().schedule(new BiteCooldownTask(this), (long) BITE_COOLDOWN_TIME);
+        myGame.getTimer().schedule(new TimerTask() {
+            @Override
+            public void run() { setCanBite(true); }
+        }, (long) BITE_COOLDOWN_TIME);
     }
 
 
@@ -68,17 +72,3 @@ public class Zombie extends Monster {
     }
 }
 
-// TODO make it more efficient and for all classes
-class BiteCooldownTask extends TimerTask{
-
-    private Zombie zombie;
-
-    public BiteCooldownTask(Zombie zombie){
-        this.zombie = zombie;
-    }
-
-    @Override
-    public void run() {
-        zombie.setCanBite(true);
-    }
-}

@@ -25,7 +25,6 @@ public class ActorsRepository <T extends Actor> extends GameObject{
 
     private final Class<T> classOfType;
     private boolean isInAction;
-    //TODO Adam
     /**
      * @param classOfType
      *  Class object of the generic type must be provided in order to perform casts

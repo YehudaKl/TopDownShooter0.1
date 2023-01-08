@@ -80,7 +80,6 @@ public class ShootButton extends AppCompatImageButton {
         reload();
     }
 
-    // TODO adam do it lambda
     private void reload(){
 
         if(isReload){return;}

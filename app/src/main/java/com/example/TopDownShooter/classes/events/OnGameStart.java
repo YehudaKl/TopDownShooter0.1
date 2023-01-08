@@ -8,8 +8,6 @@ import com.example.TopDownShooter.classes.games.Game;
  */
 public class OnGameStart extends OnEvent {
 
-    //TODO add needed information about the event
-
     public OnGameStart(Game game){
         super(game);
     }

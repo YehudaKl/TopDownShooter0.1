@@ -21,7 +21,7 @@ import com.example.TopDownShooter.dataTypes.Position;
 import java.util.HashMap;
 
 /**
- * TODO(rules for the game)
+ *
  */
 
 public class SurvivalGame extends Game{
@@ -78,11 +78,11 @@ public class SurvivalGame extends Game{
     protected void startGame() {
         super.startGame();
         spawnZombie(new Position(100, 100));
+        spawnZombie(new Position(700, 400));
     }
 
     // The function adds a new enemy to the enemies array and to the actors-array of the parent class
     private void spawnZombie(Position position){
-        // TODO decide how to spawn the zombie better
 
         Zombie zombie = new Zombie(this, position);
 

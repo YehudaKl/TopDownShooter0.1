@@ -137,13 +137,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event){
-        // TODO...
-
-        return super.onTouchEvent(event);
-    }
-
-    @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
 

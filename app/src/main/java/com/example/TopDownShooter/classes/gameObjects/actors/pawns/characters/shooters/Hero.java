@@ -11,8 +11,6 @@ import com.example.TopDownShooter.dataTypes.Position;
  * A Hero is ShooterCharacter that is controlled by a user and fight enemies
  * (or other Heroes on a multiplayer game).
  */
-
-// TODO extend from this class more types of heroes like soldier, general, agent ext..
 public class Hero extends Shooter {
 
 

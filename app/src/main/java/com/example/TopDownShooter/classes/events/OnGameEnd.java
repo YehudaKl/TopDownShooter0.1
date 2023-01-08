@@ -5,8 +5,6 @@ import com.example.TopDownShooter.classes.games.Game;
 
 public class OnGameEnd extends OnEvent {
 
-    //TODO add needed information about the event
-
     public OnGameEnd(Game game) {
         super(game);
     }
