@@ -17,7 +17,6 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private TextView helloPlayer;
 
-    // TODO replace with a menu class or whatever
     private Button singlePlayer;
     private Button multiPlayer;
     private Button settings;
@@ -60,7 +59,6 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
         Intent intent = new Intent(getApplicationContext(),SingleGameActivity.class);
-        //TODO add extras to the intent
         startActivity(intent);
 
 

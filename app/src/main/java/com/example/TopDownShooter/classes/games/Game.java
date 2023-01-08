@@ -53,7 +53,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     private PublishSubject<OnGameEnd> onGameEndObservable;
     private PublishSubject<OnGameStatusChanged> onGameStatusChangedObservable;
     private PublishSubject<OnShoot> onShootObservable;
-    private PublishSubject<Survey<? extends GameObject>> onSurveyObservable;
 
     private ReplaySubject<OnActorValid> onActorValidObservable;
     private ReplaySubject<OnActorInvalid> onActorInvalidObservable;
@@ -94,11 +93,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     public PublishSubject<OnPreUpdate> getOnPreUpdateObservable() {
         return onPreUpdateObservable;
-    }
-
-
-    public PublishSubject<Survey<? extends GameObject>> getOnSurveyObservable() {
-        return onSurveyObservable;
     }
 
 
@@ -194,14 +188,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         onGameStatusChangedObservable.onNext(new OnGameStatusChanged(this, GameStatus.PAUSED));
     }
 
-    // A getter for Surveys observable in order post surveys by other classes
-    // If the provided type dose not exist in game, the function will return null !
-    public PublishSubject<Survey<? extends GameObject>> getSurveyPublisher(){
-        return onSurveyObservable;
-    }
-
-
-
 
     protected void drawDebugInformation(Canvas canvas){
         drawUPS(canvas);
@@ -241,7 +227,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.onActorValidObservable = ReplaySubject.create();
         this.onActorInvalidObservable = ReplaySubject.create();
         this.onShootObservable = PublishSubject.create();
-        this.onSurveyObservable = PublishSubject.create();
 
         this.gameLoop = new GameLoop(this, surfaceHolder);
         this.context = getContext();

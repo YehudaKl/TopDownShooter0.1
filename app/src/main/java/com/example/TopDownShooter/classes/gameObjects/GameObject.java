@@ -30,8 +30,6 @@ public abstract class GameObject {
         this.myGame = myGame;
         this.compositeDisposable = new CompositeDisposable();
 
-        // TODO make it subscribe to the actual type of the object at run time
-        //myGame.getOnSurveyObservable().subscribe((Consumer<Survey<? extends GameObject>>) survey -> onSurvey(survey));
     }
 
 
