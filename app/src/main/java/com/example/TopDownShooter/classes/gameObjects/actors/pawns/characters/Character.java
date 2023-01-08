@@ -19,9 +19,6 @@ import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
  */
 public abstract class Character extends Pawn {
     public final int MAX_HEALTH;
-
-
-    protected Team team;
     protected float  health;
     private CharacterHealthState healthState;
 
@@ -31,7 +28,6 @@ public abstract class Character extends Pawn {
 
         this.MAX_HEALTH = 100; // conf
 
-        this.team = myGame.findMyTeam(this);
         this.health = MAX_HEALTH;
         this.healthState = CharacterHealthState.ALIVE;
 
@@ -50,7 +46,6 @@ public abstract class Character extends Pawn {
         this.healthState = CharacterHealthState.DEAD;
 
         // Invalidating the character in order to make it deleted next frame
-        team.OnMemberDied();
         owner.OnPawnDied();
         invalidate();
 
@@ -86,9 +81,6 @@ public abstract class Character extends Pawn {
         return (health <= 0);
     }
 
-    public Team getTeam() {
-        return team;
-    }
 
     public float getHealth(){
         return health;

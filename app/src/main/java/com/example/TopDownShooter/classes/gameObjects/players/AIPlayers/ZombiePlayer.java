@@ -1,6 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.players.AIPlayers;
 import android.util.Log;
 
+import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.events.OnGameStart;
@@ -10,6 +11,7 @@ import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Ch
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Zombie;
 import com.example.TopDownShooter.classes.games.Game;
+import com.example.TopDownShooter.classes.systems.repository.ActorQualifier;
 import com.example.TopDownShooter.classes.systems.repository.ActorsRepository;
 import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
 import com.example.TopDownShooter.dataTypes.enums.PawnMotionState;
@@ -36,6 +38,7 @@ public class ZombiePlayer extends AIPlayer {
         // Adding myZombie to the ignored actors of the repository
         ArrayList<Character> list = new ArrayList<>();
         list.add(myZombie);
+
         this.repository = new ActorsRepository<>(myGame, Character.class, list);
         this.objective = ZombieObjective.TRACK;// A default objective
     }
@@ -121,10 +124,14 @@ public class ZombiePlayer extends AIPlayer {
     // Search for a closer character to track
     private Character findNewTrackedCharacter(){
         // Return null if the repository is empty
-        if(repository.isEmpty()){ return null; }
+        if(repository.isEmpty()){ return null;}
 
-        // returning the closest character
-        return (Character) getClosestActor(repository.getActors());
+        if(myPawn.getTeam() == null){
+            // If there is no team - get the closes actor directly
+            return (Character) getClosestActor(repository.getActors());
+        }
+        // returning the closest character from a different team!
+        return (Character) getClosestActor(clearMyTeam(repository.getActors()));
     }
 
     // Method that generates a new objective for the zombie player by a set of logic rules. May be extended to a full objective-generation system
@@ -140,5 +147,6 @@ public class ZombiePlayer extends AIPlayer {
             return ZombieObjective.TRACK;
         }
     }
+
 
 }

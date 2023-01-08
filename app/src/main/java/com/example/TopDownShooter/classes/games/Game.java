@@ -193,16 +193,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     }
 
 
-
-    // Abstract method that each game should implement in order to define how characters are divided
-    // to teams. This method is very imported because it defines a major part of the game's rules and mode.
-    // For instance a FFA game should give a unique team for each character.
-    public abstract Team findMyTeam(Character character);
-
-    // Each child class must be able to return a map of its teams.
-    // Note! it's up to the child class to implement the team management
-    public abstract HashMap<String, Team> getTeamsMap();
-
     private void init(){
 
         //Get surface holder and add the game class as a callback so the game loop

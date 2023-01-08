@@ -13,6 +13,9 @@ import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Ch
 import com.example.TopDownShooter.dataTypes.enums.PawnMotionState;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.function.Predicate;
 
 /**
  * A Player is a class that owns a pawn or pawns in the game, and in charge of "telling" them
@@ -95,6 +98,10 @@ public abstract class Player extends GameObject{
 
     // Method for getting the closest actor to you from a provided list of actors
     protected Actor getClosestActor(ArrayList<? extends Actor> actors){
+        if(actors == null){
+            return null;
+        }
+
         Actor toReturn = actors.get(0);
         double minDistance = toReturn.getDistanceBetween(myPawn);
 
@@ -108,6 +115,46 @@ public abstract class Player extends GameObject{
 
         return toReturn;
 
+    }
+
+    // Method that gets an array list of pawns subclasses and returns a list without its team members
+    // Note! this method should not be used when the game has no teams so myPawn's team is null
+    // In case of a scenario like this the method will return the list it was provided by
+    protected ArrayList<Pawn> clearMyTeam(ArrayList<? extends Pawn> pawns){
+        if(myPawn.getTeam() == null){
+            // If myPawn's team is null, probably because the game is not teams game
+            return new ArrayList<>(pawns);
+        }
+        ArrayList<Pawn> toReturn = new ArrayList();
+        for(Pawn pawn: pawns){
+            if(!pawn.getTeam().equals(myPawn.getTeam())){
+                toReturn.add(pawn);
+            }
+        }
+
+        return toReturn;
+
+
+    }
+
+    // Method that gets an array list of pawns subclasses and returns a list with only its team members
+    // Note! this method should not be used when the game has no teams so myPawn's team is null
+    // In case of a scenario like this the method will return an empty list
+    protected ArrayList<Pawn> getMyTeam(ArrayList<? extends Pawn> pawns){
+        if(myPawn.getTeam() == null){
+            // If myPawn's team is null, probably because the game is not teams game
+            return new ArrayList<>();
+        }
+
+        ArrayList<Pawn> toReturn = new ArrayList();
+
+        for(Pawn pawn: pawns) {
+            if (pawn.getTeam().equals(myPawn.getTeam())) {
+                toReturn.add(pawn);
+            }
+        }
+
+        return toReturn;
     }
 
 }

@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.Team;
+import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
+import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Hero;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Zombie;
@@ -24,7 +26,7 @@ import java.util.HashMap;
  *
  */
 
-public class SurvivalGame extends Game{
+public class SurvivalGame extends Game implements TeamsGame{
 
     private  HashMap<String, Team> teams;
 
@@ -56,19 +58,14 @@ public class SurvivalGame extends Game{
     }
 
     @Override
-    public Team findMyTeam(Character character){
+    public Team generateMeTeam(Pawn pawn){
 
-        if(character instanceof Shooter){
+        if(pawn instanceof Shooter){
             return teams.get("Player");
         }
         else{
             return teams.get("Zombies");
         }
-    }
-
-    @Override
-    public HashMap<String, Team> getTeamsMap() {
-        return teams;
     }
 
 
@@ -103,4 +100,6 @@ public class SurvivalGame extends Game{
 
         return toReturn;
     }
+
+
 }

@@ -1,11 +1,6 @@
 package com.example.TopDownShooter.classes;
 
-import android.graphics.Color;
 import android.graphics.Paint;
-
-import com.example.TopDownShooter.dataTypes.exceptions.IllegalTeamId;
-
-import java.util.ArrayList;
 
 /**
  * A Team is a simple class that defines the team of a specific character.
@@ -14,35 +9,26 @@ import java.util.ArrayList;
  * with the same color.
  */
 public class Team {
-    public final int ID;
-    public final Paint PAINT;
+    public final int id;
+    public final Paint paint;
 
-    private static ArrayList<Integer> idsUsed = new ArrayList<>();
-
-    public Team(int id, Paint paint) throws IllegalTeamId {
-        // Check that the id is not already taken, if so the function will throw IllegalTeamId exception
-        for(int d: idsUsed){
-            if(d == id){
-                throw new IllegalTeamId();
-            }
-        }
-
-        this.ID = id;
-        this.PAINT = paint;
-
-        // Add the id to the used ids
-        idsUsed.add(id);
+    public int getId() {
+        return id;
     }
 
-    // Clear an id that is not used any more
-    // Note! the method must be called after a team is being eliminated are when the game is over
-    public static void clearUsedId(int id){
-        idsUsed.remove(id);
+    public Paint getPaint() {
+        return paint;
     }
 
-    // TODO ...
-    public void OnMemberDied() {
 
+    public Team(int id, Paint paint){
 
+        this.id = id;
+        this.paint = paint;
+
+    }
+
+    public boolean equals(Team other){
+        return(this.id == other.id);
     }
 }

@@ -1,13 +1,16 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns;
 
+import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStatusChanged;
 import com.example.TopDownShooter.classes.events.OnGameEnd;
 import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
+import com.example.TopDownShooter.classes.gameObjects.players.AIPlayers.ZombiePlayer;
 import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
+import com.example.TopDownShooter.classes.games.TeamsGame;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.Vector;
 ;import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -26,6 +29,7 @@ public abstract class Pawn extends Actor{
 
     protected Player owner;
     protected Vector velocity;
+    protected Team myTeam;
 
     public Pawn(Game myGame, Position initPosition, int resourceId){
         this(myGame, initPosition, resourceId, 0);
@@ -58,13 +62,8 @@ public abstract class Pawn extends Actor{
         update(onUpdate.getUpdateTrace());
     }
 
-    protected void update(UpdateTrace updateTrace){
-        if(owner == null){return;}
-        owner.updatePawn(updateTrace);
-    }
-
-
     public void onGameStart(OnGameStart onGameStart){
+        findMyTeam();
         owner.onGameStart(onGameStart);
     }
 
@@ -79,6 +78,7 @@ public abstract class Pawn extends Actor{
     // Method for a a pawn that was added after the game has already stared.
     // Must be called by the creator of the pawn
     public void onJoinedGame(){
+        findMyTeam();
         owner.onJoinedGame();
     }
 
@@ -97,6 +97,27 @@ public abstract class Pawn extends Actor{
     public Vector getVelocity() {
         return velocity;
     }
+
+    public Team getTeam(){
+        return myTeam;
+    }
+
+    protected void update(UpdateTrace updateTrace){
+        if(owner == null){return;}
+        owner.updatePawn(updateTrace);
+    }
+
+
+    private void findMyTeam(){
+        try{
+            TeamsGame t = (TeamsGame) myGame;
+            myTeam =  t.generateMeTeam(this);
+        }catch (ClassCastException e){
+            myTeam = null;
+        }
+    }
+
+
 
 
 
