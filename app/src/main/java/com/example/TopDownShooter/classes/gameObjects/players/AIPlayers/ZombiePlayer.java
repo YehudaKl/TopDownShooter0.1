@@ -139,10 +139,9 @@ public class ZombiePlayer extends AIPlayer {
     private ZombieObjective generateObjective(){
 
         // If a tracked character exists and in the range of bite: bite
-        if(trackedCharacter != null && myZombie.isInRangeOfBite(trackedCharacter)){
+        if(trackedCharacter != null && !trackedCharacter.isDead() && myZombie.isInRangeOfBite(trackedCharacter)){
             return ZombieObjective.BITE;
         }
-        // else: track
         else{
             return ZombieObjective.TRACK;
         }

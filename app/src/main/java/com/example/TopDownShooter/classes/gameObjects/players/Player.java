@@ -98,7 +98,7 @@ public abstract class Player extends GameObject{
 
     // Method for getting the closest actor to you from a provided list of actors
     protected Actor getClosestActor(ArrayList<? extends Actor> actors){
-        if(actors == null){
+        if(actors == null || actors.size() == 0){
             return null;
         }
 
