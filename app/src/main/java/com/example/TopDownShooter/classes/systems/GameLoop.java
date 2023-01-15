@@ -30,6 +30,11 @@ public class GameLoop extends Thread{
     }
 
     public float getDeltaTime(){
+        // If a single second has not passed there is no delta time,
+        // so return a synthetic delta time by using the MAX_UPS
+        if(averageFPS == 0){
+            return 1/(float)MAX_UPS;
+        }
         return 1/(float)averageFPS;
     }
 

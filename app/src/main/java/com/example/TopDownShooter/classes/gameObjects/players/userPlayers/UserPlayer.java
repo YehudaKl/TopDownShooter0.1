@@ -18,7 +18,7 @@ public class UserPlayer extends Player {
 
 
     public UserPlayer(Game game, Pawn pawn){
-        super(game, pawn, 10/*conf*/);
+        super(game, pawn, 300/*conf*/);
 
         this.joystickActuatorX = 0;
         this.joystickActuatorY = 0;
@@ -45,9 +45,9 @@ public class UserPlayer extends Player {
     }
 
     @Override
-    public void updateVelocity(){
-        myPawn.getVelocity().setCoordinateX(joystickActuatorX* MAX_PAWN_SPEED);
-        myPawn.getVelocity().setCoordinateY(joystickActuatorY * MAX_PAWN_SPEED);
+    public void updateVelocity(float deltaTime){
+        myPawn.getVelocity().setCoordinateX(joystickActuatorX* MAX_PAWN_SPEED * deltaTime);
+        myPawn.getVelocity().setCoordinateY(joystickActuatorY * MAX_PAWN_SPEED * deltaTime);
 
     }
 

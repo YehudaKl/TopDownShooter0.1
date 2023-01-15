@@ -71,7 +71,7 @@ public abstract class Player extends GameObject{
         // Update velocity
 
         if(motionState != PawnMotionState.STANDING){
-            updateVelocity();
+            updateVelocity(updateTrace.getDeltaTime());
 
             // Update position
             double newX = myPawn.getPosition().getX() + myPawn.getVelocity().getCoordinateX();
@@ -93,7 +93,7 @@ public abstract class Player extends GameObject{
     protected abstract void updateDirection();
 
     // Method that each child class implements in order to specify the updating of the velocity(movement)
-    protected abstract void updateVelocity();
+    protected abstract void updateVelocity(float deltaTime);
 
 
     // Method for getting the closest actor to you from a provided list of actors

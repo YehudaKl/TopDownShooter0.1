@@ -33,7 +33,7 @@ public class ZombiePlayer extends AIPlayer {
     private ZombieObjective objective;
 
     public ZombiePlayer(Game myGame, Pawn myPawn) {
-        super(myGame, myPawn, 5/*conf*/);
+        super(myGame, myPawn, 150/*conf*/);
         this.myZombie = (Zombie)myPawn;
         // Adding myZombie to the ignored actors of the repository
         ArrayList<Character> list = new ArrayList<>();
@@ -104,15 +104,15 @@ public class ZombiePlayer extends AIPlayer {
     }
 
     @Override
-    protected void updateVelocity() {
+    protected void updateVelocity(float deltaTime) {
 
         double x = 0;
         double y = 0;
 
         if(objective == ZombieObjective.TRACK){
             // Update the pawn that it goes towards what it is faced to(the tracked character)
-            x = Math.cos(myPawn.getDirection()) * MAX_PAWN_SPEED;
-            y = Math.sin(myPawn.getDirection()) * MAX_PAWN_SPEED;
+            x = Math.cos(myPawn.getDirection()) * MAX_PAWN_SPEED * deltaTime;
+            y = Math.sin(myPawn.getDirection()) * MAX_PAWN_SPEED * deltaTime;
         }
 
 
