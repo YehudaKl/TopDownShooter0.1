@@ -11,10 +11,5 @@ public abstract class Bullet extends Projectile{
     public Bullet(Game myGame, Position initPosition, int resourceID){
         super(myGame, initPosition, resourceID);
 
-
-
     }
-
-
-
 }

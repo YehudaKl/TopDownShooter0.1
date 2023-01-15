@@ -40,7 +40,7 @@ public abstract class Projectile extends Actor {
         position.setY(y);
     }
 
-    protected abstract void updateVelocity();
+    protected abstract void updateVelocity(float deltaTime);
 
 
 }
