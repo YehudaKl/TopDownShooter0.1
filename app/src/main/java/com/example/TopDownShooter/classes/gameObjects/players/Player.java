@@ -74,8 +74,8 @@ public abstract class Player extends GameObject{
             updateVelocity(updateTrace.getDeltaTime());
 
             // Update position
-            double newX = myPawn.getPosition().getX() + myPawn.getVelocity().getCoordinateX();
-            double newY = myPawn.getPosition().getY() + myPawn.getVelocity().getCoordinateY();
+            float newX = myPawn.getPosition().getX() + myPawn.getVelocity().getCoordinateX();
+            float newY = myPawn.getPosition().getY() + myPawn.getVelocity().getCoordinateY();
 
             myPawn.getPosition().setX(newX);
             myPawn.getPosition().setY(newY);

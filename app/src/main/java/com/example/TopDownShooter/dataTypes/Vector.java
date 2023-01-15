@@ -6,10 +6,10 @@ package com.example.TopDownShooter.dataTypes;
  */
 public class Vector {
 
-    private double coordinateX;
-    private double coordinateY;
+    private float coordinateX;
+    private float coordinateY;
 
-    public Vector(double coordinateX, double coordinateY){
+    public Vector(float coordinateX, float coordinateY){
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
     }
@@ -20,24 +20,24 @@ public class Vector {
     }
 
     // Returns the direction on radians, for degrees transformation is needed!
-    public double getDirection(){
-        return Math.atan2(coordinateY, coordinateX);
+    public float getDirection(){
+        return (float)Math.atan2(coordinateY, coordinateX);
     }
 
 
-    public void setCoordinateY(double coordinateY) {
+    public void setCoordinateY(float coordinateY) {
         this.coordinateY = coordinateY;
     }
 
-    public void setCoordinateX(double coordinateX) {
+    public void setCoordinateX(float coordinateX) {
         this.coordinateX = coordinateX;
     }
 
-    public double getCoordinateX() {
+    public float getCoordinateX() {
         return coordinateX;
     }
 
-    public double getCoordinateY() {
+    public float getCoordinateY() {
         return coordinateY;
     }
 }

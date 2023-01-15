@@ -37,7 +37,7 @@ public abstract class Pawn extends Actor{
     }
 
     // Constructor for with direction for pawns that has to be initialized to current direction.
-    public Pawn(Game myGame, Position initPosition, int resourceId, double direction){
+    public Pawn(Game myGame, Position initPosition, int resourceId, float direction){
         super(myGame, initPosition, resourceId, direction);
 
         this.velocity = new Vector(0, 0);
@@ -90,7 +90,7 @@ public abstract class Pawn extends Actor{
         return owner;
     }
 
-    public double getDirection() {
+    public float getDirection() {
         return direction;
     }
 

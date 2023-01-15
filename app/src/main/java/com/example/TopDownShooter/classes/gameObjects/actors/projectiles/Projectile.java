@@ -33,8 +33,8 @@ public abstract class Projectile extends Actor {
 
         updateVelocity();
 
-        double x = position.getX() + velocity.getCoordinateX();
-        double y = position.getY() + velocity.getCoordinateY();
+        float x = position.getX() + velocity.getCoordinateX();
+        float y = position.getY() + velocity.getCoordinateY();
 
         position.setX(x);
         position.setY(y);

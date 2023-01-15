@@ -106,13 +106,13 @@ public class ZombiePlayer extends AIPlayer {
     @Override
     protected void updateVelocity(float deltaTime) {
 
-        double x = 0;
-        double y = 0;
+        float x = 0;
+        float y = 0;
 
         if(objective == ZombieObjective.TRACK){
             // Update the pawn that it goes towards what it is faced to(the tracked character)
-            x = Math.cos(myPawn.getDirection()) * MAX_PAWN_SPEED * deltaTime;
-            y = Math.sin(myPawn.getDirection()) * MAX_PAWN_SPEED * deltaTime;
+            x = (float)Math.cos(myPawn.getDirection()) * MAX_PAWN_SPEED * deltaTime;
+            y = (float)Math.sin(myPawn.getDirection()) * MAX_PAWN_SPEED * deltaTime;
         }
 
 

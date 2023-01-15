@@ -2,10 +2,10 @@ package com.example.TopDownShooter.dataTypes;
 
 public class Position {
 
-    private double x;
-    private double y;
+    private float x;
+    private float y;
 
-    public Position(double x, double y){
+    public Position(float x, float y){
         this.x = x;
         this.y = y;
     }
@@ -16,19 +16,19 @@ public class Position {
         this.y = position.getY();
     }
 
-    public double getX() {
+    public float getX() {
         return x;
     }
 
-    public double getY() {
+    public float getY() {
         return y;
     }
 
-    public void setX(double x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public void setY(double y) {
+    public void setY(float y) {
         this.y = y;
     }
 }

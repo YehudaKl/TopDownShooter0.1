@@ -25,7 +25,7 @@ import io.reactivex.rxjava3.functions.Consumer;
 public abstract class Actor extends GameObject {
 
     protected Position position;
-    protected double direction;// In radians only!!
+    protected float direction;// In radians only!!
     private boolean isVisible;
     private ActorAsset asset;
     private int resourceId;
@@ -33,7 +33,7 @@ public abstract class Actor extends GameObject {
 
 
     // Constructor with direction param
-    public Actor(Game myGame, Position initPosition, int resourceId, double direction){
+    public Actor(Game myGame, Position initPosition, int resourceId, float direction){
         super(myGame);
         this.position = initPosition;
         isVisible = true;
@@ -74,30 +74,30 @@ public abstract class Actor extends GameObject {
         return position;
     }
 
-    public void setDirection(double direction) {
+    public void setDirection(float direction) {
         this.direction = direction;
     }
 
-    public double getDirection() {
+    public float getDirection() {
         return direction;
     }
 
 
     // Returns the distance between this actor and another actor
-    public double getDistanceBetween(Actor other){
+    public float getDistanceBetween(Actor other){
         double deltaX = this.getPosition().getX() - other.getPosition().getX();
         double deltaY = this.getPosition().getY() - other.getPosition().getY();
 
-        return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+        return (float)Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
     }
 
     // Sets the direction of the actor to be facing other given position
     public void facePosition(Position position){
 
-        double x = position.getX() - this.position.getX();
-        double y = position.getY() - this.position.getY();
+        float x = position.getX() - this.position.getX();
+        float y = position.getY() - this.position.getY();
 
-        this.direction = Math.atan2(y, x);
+        this.direction = (float)Math.atan2(y, x);
     }
 
 
