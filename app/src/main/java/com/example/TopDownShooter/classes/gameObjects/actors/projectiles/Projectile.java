@@ -31,7 +31,7 @@ public abstract class Projectile extends Actor {
 
     public void onUpdate(OnUpdate onUpdate){
 
-        updateVelocity();
+        updateVelocity(onUpdate.getUpdateTrace().getDeltaTime());
 
         float x = position.getX() + velocity.getCoordinateX();
         float y = position.getY() + velocity.getCoordinateY();
