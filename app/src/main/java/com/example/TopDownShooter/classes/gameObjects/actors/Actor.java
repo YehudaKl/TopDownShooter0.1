@@ -64,12 +64,6 @@ public abstract class Actor extends GameObject {
         draw(onDraw.getCanvas());
     }
 
-    protected void draw(Canvas canvas){
-        if(!isVisible || asset == null){return;}
-
-        asset.draw(canvas);
-    }
-
     public Position getPosition(){
         return position;
     }
@@ -104,6 +98,13 @@ public abstract class Actor extends GameObject {
     protected void setVisibility(boolean isVisible){
         this.isVisible = isVisible;
     }
+
+    protected void draw(Canvas canvas){
+        if(!isVisible || asset == null){return;}
+
+        asset.draw(canvas);
+    }
+
 
 
 

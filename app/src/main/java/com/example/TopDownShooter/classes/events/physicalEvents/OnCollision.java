@@ -7,7 +7,7 @@ import com.example.TopDownShooter.classes.games.Game;
 
 public class OnCollision extends OnEvent {
 
-    private CollisionInfo collisionInfo;
+    private final CollisionInfo collisionInfo;
 
     public CollisionInfo getCollisionInfo(){
         return collisionInfo;
