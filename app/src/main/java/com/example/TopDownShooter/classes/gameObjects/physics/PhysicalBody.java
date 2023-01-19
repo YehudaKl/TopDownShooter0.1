@@ -18,7 +18,7 @@ import org.jbox2d.dynamics.World;
  * The physical body manages all the interaction with the physical engine
  */
 
-public abstract class PhysicalBody extends GameObject {
+public class PhysicalBody extends GameObject {
 
     private final Actor myActor;
     private final Body body;
