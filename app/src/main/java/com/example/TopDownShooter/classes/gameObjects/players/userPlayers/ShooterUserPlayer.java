@@ -14,7 +14,7 @@ public class ShooterUserPlayer extends UserPlayer{
 
     public ShooterUserPlayer(Game game, Shooter shooter) {
         super(game, shooter);
-        subscribeToGameObservable(myGame.getOnShootObservable().subscribe(this::OnShoot));
+        subscribeToObservable(myGame.getOnShootObservable().subscribe(this::OnShoot));
     }
 
     public void OnShoot(OnShoot onShoot){

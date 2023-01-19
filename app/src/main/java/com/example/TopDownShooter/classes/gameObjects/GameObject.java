@@ -44,7 +44,7 @@ public abstract class GameObject {
     // In order to use the method the subscription code must be done in the method argument so the
     // disposable will be caught
 
-    protected void subscribeToGameObservable(Disposable d){
+    protected void subscribeToObservable(Disposable d){
         compositeDisposable.add(d);
     }
 

@@ -126,8 +126,8 @@ public class ActorsRepository <T extends Actor> extends GameObject{
     public void start(){
         if(this.isInAction){return;}
 
-        subscribeToGameObservable(myGame.getOnActorValidObservable().subscribe(this::onActorValid));
-        subscribeToGameObservable(myGame.getOnActorInvalidObservable().subscribe(this::onActorInvalid));
+        subscribeToObservable(myGame.getOnActorValidObservable().subscribe(this::onActorValid));
+        subscribeToObservable(myGame.getOnActorInvalidObservable().subscribe(this::onActorInvalid));
 
         this.isInAction = true;
 

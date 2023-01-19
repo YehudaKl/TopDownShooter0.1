@@ -44,10 +44,10 @@ public abstract class Pawn extends Actor{
 
 
 
-        subscribeToGameObservable(myGame.getOnUpdateObservable().subscribe(this::onUpdate));
-        subscribeToGameObservable(myGame.getOnGameStartObservable().subscribe(this::onGameStart));
-        subscribeToGameObservable(myGame.getOnGameEndObservable().subscribe(this::onGameEnd));
-        subscribeToGameObservable(myGame.getOnGameStatusChangedObservable().subscribe(this::onGameStatusChanged));
+        subscribeToObservable(myGame.getOnUpdateObservable().subscribe(this::onUpdate));
+        subscribeToObservable(myGame.getOnGameStartObservable().subscribe(this::onGameStart));
+        subscribeToObservable(myGame.getOnGameEndObservable().subscribe(this::onGameEnd));
+        subscribeToObservable(myGame.getOnGameStatusChangedObservable().subscribe(this::onGameStatusChanged));
     }
 
     @Override

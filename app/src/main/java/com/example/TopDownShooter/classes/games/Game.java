@@ -28,8 +28,12 @@ import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorVa
 import com.example.TopDownShooter.classes.events.surveys.Survey;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
+import com.example.TopDownShooter.classes.gameObjects.physics.PhysicsManager;
 import com.example.TopDownShooter.classes.systems.GameLoop;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
+
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.World;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -57,6 +61,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     private ReplaySubject<OnActorValid> onActorValidObservable;
     private ReplaySubject<OnActorInvalid> onActorInvalidObservable;
 
+    private PhysicsManager physicsManager;
 
     private GameLoop gameLoop;
     private Context context;
@@ -93,6 +98,10 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     public PublishSubject<OnPreUpdate> getOnPreUpdateObservable() {
         return onPreUpdateObservable;
+    }
+
+    public PhysicsManager getPhysicsManager(){
+        return physicsManager;
     }
 
 
@@ -149,6 +158,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void update(){
+        physicsManager.update(gameLoop.getDeltaTime());
         onPreUpdateObservable.onNext(new OnPreUpdate(this, updateTrace));
         updateTrace.deltaTimeNotify(gameLoop);
         onUpdateObservable.onNext(new OnUpdate(this, updateTrace));
@@ -211,6 +221,8 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.onActorInvalidObservable = ReplaySubject.create();
         this.onShootObservable = PublishSubject.create();
 
+        this.physicsManager = new PhysicsManager(this);
+
         this.gameLoop = new GameLoop(this, surfaceHolder);
         this.context = getContext();
         this.isDebugging = false;
@@ -219,6 +231,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.updateTrace = new UpdateTrace();
 
     }
+
 
     // Debug methods -------------------------------------------------------
     private void drawUPS(Canvas canvas){

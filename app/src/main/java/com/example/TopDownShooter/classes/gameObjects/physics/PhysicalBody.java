@@ -1,10 +1,16 @@
 package com.example.TopDownShooter.classes.gameObjects.physics;
 
+import com.example.TopDownShooter.classes.events.physicalEvents.OnPhysicalUpdate;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
+
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.Fixture;
+import org.jbox2d.dynamics.World;
+
 
 /**
  * The physical body is responsible to "tell" its owner actor its position in the world according
@@ -15,7 +21,9 @@ import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 public abstract class PhysicalBody extends GameObject {
 
     private final Actor myActor;
+    private final Body body;
     private PhysicsListener physicsListener;
+
 
     public Actor getActor(){
         return myActor;
@@ -25,20 +33,28 @@ public abstract class PhysicalBody extends GameObject {
         this.physicsListener = physicsListener;
     }
 
-    public PhysicalBody(Game myGame, Actor myActor) {
+    public PhysicalBody(Game myGame, Actor myActor, PhysicalSpecification physicalSpecification) {
         super(myGame);
 
         this.myActor = myActor;
-        subscribeToGameObservable(myGame.getOnUpdateObservable().subscribe(this::onUpdate));
+
+        // Creating the body using the body and the fixture def
+        World world = myGame.getPhysicsManager().getWorld();
+        this.body = world.createBody(physicalSpecification.getBodyDef());
+        body.createFixture(physicalSpecification.getFixtureDef());
+
+        // Subscribes to the PhysicalUpdate event
+        subscribeToObservable(myGame.getPhysicsManager().getOnPhysicalUpdateObservable().subscribe(this::onPhysicalUpdate));
+
     }
 
-    public void onUpdate(OnUpdate onUpdate){
-        // Ask the box2d world for my position and inform the physicsListener
+    public void onPhysicalUpdate(OnPhysicalUpdate onPhysicalUpdate){
+        if(physicsListener == null){return;}
+
+        physicsListener.onPositionChanged(new Position(body.getPosition().x, body.getPosition().y));
     }
 
-    public abstract Position getPosition();
-    public abstract float getRotation();
-    protected abstract void onColliding();
+
 
 
 
