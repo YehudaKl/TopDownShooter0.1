@@ -5,7 +5,6 @@ import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
-import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
