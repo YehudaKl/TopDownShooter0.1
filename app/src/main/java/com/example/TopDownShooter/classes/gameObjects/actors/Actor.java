@@ -105,7 +105,4 @@ public abstract class Actor extends GameObject {
         asset.draw(canvas);
     }
 
-
-
-
 }
