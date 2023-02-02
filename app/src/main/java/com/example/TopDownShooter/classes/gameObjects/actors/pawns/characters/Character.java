@@ -38,6 +38,8 @@ public abstract class Character extends Pawn {
 
     @Override
     public void update(UpdateTrace updateTrace){
+        System.out.println("Position of " + this + " is X: " + viewPosition().getX() + " Y: " + viewPosition().getY());
+
         if(isDead()){
             die();
             return;

@@ -90,14 +90,13 @@ public class ZombiePlayer extends AIPlayer<Zombie> {
         switch(objective){
 
             case TRACK:
-                float coordinateX = (float) Math.cos(zombie.getDirectionTo(trackedCharacter));
-                float coordinateY = (float) Math.sin(zombie.getDirectionTo(trackedCharacter));
+                float coordinateX = (float) Math.cos(zombie.getDirectionTo(trackedCharacter)) * zombie.getSpeed() * updateTrace.getDeltaTime();
+                float coordinateY = (float) Math.sin(zombie.getDirectionTo(trackedCharacter)) * zombie.getSpeed() * updateTrace.getDeltaTime();
                 Vector velocity = new Vector(coordinateX, coordinateY);
                 zombie.updateVelocity(velocity);
                 zombie.updateDirection(velocity.getDirection());
-                zombie
-
-                        .step();
+                zombie.step();
+                break;
             case BITE:
                 zombie.bite(trackedCharacter);
                 break;

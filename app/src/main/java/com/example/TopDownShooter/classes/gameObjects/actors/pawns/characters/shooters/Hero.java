@@ -14,7 +14,7 @@ import com.example.TopDownShooter.dataTypes.Position;
  */
 public class Hero extends Shooter {
 
-
+    private static final float MAX_SPEED = 200;
 
     public Hero(Game myGame, Position initPosition){
         super(myGame, initPosition, new Asset(R.drawable.womangreen_stand, myGame.getResources()));
@@ -24,8 +24,8 @@ public class Hero extends Shooter {
 
     }
 
-
-
-
-
+    @Override
+    public float getSpeed() {
+        return MAX_SPEED;
+    }
 }

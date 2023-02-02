@@ -46,6 +46,8 @@ public class SurvivalGame extends Game implements TeamsGame{
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         super.surfaceCreated(surfaceHolder);
 
+        setIsDebugging(true);
+
         teams = initializeTeams();
         heroPlayer = new ShooterUserPlayer(this);
         zombiesPlayer = new ZombiePlayer(this);
@@ -54,9 +56,7 @@ public class SurvivalGame extends Game implements TeamsGame{
         hero = new Hero(this, new Position(400, 400));
         hero.setOwner(heroPlayer);
 
-        spawnZombie(new Position(300, 300));
-        spawnZombie(new Position(700, 700));
-
+        spawnZombie(new Position(900, 900));
 
         startGame();
     }
@@ -78,8 +78,6 @@ public class SurvivalGame extends Game implements TeamsGame{
     @Override
     protected void startGame() {
         super.startGame();
-        spawnZombie(new Position(100, 100));
-        spawnZombie(new Position(700, 400));
     }
 
     // The function adds a new enemy to the enemies array and to the actors-array of the parent class

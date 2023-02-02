@@ -17,8 +17,9 @@ import java.util.TimerTask;
 public class Zombie extends Monster {
 
     private final float BITE_DAMAGE;
-    public final float BITE_COOLDOWN_TIME;
-    public final float BITE_RANGE;// The maximal distance from a character in order to bite(inclusive)
+    private static final float MAX_SPEED = 100;//conf
+    public static final float BITE_COOLDOWN_TIME = 1500;//conf
+    public static final float BITE_RANGE = 100;// The maximal distance from a character in order to bite(inclusive)
 
     private boolean canBite;// If zombie in bite-cooldown false, else true
 
@@ -29,8 +30,7 @@ public class Zombie extends Monster {
 
         this.health = 1;//conf
         this.BITE_DAMAGE = 50;//conf
-        this.BITE_COOLDOWN_TIME = 1500;//conf
-        this.BITE_RANGE = 100;//conf
+
 
         this.canBite = true;
 
@@ -56,9 +56,10 @@ public class Zombie extends Monster {
     }
 
 
-
-
-
+    @Override
+    public float getSpeed() {
+        return MAX_SPEED;
+    }
 
     public void setCanBite(boolean canBite){
         this.canBite = canBite;

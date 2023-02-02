@@ -20,7 +20,6 @@ import com.example.TopDownShooter.dataTypes.enums.PawnMotionState;
  */
 public abstract class Pawn extends Actor{
 
-    public final float MAX_SPEED = 200;//conf
     protected Vector velocity;
     protected Player owner;
     protected Team myTeam;
@@ -67,6 +66,8 @@ public abstract class Pawn extends Actor{
         subscribeToObservable(myGame.getOnGameEndObservable().subscribe(this::onGameEnd));
         subscribeToObservable(myGame.getOnGameStatusChangedObservable().subscribe(this::onGameStatusChanged));
     }
+
+    public abstract float getSpeed();
 
     public void onUpdate(OnUpdate onupdate){
 
@@ -134,8 +135,8 @@ public abstract class Pawn extends Actor{
     public void step(){
         if(motionState == PawnMotionState.FROZE || velocity == null){return;}
 
-        float newX = velocity.getCoordinateX();
-        float newY = velocity.getCoordinateY();
+        float newX = viewPosition().getX() + velocity.getCoordinateX();
+        float newY = viewPosition().getY() + velocity.getCoordinateY();
         updatePosition(new Position(newX, newY));
     }
 

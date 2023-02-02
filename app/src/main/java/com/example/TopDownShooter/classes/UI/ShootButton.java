@@ -50,6 +50,7 @@ public class ShootButton extends AppCompatImageButton {
 
     public void setMyGame(Game myGame){
         this.myGame = myGame;
+        myGame.getOnPreUpdateObservable().subscribe(this::onPreUpdate);
     }
 
     public ShootButton(Context context) {
@@ -77,7 +78,6 @@ public class ShootButton extends AppCompatImageButton {
     }
 
     private void init(){
-        myGame.getOnPreUpdateObservable().subscribe(this::onPreUpdate);
         reloadTime = DEFAULT_RELOAD_TIME;
         isReload = false;
         isPressed = false;
