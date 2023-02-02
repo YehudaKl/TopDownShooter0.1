@@ -31,6 +31,7 @@ import java.util.Timer;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.ReplaySubject;
+import shiffman.box2d.Box2DProcessing;
 
 /**
  * A Game is a generic class for all games that can be played by the user.
@@ -52,7 +53,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     private GameState state;
 
-    private PhysicsManager physicsManager;
+    private Box2DProcessing physicsManager;
 
     private GameLoop gameLoop;
     private Context context;
@@ -86,7 +87,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         return onPreUpdateObservable;
     }
 
-    public PhysicsManager getPhysicsManager(){
+    public Box2DProcessing getPhysicsManager(){
         return physicsManager;
     }
 
@@ -148,7 +149,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void update(){
-        physicsManager.update(gameLoop.getDeltaTime());
+        physicsManager.step(gameLoop.getDeltaTime());
         onPreUpdateObservable.onNext(new OnPreUpdate(this, updateTrace));
         updateTrace.deltaTimeNotify(gameLoop);
         onUpdateObservable.onNext(new OnUpdate(this, updateTrace));
@@ -214,7 +215,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.onActorValidObservable = ReplaySubject.create();
         this.onActorInvalidObservable = ReplaySubject.create();
 
-        this.physicsManager = new PhysicsManager(this);
+        this.physicsManager = new Box2DProcessing();
 
         this.state = GameState.LOAD;
 

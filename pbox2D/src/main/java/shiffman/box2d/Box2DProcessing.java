@@ -41,6 +41,9 @@ public class Box2DProcessing {
 	Box2DContactListener contactlistener;
 
 	// Construct with a default scaleFactor of 200
+	public Box2DProcessing(){
+		this(new PApplet());
+	}
 	public Box2DProcessing(PApplet p) {
 		this(p,200.0F);
 	}
@@ -68,15 +71,18 @@ public class Box2DProcessing {
 	// Says to move ahead one unit in time
 	// Default
 	public void step() {
-		// float timeStep = 1.0f / 60f;
-		this.step(8, 3);
-		world.clearForces();
+		float timeStep = 1.0f / 60f;
+		this.step(timeStep, 8, 3);
+	}
+
+	public void step(float timeStep){
+		step(timeStep, 8, 3);
 	}
 
 
 	// Custom
 	public void step( int velocityIterations, int positionIterations) {
-		world.step(1.0F / parent.frameRate, velocityIterations, positionIterations);
+		step(1.0F / parent.frameRate, velocityIterations, positionIterations);
 	}
 
 	public void step(float timeStep, int velocityIterations, int positionIterations) {
