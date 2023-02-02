@@ -12,6 +12,8 @@ import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
 
+import java.util.ArrayList;
+
 
 /**
  *  A Character is a humane-like pawn that can walk around and attack.
@@ -35,21 +37,21 @@ public abstract class Character extends Pawn {
 
     @Override
     public void update(UpdateTrace updateTrace){
-        super.update(updateTrace);
-
         if(isDead()){
             die();
+            return;
         }
+
+        super.update(updateTrace);
+
+
+
     }
 
     protected void die(){
-        this.healthState = CharacterHealthState.DEAD;
-
-        // Invalidating the character in order to make it deleted next frame
-        owner.OnPawnDied();
         invalidate();
-
     }
+
 
     // Function for adding health only!!(positive argument)
     public boolean addHealth(float amount){
@@ -89,4 +91,5 @@ public abstract class Character extends Pawn {
     public CharacterHealthState getHealthState() {
         return healthState;
     }
+
 }

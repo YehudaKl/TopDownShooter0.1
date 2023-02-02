@@ -38,13 +38,6 @@ public class ActorsRepository <T extends Actor> extends GameObject{
     private final ArrayList<T> actorsToIgnore;
     private final ActorQualifier<T> actorQualifier;
 
-    private void addActor(T actor){
-        actorsList.add(actor);
-    }
-    private boolean removeActor(T actor){
-        return actorsList.remove(actor);
-    }
-
     // Constructor with no actorsToIgnore
     public ActorsRepository(Game myGame, Class<T> classOfType){
        this(myGame, classOfType, new ArrayList<>());
@@ -66,9 +59,28 @@ public class ActorsRepository <T extends Actor> extends GameObject{
 
     }
 
+    // Adding new actor to the ignored actors.
+    // Note! there is no duplication testing so duplicated actor in the ignoredActors list will be checked twice
+    public void addActorToIgnore(T actor){
+        actorsToIgnore.add(actor);
+        // Using the refresh method for making sure that the repository does not already track the newly ignoredActor
+        refresh();
+    }
+
+    // Method for cleaning the repository from ignored actors that somehow got into the repository
+    public void refresh(){
+        for(T actor: actorsList){
+            for(T ignoredActor: actorsToIgnore){
+                if(actor == ignoredActor){
+                    actorsList.remove(actor);
+                }
+            }
+        }
+    }
+
 
     // Method to be executed when OnActorValid event is triggered
-    public void onActorValid(@NonNull OnActorValid onActorValid){
+    public void onActorValid(OnActorValid onActorValid){
 
         try{
             // Try to cast the actor to the repository's type
@@ -112,13 +124,21 @@ public class ActorsRepository <T extends Actor> extends GameObject{
         return new ArrayList<>(actorsList);
     }
 
-    // Method for stopping the repository's work (unsubscribing to the observables)
-    // Must be called when the last user-object goes invalid
-    public void end(){
-        if(!this.isInAction){return;}
+    // Method that gets the actors from the repository cleaned from provided actors to clean
+    public ArrayList<T> getActorsCleaned(ArrayList<T> actorsToClean){
+        ArrayList<T> toReturn = new ArrayList();
 
-      invalidate();
+        for(T actor: actorsList){
+            for(T actorToClean: actorsToClean){
+                if(actor != actorToClean){
+                    toReturn.add(actor);
+                }
+            }
+        }
+
+        return toReturn;
     }
+
 
     // Method for starting the repository's work (subscribing to the observables)
     // Must be called in order start use the repository
@@ -133,12 +153,28 @@ public class ActorsRepository <T extends Actor> extends GameObject{
 
     }
 
+    // Method for stopping the repository's work (unsubscribing to the observables)
+    // Must be called when the last user-object goes invalid
+    public void end(){
+        if(!this.isInAction){return;}
+
+      invalidate();
+    }
+
     public int getSize(){
         return actorsList.size();
     }
 
     public boolean isEmpty(){
         return(getSize() == 0);
+    }
+
+
+    private void addActor(T actor){
+        actorsList.add(actor);
+    }
+    private boolean removeActor(T actor){
+        return actorsList.remove(actor);
     }
 
 }

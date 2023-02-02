@@ -28,9 +28,10 @@ import java.util.HashMap;
 
 public class SurvivalGame extends Game implements TeamsGame{
 
-    private  HashMap<String, Team> teams;
-
+    private HashMap<String, Team> teams;
     private Hero hero;
+    private ShooterUserPlayer heroPlayer;
+    private ZombiePlayer zombiesPlayer;
 
 
     public SurvivalGame(Context context){
@@ -46,13 +47,16 @@ public class SurvivalGame extends Game implements TeamsGame{
         super.surfaceCreated(surfaceHolder);
 
         teams = initializeTeams();
+        heroPlayer = new ShooterUserPlayer(this);
+        zombiesPlayer = new ZombiePlayer(this);
 
 
+        hero = new Hero(this, new Position(400, 400));
+        hero.setOwner(heroPlayer);
 
-        this.hero = new Hero(this, new Position(400, 400));
-        hero.setOwner(new ShooterUserPlayer(this, hero));
+        spawnZombie(new Position(300, 300));
+        spawnZombie(new Position(700, 700));
 
-        setIsDebugging(true);
 
         startGame();
     }
@@ -82,9 +86,8 @@ public class SurvivalGame extends Game implements TeamsGame{
     private void spawnZombie(Position position){
 
         Zombie zombie = new Zombie(this, position);
+        zombie.setOwner(zombiesPlayer);
 
-        zombie.setOwner(new ZombiePlayer(this, zombie));
-        zombie.onJoinedGame();
 
 
     }

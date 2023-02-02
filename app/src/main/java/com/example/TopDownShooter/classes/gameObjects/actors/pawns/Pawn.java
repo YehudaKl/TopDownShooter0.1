@@ -3,33 +3,52 @@ package com.example.TopDownShooter.classes.gameObjects.actors.pawns;
 import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
-import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStatusChanged;
+import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStateChanged;
 import com.example.TopDownShooter.classes.events.OnGameEnd;
 import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
-import com.example.TopDownShooter.classes.gameObjects.players.AIPlayers.ZombiePlayer;
 import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
-import com.example.TopDownShooter.classes.games.TeamsGame;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.Vector;
-;import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.disposables.DisposableContainer;
-import io.reactivex.rxjava3.functions.Consumer;
+import com.example.TopDownShooter.dataTypes.enums.GameState;
+import com.example.TopDownShooter.dataTypes.enums.PawnMotionState;
+;
 
 /**
  * A Pawn is an actor that can be controlled by a player or an AI.
  */
 public abstract class Pawn extends Actor{
 
-
-    protected Player owner;
+    public final float MAX_SPEED = 200;//conf
     protected Vector velocity;
+    protected Player owner;
     protected Team myTeam;
+    protected PawnMotionState motionState;
+
+    public void setTeam(Team team){
+        this.myTeam = team;
+    }
+
+    public Team getTeam() {
+        return myTeam;
+    }
+
+    public void setMotionState(PawnMotionState motionState) {
+        this.motionState = motionState;
+    }
+
+    public PawnMotionState getMotionState() {
+        return motionState;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
 
     public Pawn(Game myGame, Position initPosition, int resourceId){
         this(myGame, initPosition, resourceId, 0);
@@ -41,8 +60,7 @@ public abstract class Pawn extends Actor{
         super(myGame, initPosition, resourceId, direction);
 
         this.velocity = new Vector(0, 0);
-
-
+        this.motionState = PawnMotionState.FROZE;
 
         subscribeToObservable(myGame.getOnUpdateObservable().subscribe(this::onUpdate));
         subscribeToObservable(myGame.getOnGameStartObservable().subscribe(this::onGameStart));
@@ -50,72 +68,85 @@ public abstract class Pawn extends Actor{
         subscribeToObservable(myGame.getOnGameStatusChangedObservable().subscribe(this::onGameStatusChanged));
     }
 
-    @Override
-    public void invalidate(){
-        owner.invalidate();
-        super.invalidate();
+    public void onUpdate(OnUpdate onupdate){
 
+        if(motionState == PawnMotionState.FROZE){ return;}
 
-    }
-
-    public void onUpdate(OnUpdate onUpdate){
-        update(onUpdate.getUpdateTrace());
+        update(onupdate.getUpdateTrace());
     }
 
     public void onGameStart(OnGameStart onGameStart){
-        findMyTeam();
-        owner.onGameStart(onGameStart);
+        motionState = PawnMotionState.MOVING;
     }
 
     public void onGameEnd(OnGameEnd onGameEnd){
-        owner.onGameEnd(onGameEnd);
+        motionState = PawnMotionState.FROZE;
+        invalidate();
     }
 
-    public void onGameStatusChanged(OnGameStatusChanged onGameStatusChanged){
-        owner.onGameStatusChanged(onGameStatusChanged);
-    }
-
-    // Method for a a pawn that was added after the game has already stared.
-    // Must be called by the creator of the pawn
-    public void onJoinedGame(){
-        findMyTeam();
-        owner.onJoinedGame();
-    }
-
-    public void setOwner(Player owner){
-        this.owner = owner;
-    }
-
-    public Player getOwner() {
-        return owner;
-    }
-
-    public float getDirection() {
-        return direction;
-    }
-
-    public Vector getVelocity() {
-        return velocity;
-    }
-
-    public Team getTeam(){
-        return myTeam;
-    }
-
-    protected void update(UpdateTrace updateTrace){
-        if(owner == null){return;}
-        owner.updatePawn(updateTrace);
-    }
-
-
-    private void findMyTeam(){
-        try{
-            TeamsGame t = (TeamsGame) myGame;
-            myTeam =  t.generateMeTeam(this);
-        }catch (ClassCastException e){
-            myTeam = null;
+    public void onGameStatusChanged(OnGameStateChanged onGameStateChanged){
+        switch (onGameStateChanged.getNewState()){
+            case RUN:
+                motionState = PawnMotionState.MOVING;
+                break;
+            case PAUSE:
+                motionState = PawnMotionState.FROZE;
+                break;
         }
     }
+
+
+    // Returns a copy of the direction!
+    // For updating the direction the function updateDirection() must be used
+    public float viewDirection() {
+        return direction;
+    }
+    // Returns a copy of the velocity!
+    // For updating the velocity the function updateVelocity() must be used
+    public Vector viewVelocity() {
+        if(velocity == null){return null;}
+        return new Vector(velocity);
+    }
+
+    public void updateDirection(float direction){
+        if(motionState == PawnMotionState.FROZE){ return;}
+
+        this.direction = direction;
+    }
+    public void updateVelocity(Vector velocity){
+        // The method does not accept empty vectors
+        if(motionState == PawnMotionState.FROZE || velocity.isEmpty()){return;}
+
+        this.velocity = velocity;
+    }
+
+
+    @Override
+    public void updatePosition(Position position) {
+        // Blocking any position updating while motionState is FROZE
+        if(motionState == PawnMotionState.FROZE){
+            return;
+        }
+        super.updatePosition(position);
+    }
+
+    // Update the position according to the velocity
+    public void step(){
+        if(motionState == PawnMotionState.FROZE || velocity == null){return;}
+
+        float newX = velocity.getCoordinateX();
+        float newY = velocity.getCoordinateY();
+        updatePosition(new Position(newX, newY));
+    }
+
+
+    protected void update(UpdateTrace updateTrace){
+        if(owner == null || !owner.getIsValid()){
+            return;
+        }
+        owner.updatePawn(this, updateTrace);
+    }
+
 
 
 

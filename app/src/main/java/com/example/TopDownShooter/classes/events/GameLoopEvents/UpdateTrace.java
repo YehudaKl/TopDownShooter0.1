@@ -1,6 +1,7 @@
 package com.example.TopDownShooter.classes.events.GameLoopEvents;
 
 import com.example.TopDownShooter.classes.UI.Joystick;
+import com.example.TopDownShooter.classes.UI.ShootButton;
 import com.example.TopDownShooter.classes.systems.GameLoop;
 
 /**
@@ -12,6 +13,7 @@ public class UpdateTrace {
     private float deltaTime;
     private float joystickActuatorX;
     private float joystickActuatorY;
+    private boolean isShootPressed;
 
     public float getDeltaTime() {
         return deltaTime;
@@ -25,6 +27,10 @@ public class UpdateTrace {
         return joystickActuatorY;
     }
 
+    public boolean getIsShootPressed(){
+        return isShootPressed;
+    }
+
    public void joystickNotify(Joystick joystick){
         joystickActuatorX = joystick.getActuatorX();
         joystickActuatorY = joystick.getActuatorY();
@@ -32,6 +38,10 @@ public class UpdateTrace {
 
     public void deltaTimeNotify(GameLoop gameLoop){
         this.deltaTime = gameLoop.getDeltaTime();
+    }
+
+    public void shootNotify(ShootButton shootButton){
+        this.isShootPressed = shootButton.isPressed();
     }
 
    // Default constructor. uses the init method

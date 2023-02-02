@@ -1,5 +1,6 @@
 package com.example.TopDownShooter.classes.gameObjects.players.userPlayers;
 
+import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.events.UIEvents.OnShoot;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
@@ -12,17 +13,23 @@ import com.example.TopDownShooter.classes.games.Game;
  */
 public class ShooterUserPlayer extends UserPlayer{
 
-    public ShooterUserPlayer(Game game, Shooter shooter) {
-        super(game, shooter);
-        subscribeToObservable(myGame.getOnShootObservable().subscribe(this::OnShoot));
+    public ShooterUserPlayer(Game myGame) {
+        super(myGame);
     }
 
-    public void OnShoot(OnShoot onShoot){
+    @Override
+    public void updatePawn(Pawn pawn, UpdateTrace updateTrace) {
+        Shooter shooter;
         try{
-            ((Shooter) myPawn).shoot();
-
+            shooter = (Shooter) pawn;
         }catch(ClassCastException e){
-
+            return;
         }
+        super.updatePawn(pawn, updateTrace);
+
+        if(updateTrace.getIsShootPressed()){
+            shooter.shoot();
+        }
+
     }
 }

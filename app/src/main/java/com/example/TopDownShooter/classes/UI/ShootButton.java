@@ -25,6 +25,7 @@ public class ShootButton extends AppCompatImageButton {
     private Game myGame;
     private boolean isReload;
     private float reloadTime;
+    private boolean isPressed;
 
     public void setIsReload(boolean reload) {
         isReload = reload;
@@ -41,6 +42,10 @@ public class ShootButton extends AppCompatImageButton {
 
     public float getReloadTime(){
         return reloadTime;
+    }
+
+    public boolean getIsPressed(){
+        return isPressed;
     }
 
     public void setMyGame(Game myGame){
@@ -66,16 +71,23 @@ public class ShootButton extends AppCompatImageButton {
         return true;
     }
 
+    public void onPreUpdate(OnPreUpdate onPreUpdate){
+        onPreUpdate.getUpdateTrace().shootNotify(this);
+        isPressed = false;
+    }
+
     private void init(){
+        myGame.getOnPreUpdateObservable().subscribe(this::onPreUpdate);
         reloadTime = DEFAULT_RELOAD_TIME;
         isReload = false;
+        isPressed = false;
     }
 
     //TODO adam not synchronize
     private void shoot(){
         if(myGame == null || isReload){return;}
 
-        myGame.getOnShootObservable().onNext(new OnShoot(myGame));
+        isPressed = true;
 
         reload();
     }

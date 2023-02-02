@@ -7,8 +7,8 @@ import com.example.TopDownShooter.classes.games.Game;
 public abstract class AIPlayer extends Player {
 
 
-    public AIPlayer(Game myGame, Pawn myPawn, float maxSpeed){
-        super(myGame, myPawn, maxSpeed);
+    public AIPlayer(Game myGame){
+        super(myGame);
 
     }
 

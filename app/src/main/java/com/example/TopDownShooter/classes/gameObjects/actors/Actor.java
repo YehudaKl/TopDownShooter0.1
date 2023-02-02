@@ -30,7 +30,13 @@ public abstract class Actor extends GameObject {
     private ActorAsset asset;
     private int resourceId;
 
+    public void setDirection(float direction) {
+        this.direction = direction;
+    }
 
+    public float getDirection() {
+        return direction;
+    }
 
     // Constructor with direction param
     public Actor(Game myGame, Position initPosition, int resourceId, float direction){
@@ -64,35 +70,33 @@ public abstract class Actor extends GameObject {
         draw(onDraw.getCanvas());
     }
 
-    public Position getPosition(){
-        return position;
+    // The function returns a copy! of the actors' position.
+    // For updating the position the function update position must be used!
+    public Position viewPosition(){
+        return new Position(position);
     }
 
-    public void setDirection(float direction) {
-        this.direction = direction;
+    public void updatePosition(Position position){
+        this.position = position;
     }
-
-    public float getDirection() {
-        return direction;
-    }
-
 
     // Returns the distance between this actor and another actor
     public float getDistanceBetween(Actor other){
-        double deltaX = this.getPosition().getX() - other.getPosition().getX();
-        double deltaY = this.getPosition().getY() - other.getPosition().getY();
+        double deltaX = this.viewPosition().getX() - other.viewPosition().getX();
+        double deltaY = this.viewPosition().getY() - other.viewPosition().getY();
 
         return (float)Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
     }
 
-    // Sets the direction of the actor to be facing other given position
-    public void facePosition(Position position){
+    // Get the direction to another actor
+    public float getDirectionTo(Actor actor){
 
-        float x = position.getX() - this.position.getX();
-        float y = position.getY() - this.position.getY();
+        float x = actor.viewPosition().getX() - this.viewPosition().getX();
+        float y = actor.viewPosition().getY() - this.viewPosition().getY();
 
-        this.direction = (float)Math.atan2(y, x);
+        return (float)Math.atan2(y, x);
     }
+
 
 
     protected void setVisibility(boolean isVisible){

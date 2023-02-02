@@ -2,21 +2,22 @@ package com.example.TopDownShooter.classes.events.GameStatusEvents;
 
 import com.example.TopDownShooter.classes.events.OnEvent;
 import com.example.TopDownShooter.classes.games.Game;
+import com.example.TopDownShooter.dataTypes.enums.GameState;
 
 /**
  * A parent class for all event about the game's status such as onGameStart onGamePaused ect..
  */
-public class OnGameStatusChanged extends OnEvent {
+public class OnGameStateChanged extends OnEvent {
 
-    private final GameStatus newStatus;
+    private final GameState newState;
 
-    public OnGameStatusChanged(Game game, GameStatus newStatus){
+    public OnGameStateChanged(Game game, GameState state){
         super(game);
 
-        this.newStatus = newStatus;
+        this.newState = state;
     }
 
-    public GameStatus getNewStatus(){
-        return newStatus;
+    public GameState getNewState(){
+        return newState;
     }
 }
