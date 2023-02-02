@@ -22,7 +22,8 @@ import java.util.ArrayList;
  * The zombie dose not try to avoid any counter attack.
  *
  */
-public class ZombiePlayer extends AIPlayer {
+
+public class ZombiePlayer extends AIPlayer<Zombie> {
 
     private final ActorsRepository<Character> repository;
 
@@ -80,14 +81,8 @@ public class ZombiePlayer extends AIPlayer {
 
 
     @Override
-    public void updatePawn(Pawn pawn, UpdateTrace updateTrace) {
+    public void updatePawn(Zombie zombie, UpdateTrace updateTrace) {
         // Making sure that the pawn is a zombie, if not the method returns
-        Zombie zombie;
-        try{
-            zombie = (Zombie) pawn;
-        }catch (ClassCastException e){
-            return;
-        }
 
         Character trackedCharacter = findNewTrackedCharacter(zombie);
         ZombieObjective objective = generateObjective(zombie, trackedCharacter);
@@ -95,12 +90,14 @@ public class ZombiePlayer extends AIPlayer {
         switch(objective){
 
             case TRACK:
-                float coordinateX = (float) Math.cos(pawn.getDirectionTo(trackedCharacter));
-                float coordinateY = (float) Math.sin(pawn.getDirectionTo(trackedCharacter));
+                float coordinateX = (float) Math.cos(zombie.getDirectionTo(trackedCharacter));
+                float coordinateY = (float) Math.sin(zombie.getDirectionTo(trackedCharacter));
                 Vector velocity = new Vector(coordinateX, coordinateY);
-                pawn.updateVelocity(velocity);
-                pawn.updateDirection(velocity.getDirection());
-                pawn.step();
+                zombie.updateVelocity(velocity);
+                zombie.updateDirection(velocity.getDirection());
+                zombie
+
+                        .step();
             case BITE:
                 zombie.bite(trackedCharacter);
                 break;

@@ -1,6 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns;
 
 import com.example.TopDownShooter.classes.Team;
+import com.example.TopDownShooter.classes.assets.Asset;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStateChanged;
@@ -11,7 +12,6 @@ import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.Vector;
-import com.example.TopDownShooter.dataTypes.enums.GameState;
 import com.example.TopDownShooter.dataTypes.enums.PawnMotionState;
 ;
 
@@ -50,14 +50,14 @@ public abstract class Pawn extends Actor{
         this.owner = owner;
     }
 
-    public Pawn(Game myGame, Position initPosition, int resourceId){
-        this(myGame, initPosition, resourceId, 0);
+    public Pawn(Game myGame, Position initPosition, Asset asset){
+        this(myGame, initPosition, asset, 0);
 
     }
 
     // Constructor for with direction for pawns that has to be initialized to current direction.
-    public Pawn(Game myGame, Position initPosition, int resourceId, float direction){
-        super(myGame, initPosition, resourceId, direction);
+    public Pawn(Game myGame, Position initPosition, Asset asset, float direction){
+        super(myGame, initPosition, asset, direction);
 
         this.velocity = new Vector(0, 0);
         this.motionState = PawnMotionState.FROZE;
@@ -144,6 +144,7 @@ public abstract class Pawn extends Actor{
         if(owner == null || !owner.getIsValid()){
             return;
         }
+
         owner.updatePawn(this, updateTrace);
     }
 

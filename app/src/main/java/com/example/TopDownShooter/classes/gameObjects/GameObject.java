@@ -25,6 +25,10 @@ public abstract class GameObject {
     protected final Game myGame;
     private boolean isValid;
 
+    public Game getMyGame(){
+        return myGame;
+    }
+
     public GameObject(Game myGame){
         this.isValid = true;
         this.myGame = myGame;

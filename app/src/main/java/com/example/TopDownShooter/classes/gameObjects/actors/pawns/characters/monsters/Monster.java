@@ -1,7 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters;
 
+import com.example.TopDownShooter.classes.assets.Asset;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
-import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
@@ -10,7 +10,7 @@ import com.example.TopDownShooter.dataTypes.Position;
  * Instead, Monsters have their own special attack.
  */
 public abstract class Monster extends Character {
-    public Monster(Game myGame, Position initPosition, int resourceId) {
-        super(myGame, initPosition, resourceId);
+    public Monster(Game myGame, Position initPosition, Asset asset) {
+        super(myGame, initPosition, asset);
     }
 }

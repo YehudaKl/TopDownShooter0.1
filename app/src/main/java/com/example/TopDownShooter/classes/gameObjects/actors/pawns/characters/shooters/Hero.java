@@ -1,6 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters;
 
 import com.example.TopDownShooter.R;
+import com.example.TopDownShooter.classes.assets.Asset;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
 import com.example.TopDownShooter.classes.gameObjects.players.Player;
@@ -16,7 +17,7 @@ public class Hero extends Shooter {
 
 
     public Hero(Game myGame, Position initPosition){
-        super(myGame, initPosition, R.drawable.womangreen_stand);
+        super(myGame, initPosition, new Asset(R.drawable.womangreen_stand, myGame.getResources()));
 
         this.health = 100;
 

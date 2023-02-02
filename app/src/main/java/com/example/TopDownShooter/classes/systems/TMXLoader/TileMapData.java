@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TileMapData {
-    /*
+    /**
      * A data structure holding the information from a TMX tilemap.
      * This can be used to reconstruct a graphical tilemap of theoretically
      * arbitrarily large size onscreen from repeated images of a tileset.

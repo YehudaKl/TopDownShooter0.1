@@ -1,19 +1,18 @@
 package com.example.TopDownShooter.classes.gameObjects.actors;
 
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
-import com.example.TopDownShooter.classes.assets.ActorAsset;
+import com.example.TopDownShooter.classes.assets.Asset;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnDraw;
-import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorInvalid;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * An Actor is a GameObject that has a position and can be seen by the user during the game
@@ -27,8 +26,7 @@ public abstract class Actor extends GameObject {
     protected Position position;
     protected float direction;// In radians only!!
     private boolean isVisible;
-    private ActorAsset asset;
-    private int resourceId;
+    protected Asset asset;
 
     public void setDirection(float direction) {
         this.direction = direction;
@@ -39,13 +37,12 @@ public abstract class Actor extends GameObject {
     }
 
     // Constructor with direction param
-    public Actor(Game myGame, Position initPosition, int resourceId, float direction){
+    public Actor(Game myGame, Position initPosition, Asset asset, float direction){
         super(myGame);
         this.position = initPosition;
         isVisible = true;
-        this.resourceId = resourceId;
         this.direction = direction;
-        this.asset = new ActorAsset(myGame, this, BitmapFactory.decodeResource(myGame.getContext().getResources(), resourceId));
+        this.asset = asset;
 
         // Subscribing to the OnDraw
         subscribeToObservable(myGame.getOnDrawObservable().subscribe(this::onDraw));
@@ -67,7 +64,9 @@ public abstract class Actor extends GameObject {
     }
 
     public void onDraw(OnDraw onDraw){
-        draw(onDraw.getCanvas());
+        if(isVisible || asset == null){
+            draw(onDraw.getCanvas());
+        }
     }
 
     // The function returns a copy! of the actors' position.
@@ -103,10 +102,8 @@ public abstract class Actor extends GameObject {
         this.isVisible = isVisible;
     }
 
-    protected void draw(Canvas canvas){
-        if(!isVisible || asset == null){return;}
+    protected abstract void draw(Canvas canvas);
 
-        asset.draw(canvas);
-    }
+
 
 }

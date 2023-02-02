@@ -27,14 +27,14 @@ import java.util.Iterator;
  * a UI controllers such as joystick or buttons.
  * On the other hand, an AIPlayer determines his pawn actions by logical algorithms
  */
-public abstract class Player extends GameObject{
+public abstract class Player<T extends Pawn> extends GameObject{
 
     public Player(Game myGame){
         super(myGame);
 
     }
 
-    public abstract void updatePawn(Pawn pawn, UpdateTrace updateTrace);
+    public abstract void updatePawn(T pawn, UpdateTrace updateTrace);
 
 
 
