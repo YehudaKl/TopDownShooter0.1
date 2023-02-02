@@ -10,7 +10,6 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 
 import io.reactivex.rxjava3.subjects.PublishSubject;
-import shiffman.box2d.Box2DProcessing;
 
 /**
  * A physical manager for the game that manages all physics.

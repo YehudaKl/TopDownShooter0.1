@@ -12,30 +12,30 @@ import org.jbox2d.dynamics.World;
 
 
 /**
- * The physical body is responsible to "tell" its owner actor its position in the world according
- * to physical rules.
- * The physical body manages all the interaction with the physical engine
+ * The physical body is responsible to notify a physicalListener
+ * about the physical state of its owner actor
+ * The physical body manages all interaction with the physical engine
  */
 
 public class PhysicalBody extends GameObject {
 
-    private final Actor myActor;
+    private final Actor owner;
     private final Body body;
     private PhysicsListener physicsListener;
 
 
     public Actor getActor(){
-        return myActor;
+        return owner;
     }
 
     public void setPhysicsListener(PhysicsListener physicsListener){
         this.physicsListener = physicsListener;
     }
 
-    public PhysicalBody(Game myGame, Actor myActor, PhysicalSpecification physicalSpecification) {
+    public PhysicalBody(Game myGame, Actor owner, PhysicalSpecification physicalSpecification) {
         super(myGame);
 
-        this.myActor = myActor;
+        this.owner = owner;
 
         // Creating the body using the body and the fixture def
         World world = myGame.getPhysicsManager().getWorld();
