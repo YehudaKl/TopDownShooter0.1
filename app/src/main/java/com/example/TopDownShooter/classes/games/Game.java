@@ -19,10 +19,8 @@ import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStateChanged;
 import com.example.TopDownShooter.classes.events.OnGameEnd;
 import com.example.TopDownShooter.classes.events.OnGameStart;
-import com.example.TopDownShooter.classes.events.UIEvents.OnShoot;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorInvalid;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;
-import com.example.TopDownShooter.classes.gameObjects.physics.PhysicsManager;
 import com.example.TopDownShooter.classes.systems.GameLoop;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
 

@@ -9,6 +9,8 @@ import android.graphics.drawable.Drawable;
 import com.example.TopDownShooter.classes.assets.Asset;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
+import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalBody;
+import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalSpecifecations.DefaultCharacterPhysicalSpecification;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
@@ -23,6 +25,7 @@ import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
 public abstract class Character extends Pawn {
     public final int MAX_HEALTH;
     protected float  health;
+    protected final PhysicalBody physicalBody;
     private CharacterHealthState healthState;
 
 
@@ -30,9 +33,12 @@ public abstract class Character extends Pawn {
         super(myGame, initPosition, asset);
 
         this.MAX_HEALTH = 100; // conf
-
         this.health = MAX_HEALTH;
+
+        this.physicalBody = new PhysicalBody(myGame, this, DefaultCharacterPhysicalSpecification.getSpecification());
+
         this.healthState = CharacterHealthState.ALIVE;
+
 
     }
 
@@ -47,6 +53,8 @@ public abstract class Character extends Pawn {
 
         super.update(updateTrace);
 
+        // Updating the position according to the physical position.
+        updatePosition(physicalBody.getPosition());
 
 
     }

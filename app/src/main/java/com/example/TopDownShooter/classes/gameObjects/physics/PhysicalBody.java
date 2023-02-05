@@ -7,8 +7,6 @@ import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
 import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.Fixture;
-import org.jbox2d.dynamics.World;
 
 
 /**
@@ -17,9 +15,9 @@ import org.jbox2d.dynamics.World;
  * The physical body manages all interaction with the physical engine
  */
 
-public class PhysicalBody extends GameObject {
+public class PhysicalBody <T extends Actor> extends GameObject {
 
-    private final Actor owner;
+    private final T owner;
     private final Body body;
 
 
@@ -31,14 +29,14 @@ public class PhysicalBody extends GameObject {
         return new Position(body.getPosition().x, body.getPosition().y);
     }
 
-    public PhysicalBody(Game myGame, Actor owner, PhysicalSpecification physicalSpecification) {
+    public PhysicalBody(Game myGame, T owner, PhysicalSpecification<T> physicalSpecification) {
         super(myGame);
 
         this.owner = owner;
 
         // Creating the body using the body and the fixture def
-        this.body = myGame.getPhysicsManager().createBody(physicalSpecification.getBodyDef());
-        body.createFixture(physicalSpecification.getFixtureDef());
+        this.body = myGame.getPhysicsManager().createBody(physicalSpecification.getBodyDef(owner));
+        body.createFixture(physicalSpecification.getFixtureDef(owner));
 
 
     }
