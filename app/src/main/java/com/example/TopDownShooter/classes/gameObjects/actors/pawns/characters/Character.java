@@ -2,7 +2,9 @@ package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
@@ -53,8 +55,9 @@ public abstract class Character extends Pawn {
 
         super.update(updateTrace);
 
-        // Updating the position according to the physical position.
+        // Updating the position and rotation according to the physical position.
         updatePosition(physicalBody.getPosition());
+        updateDirection(physicalBody.getAngle());
 
 
     }

@@ -6,6 +6,7 @@ import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
 
@@ -26,7 +27,15 @@ public class PhysicalBody <T extends Actor> extends GameObject {
     }
 
     public Position getPosition(){
-        return new Position(body.getPosition().x, body.getPosition().y);
+        // Returning new position in pixel coordinates
+        Vec2 pixelPosition = owner.getMyGame().getPhysicsManager().getBodyPixelCoord(body);
+
+        return new Position(pixelPosition.x, pixelPosition.y);
+    }
+
+    public float getAngle(){
+        // Return the right angle for screen axis system, which means negative angle of the physical angle
+        return body.getAngle() * -1;
     }
 
     public PhysicalBody(Game myGame, T owner, PhysicalSpecification<T> physicalSpecification) {

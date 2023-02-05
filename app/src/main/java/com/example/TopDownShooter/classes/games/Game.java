@@ -24,6 +24,8 @@ import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorVa
 import com.example.TopDownShooter.classes.systems.GameLoop;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
 
+import org.jbox2d.common.Vec2;
+
 import java.util.Timer;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -214,6 +216,8 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.onActorInvalidObservable = ReplaySubject.create();
 
         this.physicsManager = new Box2DProcessing();
+        // Setting a world with no gravity
+        this.physicsManager.createWorld(new Vec2(0, 0));
 
         this.state = GameState.LOAD;
 
