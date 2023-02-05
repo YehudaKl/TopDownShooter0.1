@@ -27,12 +27,12 @@ public abstract class UserPlayer<T extends Pawn> extends Player<T> {
 
        Vector velocity = new Vector(coordinateX, coordinateY);
 
-       if(velocity.isEmpty()){return;}
-
        pawn.updateVelocity(velocity);
+
+       if(velocity.isEmpty()){return;}
        pawn.updateDirection(velocity.getDirection());
 
-       pawn.step();
+
 
    }
 }

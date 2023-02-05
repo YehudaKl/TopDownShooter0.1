@@ -17,7 +17,7 @@ import java.util.TimerTask;
 public class Zombie extends Monster {
 
     private final float BITE_DAMAGE;
-    private static final float MAX_SPEED = 100;//conf
+    private static final float MAX_SPEED = 30;//conf
     public static final float BITE_COOLDOWN_TIME = 1500;//conf
     public static final float BITE_RANGE = 100;// The maximal distance from a character in order to bite(inclusive)
 

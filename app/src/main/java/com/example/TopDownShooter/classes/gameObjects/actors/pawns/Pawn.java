@@ -116,7 +116,7 @@ public abstract class Pawn extends Actor{
     }
     public void updateVelocity(Vector velocity){
         // The method does not accept empty vectors
-        if(motionState == PawnMotionState.FROZE || velocity.isEmpty()){return;}
+        if(motionState == PawnMotionState.FROZE){return;}
 
         this.velocity = velocity;
     }

@@ -5,9 +5,12 @@ import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
+import com.example.TopDownShooter.dataTypes.Vector;
 
+import org.jbox2d.collision.Collision;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.World;
 
 
 /**
@@ -29,7 +32,6 @@ public class PhysicalBody <T extends Actor> extends GameObject {
     public Position getPosition(){
         // Returning new position in pixel coordinates
         Vec2 pixelPosition = owner.getMyGame().getPhysicsManager().getBodyPixelCoord(body);
-
         return new Position(pixelPosition.x, pixelPosition.y);
     }
 
@@ -47,8 +49,22 @@ public class PhysicalBody <T extends Actor> extends GameObject {
         this.body = myGame.getPhysicsManager().createBody(physicalSpecification.getBodyDef(owner));
         body.createFixture(physicalSpecification.getFixtureDef(owner));
 
-
     }
+
+    public void applyForce(Vector force){
+        if(body == null){return;}
+        body.applyForce(new Vec2(force.getCoordinateX(), -force.getCoordinateY()), body.getWorldCenter());
+    }
+    public void applyVelocity(Vector vector){
+        if(body == null){return;}
+        body.setLinearVelocity(new Vec2(vector.getCoordinateX(), -vector.getCoordinateY()));
+    }
+
+    public void applyRotation(float rotation){
+        if(body == null){return;}
+        body.setTransform(body.getPosition(), -rotation);
+    }
+
 
 
 

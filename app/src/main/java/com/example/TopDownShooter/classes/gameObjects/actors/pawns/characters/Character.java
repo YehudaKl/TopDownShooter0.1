@@ -15,6 +15,7 @@ import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalBody;
 import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalSpecifecations.DefaultCharacterPhysicalSpecification;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
+import com.example.TopDownShooter.dataTypes.Vector;
 import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
 
 
@@ -55,8 +56,9 @@ public abstract class Character extends Pawn {
 
         super.update(updateTrace);
 
-        // Updating the position and rotation according to the physical position.
+        physicalBody.applyVelocity(velocity);
         updatePosition(physicalBody.getPosition());
+        physicalBody.applyRotation(viewDirection());
         updateDirection(physicalBody.getAngle());
 
 
@@ -134,5 +136,4 @@ public abstract class Character extends Pawn {
     public CharacterHealthState getHealthState() {
         return healthState;
     }
-
 }

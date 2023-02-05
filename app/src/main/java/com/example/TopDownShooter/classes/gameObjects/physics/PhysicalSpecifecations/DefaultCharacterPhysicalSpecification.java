@@ -47,8 +47,8 @@ public class DefaultCharacterPhysicalSpecification implements PhysicalSpecificat
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1;
-        fixtureDef.friction = 0.3f;
+        fixtureDef.density = 100;
+        fixtureDef.friction = 3f;
         fixtureDef.restitution = 0;
 
         return fixtureDef;

@@ -95,10 +95,12 @@ public class ZombiePlayer extends AIPlayer<Zombie> {
                 Vector velocity = new Vector(coordinateX, coordinateY);
                 zombie.updateVelocity(velocity);
                 zombie.updateDirection(velocity.getDirection());
-                zombie.step();
                 break;
             case BITE:
                 zombie.bite(trackedCharacter);
+                break;
+            default:
+                zombie.updateVelocity(new Vector(0, 0));
                 break;
 
         }
