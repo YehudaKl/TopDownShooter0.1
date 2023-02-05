@@ -3,7 +3,9 @@ package com.example.TopDownShooter.classes.gameObjects.physics.PhysicalSpecifeca
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalSpecification;
 
+import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 /**
@@ -11,7 +13,8 @@ import org.jbox2d.dynamics.FixtureDef;
  * based on the box shape of all kenney assets characters
  */
 public class DefaultCharacterPhysicalSpecification implements PhysicalSpecification<Character> {
-
+    private static final float WIDTH = 39;
+    private static final float HEIGHT = 43;
     private static DefaultCharacterPhysicalSpecification instance;
 
     public static DefaultCharacterPhysicalSpecification getSpecification(){
@@ -24,13 +27,30 @@ public class DefaultCharacterPhysicalSpecification implements PhysicalSpecificat
     @Override
     public BodyDef getBodyDef(Character character) {
         BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.KINEMATIC;
 
+        // Setting the characters' body initial position according to its position
+        // and converting it to world coordinates using the characters' physics manager
+        bodyDef.position.set(character.getMyGame().getPhysicsManager().coordPixelsToWorld(character.viewPosition().getX(), character.viewPosition().getY()));
 
         return bodyDef;
     }
 
     @Override
     public FixtureDef getFixtureDef(Character character) {
-        return null;
+
+        PolygonShape shape = new PolygonShape();
+        // Creating measured width and height after processing
+        float measuredWidth = character.getMyGame().getPhysicsManager().scalarPixelsToWorld(WIDTH/2);
+        float measuredHeight = character.getMyGame().getPhysicsManager().scalarPixelsToWorld(HEIGHT/2);
+        shape.setAsBox(measuredWidth, measuredHeight);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1;
+        fixtureDef.friction = 0.3f;
+        fixtureDef.restitution = 0;
+
+        return fixtureDef;
     }
 }

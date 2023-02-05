@@ -25,7 +25,7 @@ import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
 public abstract class Character extends Pawn {
     public final int MAX_HEALTH;
     protected float  health;
-    protected final PhysicalBody physicalBody;
+    protected final PhysicalBody<Character> physicalBody;
     private CharacterHealthState healthState;
 
 
@@ -35,7 +35,7 @@ public abstract class Character extends Pawn {
         this.MAX_HEALTH = 100; // conf
         this.health = MAX_HEALTH;
 
-        this.physicalBody = new PhysicalBody(myGame, this, DefaultCharacterPhysicalSpecification.getSpecification());
+        this.physicalBody = new PhysicalBody<Character>(myGame, this, DefaultCharacterPhysicalSpecification.getSpecification());
 
         this.healthState = CharacterHealthState.ALIVE;
 
