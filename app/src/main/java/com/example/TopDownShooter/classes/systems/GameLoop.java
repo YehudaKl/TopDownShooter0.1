@@ -7,7 +7,7 @@ import com.example.TopDownShooter.classes.games.Game;
 
 public class GameLoop extends Thread{
 
-    public static final double MAX_UPS = 25;
+    public static final double MAX_UPS = 60;
     private static final double UPS_PERIOD = 1E+3/MAX_UPS;
     private boolean isRunning;
     private SurfaceHolder surfaceHolder;
@@ -32,10 +32,10 @@ public class GameLoop extends Thread{
     public float getDeltaTime(){
         // If a single second has not passed there is no delta time,
         // so return a synthetic delta time by using the MAX_UPS
-        if(averageFPS == 0){
+        if(averageUPS == 0){
             return 1/(float)MAX_UPS;
         }
-        return 1/(float)averageFPS;
+        return 1/(float)averageUPS;
     }
 
     public void startLoop() {
@@ -104,7 +104,7 @@ public class GameLoop extends Thread{
             while(sleepTime < 0 && updateCount < MAX_UPS - 1){
                 game.update();
                 updateCount++;
-                elapsedTime = System.currentTimeMillis();
+                elapsedTime = System.currentTimeMillis() -elapsedTime;
                 sleepTime = (long) (updateCount*UPS_PERIOD - elapsedTime);
             }
             // Calculate average UPS and FPS
