@@ -27,7 +27,7 @@ public class DefaultCharacterPhysicalSpecification implements PhysicalSpecificat
     @Override
     public BodyDef getBodyDef(Character character) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyType.KINEMATIC;
+        bodyDef.type = BodyType.DYNAMIC;
 
         // Setting the characters' body initial position according to its position
         // and converting it to world coordinates using the characters' physics manager

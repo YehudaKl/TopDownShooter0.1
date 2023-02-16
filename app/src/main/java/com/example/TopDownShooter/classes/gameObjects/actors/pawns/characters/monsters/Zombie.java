@@ -29,7 +29,7 @@ public class Zombie extends Monster {
         super(myGame, initPosition, new Asset(R.drawable.zombie1_stand, myGame.getResources()));
 
         this.health = 1;//conf
-        this.BITE_DAMAGE = 50;//conf
+        this.BITE_DAMAGE = 20;//conf
 
 
         this.canBite = true;
