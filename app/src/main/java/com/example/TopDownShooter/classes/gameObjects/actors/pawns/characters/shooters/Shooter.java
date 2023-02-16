@@ -4,6 +4,8 @@ import android.widget.Toast;
 
 import com.example.TopDownShooter.classes.assets.Asset;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
+import com.example.TopDownShooter.classes.gameObjects.actors.projectiles.bullets.Bullet;
+import com.example.TopDownShooter.classes.gameObjects.actors.projectiles.bullets.DefaultBullet;
 import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
@@ -18,7 +20,11 @@ public abstract class Shooter extends Character {
 
     // Method for shooting, must be used only by the owner!
     public void shoot(){
-        Toast.makeText(myGame.getContext(), "Shoot !", Toast.LENGTH_SHORT).show();
+        Bullet bullet = new DefaultBullet(myGame, this, getBulletSpawnPosition());
+
     }
+
+    // Return the absolute position to spawn the bullet from
+    public abstract Position getBulletSpawnPosition();
 
 }

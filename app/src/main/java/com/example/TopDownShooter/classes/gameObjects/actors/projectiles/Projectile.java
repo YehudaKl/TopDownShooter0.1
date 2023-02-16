@@ -3,6 +3,7 @@ package com.example.TopDownShooter.classes.gameObjects.actors.projectiles;
 import com.example.TopDownShooter.classes.assets.Asset;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
+import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.Vector;
@@ -16,32 +17,19 @@ public abstract class Projectile extends Actor {
 
 
 
-    private Character sourceCharacter;
-    private Vector velocity;
-    private float speed;
+    private final Character  sourceCharacter;
+    private float damage;
 
+    public Character getSourceCharacter() {
+        return sourceCharacter;
+    }
 
-
-    public Projectile(Game myGame, Position initPosition, Asset asset){
+    public Projectile(Game myGame, Character sourceCharacter, Position initPosition, Asset asset){
         super(myGame, initPosition, asset, 0);
-
-        this.speed = 40;//conf
-
+        this.sourceCharacter = sourceCharacter;
     }
 
 
-    public void onUpdate(OnUpdate onUpdate){
-
-        updateVelocity(onUpdate.getUpdateTrace().getDeltaTime());
-
-        float x = position.getX() + velocity.getCoordinateX();
-        float y = position.getY() + velocity.getCoordinateY();
-
-        position.setX(x);
-        position.setY(y);
-    }
-
-    protected abstract void updateVelocity(float deltaTime);
 
 
 }

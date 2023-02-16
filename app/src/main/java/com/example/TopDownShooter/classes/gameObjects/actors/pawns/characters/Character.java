@@ -24,6 +24,8 @@ import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
  *  The Character class is the parent class of all shooters and monsters in the game.
  *  The character class draws the center of the asset in its position
  *  and rotated according to its rotation
+ *  The character does not use his own native velocity. Instead it refers to the physical
+ *  body's velocity as its velocity
  */
 public abstract class Character extends Pawn {
     public final int MAX_HEALTH;
@@ -56,7 +58,6 @@ public abstract class Character extends Pawn {
 
         super.update(updateTrace);
 
-        physicalBody.applyVelocity(velocity);
         updatePosition(physicalBody.getPosition());
         physicalBody.applyRotation(viewDirection());
         updateDirection(physicalBody.getAngle());
@@ -91,6 +92,17 @@ public abstract class Character extends Pawn {
 
 
 
+    }
+
+    @Override
+    public void updateVelocity(Vector velocity) {
+        physicalBody.applyVelocity(velocity);
+
+    }
+
+    @Override
+    public Vector viewVelocity() {
+        return physicalBody.getVelocity();
     }
 
     protected void die(){

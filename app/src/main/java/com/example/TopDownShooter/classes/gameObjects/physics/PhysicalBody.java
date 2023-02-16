@@ -65,6 +65,10 @@ public class PhysicalBody <T extends Actor> extends GameObject {
         body.setTransform(body.getPosition(), -rotation);
     }
 
+    public Vector getVelocity(){
+        return new Vector(body.getLinearVelocity().x, body.getLinearVelocity().y);
+    }
+
 
 
 

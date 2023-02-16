@@ -28,4 +28,12 @@ public class Hero extends Shooter {
     public float getSpeed() {
         return MAX_SPEED;
     }
+
+    @Override
+    public Position getBulletSpawnPosition() {
+
+        float x = (float) Math.cos(direction) * 40;
+        float y = (float) Math.sin(direction) * 40;
+        return new Position(viewPosition().getX() + x, viewPosition().getY() + y);
+    }
 }
