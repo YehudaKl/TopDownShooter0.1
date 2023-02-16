@@ -26,8 +26,8 @@ public abstract class Bullet extends Projectile {
         super(myGame, sourceCharacter, initPosition, asset);
         this.physicalBody = new PhysicalBody(myGame, this, physicalSpecification);
         this.physicalBody.applyRotation(sourceCharacter.viewDirection());
-        float x = (float) Math.cos(direction) * 40;
-        float y = (float) Math.sin(direction) * 40;
+        float x = (float) Math.cos(physicalBody.getAngle()) * 1000;
+        float y = (float) Math.sin(physicalBody.getAngle()) * 1000;
         this.physicalBody.applyForce(new Vector(x, y));
 
 
@@ -36,7 +36,7 @@ public abstract class Bullet extends Projectile {
     @Override
     protected void draw(Canvas canvas) {
 
-        double degrees = Math.toDegrees(physicalBody.getAngle());
+        double degrees = Math.toDegrees(physicalBody.getAngle() + (float)Math.PI/2);
         Matrix matrix = new Matrix();
         matrix.postRotate((float) degrees);
         Bitmap originBitmap = asset.getBitmap();

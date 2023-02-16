@@ -21,7 +21,7 @@ public class ShooterUserPlayer extends UserPlayer<Shooter>{
     public void updatePawn(Shooter shooter, UpdateTrace updateTrace) {
         super.updatePawn(shooter, updateTrace);
 
-        if(updateTrace.getIsShootPressed()){
+        if(updateTrace.getIsShoot()){
             shooter.shoot();
         }
 

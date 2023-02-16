@@ -20,12 +20,12 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
  * reload time of the user's character/pawn
  */
 public class ShootButton extends AppCompatImageButton {
-    public static final float DEFAULT_RELOAD_TIME = 10;
+    public static final float DEFAULT_RELOAD_TIME = 1000;
 
     private Game myGame;
     private boolean isReload;
     private float reloadTime;
-    private boolean isPressed;
+    private boolean isShoot;
 
     public void setIsReload(boolean reload) {
         isReload = reload;
@@ -44,8 +44,8 @@ public class ShootButton extends AppCompatImageButton {
         return reloadTime;
     }
 
-    public boolean getIsPressed(){
-        return isPressed;
+    public boolean getIsShoot(){
+        return isShoot;
     }
 
     public void setMyGame(Game myGame){
@@ -63,37 +63,34 @@ public class ShootButton extends AppCompatImageButton {
         init();
     }
 
+
+
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent){
         super.onTouchEvent(motionEvent);
 
-        shoot();
+        if(!isReload){
+            isShoot = true;
+            reload();
+        }
 
         return true;
     }
 
+
+
     public void onPreUpdate(OnPreUpdate onPreUpdate){
         onPreUpdate.getUpdateTrace().shootNotify(this);
-        isPressed = false;
+        isShoot = false;
     }
 
     private void init(){
         reloadTime = DEFAULT_RELOAD_TIME;
         isReload = false;
-        isPressed = false;
-    }
-
-    //TODO adam not synchronize
-    private void shoot(){
-        if(myGame == null || isReload){return;}
-
-        isPressed = true;
-
-        reload();
+        isShoot = false;
     }
 
     private void reload(){
-
         if(isReload){return;}
 
         isReload = true;

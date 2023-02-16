@@ -13,7 +13,7 @@ public class UpdateTrace {
     private float deltaTime;
     private float joystickActuatorX;
     private float joystickActuatorY;
-    private boolean isShootPressed;
+    private boolean isShoot;
 
     public float getDeltaTime() {
         return deltaTime;
@@ -27,8 +27,8 @@ public class UpdateTrace {
         return joystickActuatorY;
     }
 
-    public boolean getIsShootPressed(){
-        return isShootPressed;
+    public boolean getIsShoot(){
+        return isShoot;
     }
 
    public void joystickNotify(Joystick joystick){
@@ -41,7 +41,7 @@ public class UpdateTrace {
     }
 
     public void shootNotify(ShootButton shootButton){
-        this.isShootPressed = shootButton.isPressed();
+        this.isShoot = shootButton.getIsShoot();
     }
 
    // Default constructor. uses the init method
