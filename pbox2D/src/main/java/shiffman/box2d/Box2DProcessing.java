@@ -9,6 +9,7 @@
 
 package shiffman.box2d;
 
+import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -60,6 +61,10 @@ public class Box2DProcessing {
 	public void listenForCollisions() {
 		contactlistener = new Box2DContactListener(parent);
 		world.setContactListener(contactlistener);
+	}
+
+	public void setContactListener(ContactListener c){
+		world.setContactListener(c);
 	}
 
 	// Change the scaleFactor

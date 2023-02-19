@@ -42,8 +42,6 @@ public class Zombie extends Monster {
         double distance = getDistanceBetween(character);
         if(distance >= BITE_RANGE || !canBite){ return;}
 
-        Log.e("ZombieDebug", "Bite!");
-
         character.reduceHealth(BITE_DAMAGE);
 
         // Start the cooldown process

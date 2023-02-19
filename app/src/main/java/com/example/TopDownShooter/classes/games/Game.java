@@ -21,10 +21,16 @@ import com.example.TopDownShooter.classes.events.OnGameEnd;
 import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorInvalid;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;
+import com.example.TopDownShooter.classes.events.physicalEvents.OnCollisionEnd;
+import com.example.TopDownShooter.classes.events.physicalEvents.OnCollisionStart;
 import com.example.TopDownShooter.classes.systems.GameLoop;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
 
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.contacts.Contact;
 
 import java.util.Timer;
 
@@ -38,7 +44,7 @@ import shiffman.box2d.Box2DProcessing;
  * A Game class is a view that the activity of the game uses as its content view.
  * Generally different classes of games function as different game modes that can be played
  */
-public abstract class Game extends SurfaceView implements SurfaceHolder.Callback{
+public abstract class Game extends SurfaceView implements SurfaceHolder.Callback, ContactListener{
 
 
     private PublishSubject<OnUpdate> onUpdateObservable;
@@ -48,8 +54,12 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     private PublishSubject<OnGameEnd> onGameEndObservable;
     private PublishSubject<OnGameStateChanged> onGameStatusChangedObservable;
 
+    private PublishSubject<OnCollisionStart> onCollisionStartObservable;
+    private PublishSubject<OnCollisionEnd> onCollisionEndObservable;
+
     private ReplaySubject<OnActorValid> onActorValidObservable;
     private ReplaySubject<OnActorInvalid> onActorInvalidObservable;
+
 
     private GameState state;
 
@@ -69,6 +79,14 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     public ReplaySubject<OnActorInvalid> getOnActorInvalidObservable() {
         return onActorInvalidObservable;
+    }
+
+    public PublishSubject<OnCollisionStart> getOnCollisionStartObservable() {
+        return onCollisionStartObservable;
+    }
+
+    public PublishSubject<OnCollisionEnd> getOnCollisionEndObservable() {
+        return onCollisionEndObservable;
     }
 
     public PublishSubject<OnGameStart> getOnGameStartObservable(){
@@ -135,6 +153,28 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
 
     }
+
+    // Physical -------------------------------------------
+    @Override
+    public void beginContact(Contact contact) {
+        onCollisionStartObservable.onNext(new OnCollisionStart(this, contact));
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+        onCollisionEndObservable.onNext(new OnCollisionEnd(this, contact));
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+
+    }
+    //------------------------------------------------------
 
     @Override
     public void draw(Canvas canvas) {
@@ -212,12 +252,16 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.onGameStartObservable = PublishSubject.create();
         this.onGameEndObservable = PublishSubject.create();
         this.onGameStatusChangedObservable = PublishSubject.create();
+        this.onCollisionStartObservable = PublishSubject.create();
+        this.onCollisionEndObservable = PublishSubject.create();
         this.onActorValidObservable = ReplaySubject.create();
         this.onActorInvalidObservable = ReplaySubject.create();
+
 
         this.physicsManager = new Box2DProcessing();
         // Setting a world with no gravity
         this.physicsManager.createWorld(new Vec2(0, 0));
+        this.physicsManager.setContactListener(this);
 
         this.state = GameState.LOAD;
 
@@ -252,6 +296,8 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         canvas.drawText("FPS: " + averageFPS, 100, 200, paint);
 
     }
+
+
 
     //-------------------------------------------------------------------
 

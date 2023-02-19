@@ -14,8 +14,10 @@ import com.example.TopDownShooter.dataTypes.Position;
  */
 public class DefaultBullet extends Bullet{
 
+    private static final float DEFAULT_DAMAGE = 2;
+
     public DefaultBullet(Game myGame, Shooter sourceCharacter, Position initPosition) {
-        super(myGame, sourceCharacter, initPosition, new Asset(R.drawable.bulletyellowsilver_outline, myGame.getResources()), DefaultBulletPhysicalSpecification.getSpecification());
+        super(myGame, DEFAULT_DAMAGE, sourceCharacter, initPosition, new Asset(R.drawable.bulletyellowsilver_outline, myGame.getResources()), DefaultBulletPhysicalSpecification.getSpecification());
 
     }
 

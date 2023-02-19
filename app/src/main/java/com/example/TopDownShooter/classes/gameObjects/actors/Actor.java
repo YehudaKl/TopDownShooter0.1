@@ -17,8 +17,7 @@ import com.example.TopDownShooter.dataTypes.Position;
 /**
  * An Actor is a GameObject that has a position and can be seen by the user during the game
  */
-// event bus
-    // live data
+
 
 
 public abstract class Actor extends GameObject {

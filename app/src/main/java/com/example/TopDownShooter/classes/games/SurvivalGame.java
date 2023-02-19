@@ -20,6 +20,10 @@ import com.example.TopDownShooter.classes.gameObjects.players.userPlayers.Shoote
 import com.example.TopDownShooter.classes.gameObjects.players.userPlayers.UserPlayer;
 import com.example.TopDownShooter.dataTypes.Position;
 
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.collision.Manifold;
+import org.jbox2d.dynamics.contacts.Contact;
+
 import java.util.HashMap;
 
 /**

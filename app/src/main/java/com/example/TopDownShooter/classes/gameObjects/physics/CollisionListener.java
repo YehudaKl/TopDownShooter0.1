@@ -1,5 +1,6 @@
 package com.example.TopDownShooter.classes.gameObjects.physics;
 
+import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.dataTypes.Position;
 
 import org.jbox2d.common.Vec2;
@@ -7,9 +8,9 @@ import org.jbox2d.common.Vec2;
 /**
  * An interfaces that specifies a listener to a physical body object
  */
-public interface PhysicsListener {
+public interface CollisionListener {
 
-    void onColliding(PhysicalBody physicalBody);
-    void onPositionChanged(Position position);
-    void onRotationChanged(float rotation);
+    void onCollisionStart(Actor other);
+    void onCollisionEnd(Actor other);
+
 }
