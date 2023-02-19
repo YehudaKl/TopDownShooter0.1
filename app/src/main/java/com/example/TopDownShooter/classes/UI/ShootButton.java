@@ -20,7 +20,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
  * reload time of the user's character/pawn
  */
 public class ShootButton extends AppCompatImageButton {
-    public static final float DEFAULT_RELOAD_TIME = 1000;
+    public static final float DEFAULT_RELOAD_TIME = 500;
 
     private Game myGame;
     private boolean isReload;
