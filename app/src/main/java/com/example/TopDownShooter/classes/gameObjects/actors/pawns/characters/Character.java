@@ -2,7 +2,9 @@ package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 
 import com.example.TopDownShooter.classes.assets.BitmapLoader;
@@ -65,7 +67,9 @@ public abstract class Character extends Pawn {
         // Creating a rotated bitmap according to the direction
 
 
-
+        if(physicalBody == null){
+            return;
+        }
         // Creating the drawable
         BitmapDrawable drawable = new BitmapDrawable(myGame.getResources(), getCurrentStateBitmapLoader().getBitmap(physicalBody.getAngle()));
 
@@ -79,6 +83,7 @@ public abstract class Character extends Pawn {
         drawable.setBounds(boundX, boundY, WIDTH + boundX, HEIGHT + boundY);
 
         drawable.draw(canvas);
+
 
 
 

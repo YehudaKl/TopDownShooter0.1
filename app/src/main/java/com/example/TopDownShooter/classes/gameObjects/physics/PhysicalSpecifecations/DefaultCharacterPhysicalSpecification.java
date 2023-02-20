@@ -13,8 +13,8 @@ import org.jbox2d.dynamics.FixtureDef;
  * based on the box shape of all kenney assets characters
  */
 public class DefaultCharacterPhysicalSpecification implements PhysicalSpecification<Character> {
-    private static final float WIDTH = 39;
-    private static final float HEIGHT = 43;
+    private static final float WIDTH = 50;
+    private static final float HEIGHT = 100;
     private static DefaultCharacterPhysicalSpecification instance;
 
     public static DefaultCharacterPhysicalSpecification getSpecification(){
@@ -46,6 +46,8 @@ public class DefaultCharacterPhysicalSpecification implements PhysicalSpecificat
         shape.setAsBox(measuredWidth, measuredHeight);
 
         FixtureDef fixtureDef = new FixtureDef();
+
+
         fixtureDef.shape = shape;
         fixtureDef.density = 100;
         fixtureDef.friction = 3f;
