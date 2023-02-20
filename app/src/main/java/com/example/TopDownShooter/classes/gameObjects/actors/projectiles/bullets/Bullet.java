@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 
-import com.example.TopDownShooter.classes.assets.Asset;
+import com.example.TopDownShooter.classes.assets.BitmapLoader;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
@@ -24,6 +24,7 @@ public abstract class Bullet extends Projectile implements CollisionListener {
 
     private final PhysicalBody<Bullet> physicalBody;
     protected float damage;
+    private final BitmapLoader bitmapLoader;
 
     public float getDamage() {
         return damage;
@@ -33,15 +34,14 @@ public abstract class Bullet extends Projectile implements CollisionListener {
         this.damage = damage;
     }
 
-    public Bullet(Game myGame, float damage, Shooter sourceCharacter, Position initPosition, Asset asset, PhysicalSpecification<Bullet> physicalSpecification){
-        super(myGame, sourceCharacter, initPosition, asset);
+    public Bullet(Game myGame, Shooter sourceCharacter, Position initPosition, PhysicalSpecification<Bullet> physicalSpecification, BitmapLoader bitmapLoader, float damage, Vector launchingForce){
+        super(myGame, sourceCharacter, initPosition);
         this.physicalBody = new PhysicalBody(myGame, this, physicalSpecification);
         this.physicalBody.setCollisionListener(this);
+        this.bitmapLoader = bitmapLoader;
         this.damage = damage;
         this.physicalBody.applyRotation(sourceCharacter.viewDirection());
-        float x = (float) Math.cos(physicalBody.getAngle()) * 1000;
-        float y = (float) Math.sin(physicalBody.getAngle()) * 1000;
-        this.physicalBody.applyForce(new Vector(x, y));
+        this.physicalBody.applyForce(launchingForce);
 
 
     }
@@ -49,20 +49,16 @@ public abstract class Bullet extends Projectile implements CollisionListener {
     @Override
     protected void draw(Canvas canvas) {
 
-        double degrees = Math.toDegrees(physicalBody.getAngle() + (float)Math.PI/2);
-        Matrix matrix = new Matrix();
-        matrix.postRotate((float) degrees);
-        Bitmap originBitmap = asset.getBitmap();
-        Bitmap bitmap = Bitmap.createBitmap(originBitmap, 0, 0, originBitmap.getWidth(), originBitmap.getHeight(), matrix, true);
+
 
         // Creating the drawable
-        BitmapDrawable drawable = new BitmapDrawable(myGame.getResources(), bitmap);
+        BitmapDrawable drawable = new BitmapDrawable(myGame.getResources(), bitmapLoader.getBitmap(physicalBody.getAngle()));
 
 
+        // Draw from the center
         final int WIDTH = drawable.getIntrinsicWidth();
         final int HEIGHT = drawable.getMinimumHeight();
 
-        // Draw from the center
         int boundX = (int)(viewPosition().getX() - WIDTH/2);
         int boundY = (int)(viewPosition().getY() - HEIGHT/2);
 

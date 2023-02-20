@@ -58,9 +58,8 @@ public class SurvivalGame extends Game implements TeamsGame{
 
 
         hero = new Hero(this, new Position(400, 400));
-        spawnZombie(new Position(900, 900));
         hero.setOwner(heroPlayer);
-
+        spawnZombie(new Position(500, 500));
         startGame();
     }
 

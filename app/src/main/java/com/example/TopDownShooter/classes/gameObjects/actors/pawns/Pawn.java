@@ -1,7 +1,6 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns;
 
 import com.example.TopDownShooter.classes.Team;
-import com.example.TopDownShooter.classes.assets.Asset;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.events.GameStatusEvents.OnGameStateChanged;
@@ -49,14 +48,14 @@ public abstract class Pawn extends Actor{
         this.owner = owner;
     }
 
-    public Pawn(Game myGame, Position initPosition, Asset asset){
-        this(myGame, initPosition, asset, 0);
+    public Pawn(Game myGame, Position initPosition){
+        this(myGame, initPosition, 0);
 
     }
 
     // Constructor for with direction for pawns that has to be initialized to current direction.
-    public Pawn(Game myGame, Position initPosition, Asset asset, float direction){
-        super(myGame, initPosition, asset, direction);
+    public Pawn(Game myGame, Position initPosition,float direction){
+        super(myGame, initPosition,direction);
 
         this.velocity = new Vector(0, 0);
         this.motionState = PawnMotionState.FROZE;

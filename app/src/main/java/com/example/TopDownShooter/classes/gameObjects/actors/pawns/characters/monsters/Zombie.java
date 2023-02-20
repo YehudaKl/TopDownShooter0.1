@@ -1,9 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters;
 
-import android.util.Log;
-
 import com.example.TopDownShooter.R;
-import com.example.TopDownShooter.classes.assets.Asset;
+import com.example.TopDownShooter.classes.assets.BitmapLoader;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
@@ -21,22 +19,27 @@ public class Zombie extends Monster {
     public static final float BITE_COOLDOWN_TIME = 1500;//conf
     public static final float BITE_RANGE = 100;// The maximal distance from a character in order to bite(inclusive)
 
+    private BitmapLoader chasingBitmap;
     private boolean canBite;// If zombie in bite-cooldown false, else true
 
 
     public Zombie(Game myGame, Position initPosition){
         // TODO replace null
-        super(myGame, initPosition, new Asset(R.drawable.zombie1_stand, myGame.getResources()));
+        super(myGame, initPosition);
 
         this.health = 1;//conf
         this.BITE_DAMAGE = 20;//conf
 
 
         this.canBite = true;
-
+        this.chasingBitmap = new BitmapLoader(R.drawable.zoimbie1_hold, myGame.getResources(), 0);
 
     }
 
+    @Override
+    protected BitmapLoader getCurrentStateBitmapLoader() {
+        return chasingBitmap;
+    }
 
     public void bite(Character character){
         double distance = getDistanceBetween(character);

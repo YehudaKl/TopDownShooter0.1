@@ -2,13 +2,10 @@ package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 
-import com.example.TopDownShooter.classes.assets.Asset;
+import com.example.TopDownShooter.classes.assets.BitmapLoader;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalBody;
@@ -31,17 +28,17 @@ public abstract class Character extends Pawn {
     public final int MAX_HEALTH;
     protected float  health;
     protected final PhysicalBody<Character> physicalBody;
+    private BitmapLoader bitmapLoader;
     private CharacterHealthState healthState;
 
 
-    public Character(Game myGame, Position initPosition, Asset asset){
-        super(myGame, initPosition, asset);
+    public Character(Game myGame, Position initPosition){
+        super(myGame, initPosition);
 
         this.MAX_HEALTH = 100; // conf
         this.health = MAX_HEALTH;
 
-        this.physicalBody = new PhysicalBody<Character>(myGame, this, DefaultCharacterPhysicalSpecification.getSpecification());
-
+        this.physicalBody = new PhysicalBody(myGame, this, DefaultCharacterPhysicalSpecification.getSpecification());
         this.healthState = CharacterHealthState.ALIVE;
 
 
@@ -49,8 +46,6 @@ public abstract class Character extends Pawn {
 
     @Override
     public void update(UpdateTrace updateTrace){
-        System.out.println("Position of " + this + " is X: " + viewPosition().getX() + " Y: " + viewPosition().getY());
-
         if(isDead()){
             die();
             return;
@@ -69,20 +64,15 @@ public abstract class Character extends Pawn {
     protected void draw(Canvas canvas) {
         // Creating a rotated bitmap according to the direction
 
-        double degrees = Math.toDegrees(viewDirection());
-        Matrix matrix = new Matrix();
-        matrix.postRotate((float) degrees);
-        Bitmap originBitmap = asset.getBitmap();
-        Bitmap bitmap = Bitmap.createBitmap(originBitmap, 0, 0, originBitmap.getWidth(), originBitmap.getHeight(), matrix, true);
+
 
         // Creating the drawable
-        BitmapDrawable drawable = new BitmapDrawable(myGame.getResources(), bitmap);
+        BitmapDrawable drawable = new BitmapDrawable(myGame.getResources(), getCurrentStateBitmapLoader().getBitmap(physicalBody.getAngle()));
 
-
+        // Draw from the center
         final int WIDTH = drawable.getIntrinsicWidth();
         final int HEIGHT = drawable.getMinimumHeight();
 
-        // Draw from the center
         int boundX = (int)(viewPosition().getX() - WIDTH/2);
         int boundY = (int)(viewPosition().getY() - HEIGHT/2);
 
@@ -108,6 +98,12 @@ public abstract class Character extends Pawn {
     protected void die(){
         invalidate();
     }
+
+    // Method for providing the right bitmap loader for the current frame
+    // For example a shooter would return an image with a gun he is holding it
+    // and with out a gun while he is standing
+
+    protected abstract BitmapLoader getCurrentStateBitmapLoader();
 
 
     // Function for adding health only!!(positive argument)
@@ -139,7 +135,6 @@ public abstract class Character extends Pawn {
     public boolean isDead(){
         return (health <= 0);
     }
-
 
     public float getHealth(){
         return health;

@@ -1,12 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.actors;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 
-import com.example.TopDownShooter.classes.assets.Asset;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnDraw;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorInvalid;
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;
@@ -25,7 +20,6 @@ public abstract class Actor extends GameObject {
     protected Position position;
     protected float direction;// In radians only!!
     private boolean isVisible;
-    protected Asset asset;
 
     public void setDirection(float direction) {
         this.direction = direction;
@@ -36,12 +30,11 @@ public abstract class Actor extends GameObject {
     }
 
     // Constructor with direction param
-    public Actor(Game myGame, Position initPosition, Asset asset, float direction){
+    public Actor(Game myGame, Position initPosition, float direction){
         super(myGame);
         this.position = initPosition;
         isVisible = true;
         this.direction = direction;
-        this.asset = asset;
 
         // Subscribing to the OnDraw
         subscribeToObservable(myGame.getOnDrawObservable().subscribe(this::onDraw));
@@ -63,7 +56,7 @@ public abstract class Actor extends GameObject {
     }
 
     public void onDraw(OnDraw onDraw){
-        if(isVisible || asset == null){
+        if(isVisible){
             draw(onDraw.getCanvas());
         }
     }
