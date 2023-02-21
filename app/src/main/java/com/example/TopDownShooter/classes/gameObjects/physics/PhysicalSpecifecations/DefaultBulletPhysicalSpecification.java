@@ -11,8 +11,8 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 public class DefaultBulletPhysicalSpecification implements PhysicalSpecification<Bullet> {
-    private static final float WIDTH = 20;
-    private static final float HEIGHT = 34;
+    private static final float WIDTH = 10;
+    private static final float HEIGHT = 17;
     private static DefaultBulletPhysicalSpecification instance;
 
     public static DefaultBulletPhysicalSpecification getSpecification(){

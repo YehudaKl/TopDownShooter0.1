@@ -2,17 +2,20 @@ package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.s
 
 import com.example.TopDownShooter.classes.assets.BitmapLoader;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
+import com.example.TopDownShooter.classes.gameObjects.guns.Gun;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
 /**
- * A Shooter is a character that can use pistols and guns as weapons
+ * A Shooter is a character that can uses some kind of gun as its weapon
+ * In addition a shooter has two different bitmapLoaders, one for shooting and one for reloading
  */
 public abstract class Shooter extends Character {
-
+    private Gun myGun;
+    private boolean isReloading;
     private BitmapLoader shootingBitmap;
     private BitmapLoader reloadingBitmap;
-    private boolean isReloading;
+
 
     public void setShootingBitmap(BitmapLoader shootingBitmap) {
         this.shootingBitmap = shootingBitmap;
@@ -22,27 +25,43 @@ public abstract class Shooter extends Character {
         this.reloadingBitmap = reloadingBitmap;
     }
 
-    public Shooter(Game myGame, Position initPosition, BitmapLoader shootingBitmap, BitmapLoader reloadingBitmap) {
+    public Shooter(Game myGame, Position initPosition, BitmapLoader shootingBitmap, BitmapLoader reloadingBitmap, Gun myGun) {
         super(myGame, initPosition);
-        this.isReloading = false;
         this.shootingBitmap = shootingBitmap;
         this.reloadingBitmap = reloadingBitmap;
+        this.myGun = myGun;
+        this.myGun.setOwner(this);
     }
 
-    // Method for shooting, must be used only by the owner!
     public void shoot(){
-
-
+        myGun.press();
     }
+
+    public void releaseTrigger(){
+        myGun.release();
+    }
+
 
     @Override
     protected BitmapLoader getCurrentStateBitmapLoader() {
-        if(isReloading){
+
+        if(myGun != null && myGun.isReloading()){
             return reloadingBitmap;
         }
-
-        return shootingBitmap;
+        else{
+            return shootingBitmap;
+        }
     }
+
+    public void reload(){
+        //TODO reload with the amount of ammo that the shooter has in his pocket
+        myGun.reload(myGun.getMaxAmmo());
+    }
+
+    public int getAmmoInGun(){
+        return myGun.getCurrentAmmo();
+    }
+
 
     // Return the absolute position to spawn the bullet from
     public abstract Position getBulletSpawnPosition();

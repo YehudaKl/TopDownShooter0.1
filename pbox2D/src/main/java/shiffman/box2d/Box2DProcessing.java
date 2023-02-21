@@ -214,6 +214,9 @@ public class Box2DProcessing {
 
 	// A common task we have to do a lot
 	public Body createBody(BodyDef bd) {
+		while(world.isLocked()){
+
+		}
 		return world.createBody(bd);
 	}
 

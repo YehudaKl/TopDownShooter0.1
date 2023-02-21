@@ -20,7 +20,7 @@ import com.example.TopDownShooter.dataTypes.Vector;
 /**
  * A Bullet is a projectile that guns shoot
  */
-public abstract class Bullet extends Projectile implements CollisionListener {
+public class Bullet extends Projectile implements CollisionListener {
 
     private final PhysicalBody<Bullet> physicalBody;
     protected float damage;
@@ -34,14 +34,19 @@ public abstract class Bullet extends Projectile implements CollisionListener {
         this.damage = damage;
     }
 
-    public Bullet(Game myGame, Shooter sourceCharacter, Position initPosition, PhysicalSpecification<Bullet> physicalSpecification, BitmapLoader bitmapLoader, float damage, Vector launchingForce){
-        super(myGame, sourceCharacter, initPosition);
+    public Bullet(Game myGame, Shooter sourceCharacter, PhysicalSpecification<Bullet> physicalSpecification, BitmapLoader bitmapLoader, float damage, float launchingPower){
+        super(myGame, sourceCharacter, sourceCharacter.getBulletSpawnPosition());
         this.physicalBody = new PhysicalBody(myGame, this, physicalSpecification);
         this.physicalBody.setCollisionListener(this);
         this.bitmapLoader = bitmapLoader;
         this.damage = damage;
         this.physicalBody.applyRotation(sourceCharacter.viewDirection());
-        this.physicalBody.applyForce(launchingForce);
+
+        // Creating the vector for the launching
+        float x = (float) Math.cos(physicalBody.getAngle()) * launchingPower;
+        float y = (float) Math.sin(physicalBody.getAngle()) * launchingPower;
+        Vector force = new Vector(x, y);
+        this.physicalBody.applyForce(force);
 
 
     }

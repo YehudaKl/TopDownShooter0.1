@@ -29,7 +29,7 @@ public class BitmapLoader {
         this.resourceId = resourceId;
         this.res = res;
         this.rotation = 0;
-        this.rotation = rotationOffset;
+        this.rotationOffset = rotationOffset;
 
     }
 

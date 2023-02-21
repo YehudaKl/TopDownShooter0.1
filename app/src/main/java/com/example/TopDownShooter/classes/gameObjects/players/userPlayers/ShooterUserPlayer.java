@@ -24,6 +24,14 @@ public class ShooterUserPlayer extends UserPlayer<Shooter>{
         if(updateTrace.getIsShoot()){
             shooter.shoot();
         }
+        else{
+            shooter.releaseTrigger();
+        }
+
+        // TODO add reloading button
+        if(shooter.getAmmoInGun() <= 0){
+            shooter.reload();
+        }
 
     }
 }

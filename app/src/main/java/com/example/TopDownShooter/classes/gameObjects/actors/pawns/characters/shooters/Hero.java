@@ -2,26 +2,23 @@ package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.s
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.assets.BitmapLoader;
+import com.example.TopDownShooter.classes.gameObjects.guns.Pistol;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
 /**
  * A Hero is ShooterCharacter that is controlled by a user and fight enemies
- * (or other Heroes on a multiplayer game).
+ * (or other Heroes on a multiplayer game)
  */
 public class Hero extends Shooter {
-
     private static final float MAX_SPEED = 60;
 
+
     public Hero(Game myGame, Position initPosition){
-        super(myGame, initPosition, new BitmapLoader(R.drawable.womangreen_gun, myGame.getResources()), new BitmapLoader(R.drawable.womangreen_stand, myGame.getResources()));
+        super(myGame, initPosition, new BitmapLoader(R.drawable.womangreen_gun, myGame.getResources()), new BitmapLoader(R.drawable.womangreen_stand, myGame.getResources()), new Pistol(myGame));
 
         this.health = 100;
-
-
     }
-
-
 
     @Override
     public float getSpeed() {
@@ -31,8 +28,9 @@ public class Hero extends Shooter {
     @Override
     public Position getBulletSpawnPosition() {
 
-        float x = (float) Math.cos(direction) * 40;
-        float y = (float) Math.sin(direction) * 40;
+        float x = (float) Math.cos(direction) * 80;
+        float y = (float) Math.sin(direction) * 80;
+
         return new Position(viewPosition().getX() + x, viewPosition().getY() + y);
     }
 }

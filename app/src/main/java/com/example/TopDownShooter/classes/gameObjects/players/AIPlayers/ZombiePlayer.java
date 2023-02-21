@@ -66,7 +66,7 @@ public class ZombiePlayer extends AIPlayer<Zombie> {
     // for all pawns
     private ZombieObjective generateObjective(Zombie zombie, Character trackedCharacter){
 
-            if(trackedCharacter == null || true){
+            if(trackedCharacter == null){
                 return ZombieObjective.WAIT;
             }
 
