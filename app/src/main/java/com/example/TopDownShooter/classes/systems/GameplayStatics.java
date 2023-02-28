@@ -72,8 +72,9 @@ public class GameplayStatics {
         }
 
         Iterator<? extends Pawn> iterator = pawns.iterator();
-        Pawn p = iterator.next();
+
         while(iterator.hasNext()){
+            Pawn p = iterator.next();
             if(p == otherPawn || p.getTeam().equals(otherPawn.getTeam())){
                 iterator.remove();
             }

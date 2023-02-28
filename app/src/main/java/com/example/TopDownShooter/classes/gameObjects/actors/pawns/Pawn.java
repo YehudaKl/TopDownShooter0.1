@@ -1,5 +1,7 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns;
 
+import android.widget.Toast;
+
 import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
@@ -9,6 +11,7 @@ import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.gameObjects.players.Player;
 import com.example.TopDownShooter.classes.games.Game;
+import com.example.TopDownShooter.classes.games.TeamsGame;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.Vector;
 import com.example.TopDownShooter.dataTypes.enums.PawnMotionState;
@@ -19,7 +22,6 @@ import com.example.TopDownShooter.dataTypes.enums.PawnMotionState;
  */
 public abstract class Pawn extends Actor{
 
-    protected Vector velocity;
     protected Player owner;
     protected Team myTeam;
     protected PawnMotionState motionState;
@@ -52,7 +54,6 @@ public abstract class Pawn extends Actor{
     public Pawn(Game myGame){
         super(myGame);
 
-        this.velocity = new Vector(0, 0);
         this.motionState = PawnMotionState.FROZE;
 
         subscribeToObservable(myGame.getOnUpdateObservable().subscribe(this::onUpdate));
@@ -80,6 +81,10 @@ public abstract class Pawn extends Actor{
 
     public void onGameStart(OnGameStart onGameStart){
         motionState = PawnMotionState.MOVING;
+        if(myGame instanceof TeamsGame){
+
+            myTeam = ((TeamsGame) myGame).generateMeTeam(this);
+        }
     }
 
     public void onGameEnd(OnGameEnd onGameEnd){

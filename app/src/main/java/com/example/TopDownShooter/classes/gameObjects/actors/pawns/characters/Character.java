@@ -7,8 +7,10 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 
+import com.example.TopDownShooter.classes.Team;
 import com.example.TopDownShooter.classes.assets.BitmapLoader;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
+import com.example.TopDownShooter.classes.events.OnGameStart;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalBody;
 import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalSpecifecations.DefaultCharacterPhysicalSpecification;
@@ -34,7 +36,6 @@ public abstract class Character extends Pawn {
     private BitmapLoader bitmapLoader;
     private CharacterHealthState healthState;
 
-
     public Character(Game myGame, Position initPosition, int maxHealth){
       this(myGame, initPosition, maxHealth, DefaultCharacterPhysicalSpecification.getSpecification());
 
@@ -56,7 +57,7 @@ public abstract class Character extends Pawn {
         }
 
         super.update(updateTrace);
-        
+
     }
 
     @Override
@@ -114,7 +115,6 @@ public abstract class Character extends Pawn {
     public Vector viewVelocity() {
         return physicalBody.getVelocity();
     }
-
 
 
 

@@ -18,6 +18,7 @@ public class Survivor extends Shooter {
         super(myGame, initPosition, MAX_HEALTH, new BitmapLoader(R.drawable.womangreen_gun, myGame.getResources()), new BitmapLoader(R.drawable.womangreen_stand, myGame.getResources()), new Pistol(myGame));
     }
 
+
     @Override
     public int getSpeed() {
         return MAX_SPEED;
