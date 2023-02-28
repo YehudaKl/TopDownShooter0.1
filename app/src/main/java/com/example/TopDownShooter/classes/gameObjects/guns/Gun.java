@@ -2,6 +2,8 @@ package com.example.TopDownShooter.classes.gameObjects.guns;
 
 import android.media.SoundPool;
 
+import androidx.annotation.RawRes;
+
 import com.example.TopDownShooter.classes.assets.BitmapLoader;
 import com.example.TopDownShooter.classes.gameObjects.GameObject;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
@@ -22,6 +24,8 @@ public abstract class Gun extends GameObject {
     private Shooter owner;
     private final PhysicalSpecification<Bullet> bulletPhysicalSpecification;
     private final BitmapLoader bulletBitmapLoader;
+    private final int shootSound;
+    private final int reloadSound;
     private final float launchingPower;
     private final boolean isAutomatic;
     private final int reloadTime;
@@ -54,10 +58,12 @@ public abstract class Gun extends GameObject {
         this.owner = owner;
     }
 
-    public Gun(Game myGame, PhysicalSpecification<Bullet> bulletPhysicalSpecification, BitmapLoader bulletBitmapLoader, float launchingPower, boolean isAutomatic, int reloadTime, int coolDownTime, int maxAmmo, float damage) {
+    public Gun(Game myGame, PhysicalSpecification<Bullet> bulletPhysicalSpecification, BitmapLoader bulletBitmapLoader, @RawRes int shootSoundResId, @RawRes int reloadSoundResId, float launchingPower, boolean isAutomatic, int reloadTime, int coolDownTime, int maxAmmo, float damage) {
         super(myGame);
         this.bulletPhysicalSpecification = bulletPhysicalSpecification;
         this.bulletBitmapLoader = bulletBitmapLoader;
+        this.shootSound = myGame.getSoundPool().load(myGame.getContext(), shootSoundResId, 1);
+        this.reloadSound = myGame.getSoundPool().load(myGame.getContext(), reloadSoundResId, 1);
         this.launchingPower = launchingPower;
         this.isAutomatic = isAutomatic;
         this.reloadTime = reloadTime;
@@ -76,6 +82,7 @@ public abstract class Gun extends GameObject {
         if(!canShoot()){return;}
 
         Bullet bullet = new Bullet(myGame, owner, bulletPhysicalSpecification, bulletBitmapLoader, damage, launchingPower);
+        myGame.getSoundPool().play(shootSound, 1, 1, 0, 0, 1);//conf
         currentAmmo--;
         isPressed = true;
         isCoolDowned = false;
@@ -103,6 +110,7 @@ public abstract class Gun extends GameObject {
 
 
         isReloading = true;
+        myGame.getSoundPool().play(reloadSound, 1, 1, 0, 0, 1);//conf
         myGame.getTimer().schedule(new TimerTask() {
             @Override
             public void run() {

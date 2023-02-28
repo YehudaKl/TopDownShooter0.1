@@ -84,9 +84,6 @@ public abstract class Character extends Pawn {
 
         drawable.draw(canvas);
 
-
-
-
     }
 
     @Override

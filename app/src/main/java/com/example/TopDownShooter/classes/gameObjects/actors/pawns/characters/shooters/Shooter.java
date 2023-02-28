@@ -61,6 +61,7 @@ public abstract class Shooter extends Character {
     public int getAmmoInGun(){
         return myGun.getCurrentAmmo();
     }
+    public boolean isReloading(){return myGun.isReloading();}
 
 
     // Return the absolute position to spawn the bullet from

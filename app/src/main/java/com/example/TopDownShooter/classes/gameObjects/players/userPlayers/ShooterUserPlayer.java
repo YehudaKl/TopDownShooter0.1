@@ -29,7 +29,7 @@ public class ShooterUserPlayer extends UserPlayer<Shooter>{
         }
 
         // TODO add reloading button
-        if(shooter.getAmmoInGun() <= 0){
+        if(shooter.getAmmoInGun() <= 0 && !shooter.isReloading()){
             shooter.reload();
         }
 

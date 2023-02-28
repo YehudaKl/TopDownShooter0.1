@@ -21,6 +21,8 @@ public class Pistol extends Gun{
                 myGame,
                 DefaultBulletPhysicalSpecification.getSpecification(),
                 generateBitmapLoader(myGame),
+                R.raw.pistol_shoot,
+                R.raw.pistol_reload,
                 DEFAULT_LAUNCHING_POWER,
                 IS_AUTOMATIC,
                 DEFAULT_RELOAD_TIME,

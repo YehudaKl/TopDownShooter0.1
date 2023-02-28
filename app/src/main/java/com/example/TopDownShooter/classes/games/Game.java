@@ -3,6 +3,8 @@ package com.example.TopDownShooter.classes.games;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -69,6 +71,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     private Context context;
     private boolean isDebugging;
     private Timer timer;// A timer for all classes in the game.
+    private SoundPool soundPool;
     private UpdateTrace updateTrace;
 
 
@@ -117,6 +120,9 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         return timer;
     }
 
+    public SoundPool getSoundPool() {
+        return soundPool;
+    }
 
     // This method must be used by any UI element that wants to identify the game
     // The UI element pass himself as an argument to the update notify method for its type;
@@ -269,8 +275,21 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.context = getContext();
         this.isDebugging = false;
         this.timer = new Timer();
+        this.soundPool = generateSoundPool();
         this.updateTrace = new UpdateTrace();
 
+    }
+
+    private SoundPool generateSoundPool(){
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_UNKNOWN)
+                .build();
+        SoundPool soundPool = new SoundPool.Builder()
+                .setMaxStreams(6)
+                .setAudioAttributes(audioAttributes)
+                .build();
+        return  soundPool;
     }
 
 
