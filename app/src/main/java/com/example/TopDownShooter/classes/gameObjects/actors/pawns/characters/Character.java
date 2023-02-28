@@ -12,6 +12,7 @@ import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalBody;
 import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalSpecifecations.DefaultCharacterPhysicalSpecification;
+import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalSpecification;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.Vector;
@@ -27,39 +28,35 @@ import com.example.TopDownShooter.dataTypes.enums.CharacterHealthState;
  *  body's velocity as its velocity
  */
 public abstract class Character extends Pawn {
-    public final int MAX_HEALTH;
-    protected float  health;
-    protected final PhysicalBody<Character> physicalBody;
+    private int maxHealth;
+    private float  health;
+    protected PhysicalBody physicalBody;
     private BitmapLoader bitmapLoader;
     private CharacterHealthState healthState;
 
 
-    public Character(Game myGame, Position initPosition){
-        super(myGame, initPosition);
-
-        this.MAX_HEALTH = 100; // conf
-        this.health = MAX_HEALTH;
-
-        this.physicalBody = new PhysicalBody(myGame, this, DefaultCharacterPhysicalSpecification.getSpecification());
-        this.healthState = CharacterHealthState.ALIVE;
-
+    public Character(Game myGame, Position initPosition, int maxHealth){
+      this(myGame, initPosition, maxHealth, DefaultCharacterPhysicalSpecification.getSpecification());
 
     }
 
+    public Character(Game myGame, Position initPosition, int maxHealth, PhysicalSpecification physicalSpecification){
+        super(myGame);
+        this.health = maxHealth;
+        this.maxHealth = maxHealth;
+        this.physicalBody = new PhysicalBody(myGame, this, initPosition, physicalSpecification);
+        this.healthState = CharacterHealthState.ALIVE;
+    }
+
     @Override
-    public void update(UpdateTrace updateTrace){
-        if(isDead()){
+    protected void update(UpdateTrace updateTrace) {
+        if (isDead()) {
             die();
             return;
         }
 
         super.update(updateTrace);
-
-        updatePosition(physicalBody.getPosition());
-        physicalBody.applyRotation(viewDirection());
-        updateDirection(physicalBody.getAngle());
-
-
+        
     }
 
     @Override
@@ -86,6 +83,27 @@ public abstract class Character extends Pawn {
 
     }
 
+
+    @Override
+    public void updatePosition(Position position) {
+        physicalBody.setPosition(position);
+    }
+
+    @Override
+    public Position viewPosition() {
+        return physicalBody.getPosition();
+    }
+
+    @Override
+    public void updateDirection(float direction) {
+        physicalBody.applyRotation(direction);
+    }
+
+    @Override
+    public float viewDirection() {
+        return physicalBody.getAngle();
+    }
+
     @Override
     public void updateVelocity(Vector velocity) {
         physicalBody.applyVelocity(velocity);
@@ -97,14 +115,17 @@ public abstract class Character extends Pawn {
         return physicalBody.getVelocity();
     }
 
+
+
+
     protected void die(){
         invalidate();
     }
 
+
     // Method for providing the right bitmap loader for the current frame
     // For example a shooter would return an image with a gun he is holding it
     // and with out a gun while he is standing
-
     protected abstract BitmapLoader getCurrentStateBitmapLoader();
 
 
@@ -114,7 +135,7 @@ public abstract class Character extends Pawn {
         if(amount <= 0){ return false; }
 
         float opt_health =  health + amount;
-        if(opt_health > MAX_HEALTH){return false;}
+        if(opt_health > maxHealth){return false;}
 
         return true;
 

@@ -3,6 +3,7 @@ package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.s
 import com.example.TopDownShooter.classes.assets.BitmapLoader;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.gameObjects.guns.Gun;
+import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalSpecification;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
 
@@ -25,8 +26,16 @@ public abstract class Shooter extends Character {
         this.reloadingBitmap = reloadingBitmap;
     }
 
-    public Shooter(Game myGame, Position initPosition, BitmapLoader shootingBitmap, BitmapLoader reloadingBitmap, Gun myGun) {
-        super(myGame, initPosition);
+    public Shooter(Game myGame, Position initPosition, int maxHealth,  BitmapLoader shootingBitmap, BitmapLoader reloadingBitmap, Gun myGun) {
+        super(myGame, initPosition, maxHealth);
+        this.shootingBitmap = shootingBitmap;
+        this.reloadingBitmap = reloadingBitmap;
+        this.myGun = myGun;
+        this.myGun.setOwner(this);
+    }
+
+    public Shooter(Game myGame, Position initPosition, int maxHealth, PhysicalSpecification physicalSpecification,  BitmapLoader shootingBitmap, BitmapLoader reloadingBitmap, Gun myGun) {
+        super(myGame, initPosition, maxHealth, physicalSpecification);
         this.shootingBitmap = shootingBitmap;
         this.reloadingBitmap = reloadingBitmap;
         this.myGun = myGun;

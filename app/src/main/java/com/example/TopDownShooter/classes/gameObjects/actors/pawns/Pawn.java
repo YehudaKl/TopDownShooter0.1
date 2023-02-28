@@ -48,14 +48,9 @@ public abstract class Pawn extends Actor{
         this.owner = owner;
     }
 
-    public Pawn(Game myGame, Position initPosition){
-        this(myGame, initPosition, 0);
-
-    }
-
     // Constructor for with direction for pawns that has to be initialized to current direction.
-    public Pawn(Game myGame, Position initPosition,float direction){
-        super(myGame, initPosition,direction);
+    public Pawn(Game myGame){
+        super(myGame);
 
         this.velocity = new Vector(0, 0);
         this.motionState = PawnMotionState.FROZE;
@@ -66,7 +61,6 @@ public abstract class Pawn extends Actor{
         subscribeToObservable(myGame.getOnGameStatusChangedObservable().subscribe(this::onGameStatusChanged));
     }
 
-    public abstract float getSpeed();
 
     public void onUpdate(OnUpdate onupdate){
 
@@ -74,6 +68,15 @@ public abstract class Pawn extends Actor{
 
         update(onupdate.getUpdateTrace());
     }
+
+    protected void update(UpdateTrace updateTrace){
+        if(owner == null || !owner.getIsValid()){
+            return;
+        }
+
+        owner.updatePawn(this, updateTrace);
+    }
+
 
     public void onGameStart(OnGameStart onGameStart){
         motionState = PawnMotionState.MOVING;
@@ -95,58 +98,12 @@ public abstract class Pawn extends Actor{
         }
     }
 
+    public abstract int getSpeed();
+    public abstract void updateDirection(float direction);
+    public abstract void updatePosition(Position position);
+    public abstract void updateVelocity(Vector velocity);
+    public abstract Vector viewVelocity();
 
-    // Returns a copy of the direction!
-    // For updating the direction the function updateDirection() must be used
-    public float viewDirection() {
-        return direction;
-    }
-    // Returns a copy of the velocity!
-    // For updating the velocity the function updateVelocity() must be used
-    public Vector viewVelocity() {
-        if(velocity == null){return null;}
-        return new Vector(velocity);
-    }
-
-    public void updateDirection(float direction){
-        if(motionState == PawnMotionState.FROZE){ return;}
-
-        this.direction = direction;
-    }
-    public void updateVelocity(Vector velocity){
-        // The method does not accept empty vectors
-        if(motionState == PawnMotionState.FROZE){return;}
-
-        this.velocity = velocity;
-    }
-
-
-    @Override
-    public void updatePosition(Position position) {
-        // Blocking any position updating while motionState is FROZE
-        if(motionState == PawnMotionState.FROZE){
-            return;
-        }
-        super.updatePosition(position);
-    }
-
-    // Update the position according to the velocity
-    public void step(){
-        if(motionState == PawnMotionState.FROZE || velocity == null){return;}
-
-        float newX = viewPosition().getX() + velocity.getCoordinateX();
-        float newY = viewPosition().getY() + velocity.getCoordinateY();
-        updatePosition(new Position(newX, newY));
-    }
-
-
-    protected void update(UpdateTrace updateTrace){
-        if(owner == null || !owner.getIsValid()){
-            return;
-        }
-
-        owner.updatePawn(this, updateTrace);
-    }
 
 
 

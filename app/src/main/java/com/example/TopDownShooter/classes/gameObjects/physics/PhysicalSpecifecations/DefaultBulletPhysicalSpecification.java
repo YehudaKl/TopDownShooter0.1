@@ -4,13 +4,16 @@ import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Ch
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
 import com.example.TopDownShooter.classes.gameObjects.actors.projectiles.bullets.Bullet;
 import com.example.TopDownShooter.classes.gameObjects.physics.PhysicalSpecification;
+import com.example.TopDownShooter.dataTypes.Position;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-public class DefaultBulletPhysicalSpecification implements PhysicalSpecification<Bullet> {
+import shiffman.box2d.Box2DProcessing;
+
+public class DefaultBulletPhysicalSpecification implements PhysicalSpecification {
     private static final float WIDTH = 10;
     private static final float HEIGHT = 17;
     private static DefaultBulletPhysicalSpecification instance;
@@ -23,25 +26,22 @@ public class DefaultBulletPhysicalSpecification implements PhysicalSpecification
         return instance;
     }
     @Override
-    public BodyDef getBodyDef(Bullet bullet) {
+    public BodyDef getBodyDef(Position position, Box2DProcessing physicalManager) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;
 
-        // Setting the bullet's body initial position according to its bulletSpawnPosition
-        // and converting it to world coordinates using the characters' physics manager
-        Shooter shooter  = (Shooter) bullet.getSourceCharacter();
-        bodyDef.position.set(bullet.getMyGame().getPhysicsManager().coordPixelsToWorld(shooter.getBulletSpawnPosition().getX(), shooter.getBulletSpawnPosition().getY()));
+        bodyDef.position.set(physicalManager.coordPixelsToWorld(position.getX(), position.getY()));
 
         return bodyDef;
     }
 
     @Override
-    public FixtureDef getFixtureDef(Bullet bullet) {
+    public FixtureDef getFixtureDef(Box2DProcessing physicalManager) {
 
         PolygonShape shape = new PolygonShape();
         // Creating measured width and height after processing
-        float measuredWidth = bullet.getMyGame().getPhysicsManager().scalarPixelsToWorld(WIDTH/2);
-        float measuredHeight = bullet.getMyGame().getPhysicsManager().scalarPixelsToWorld(HEIGHT/2);
+        float measuredWidth = physicalManager.scalarPixelsToWorld(WIDTH/2);
+        float measuredHeight = physicalManager.scalarPixelsToWorld(HEIGHT/2);
         shape.setAsBox(measuredWidth, measuredHeight);
 
         FixtureDef fixtureDef = new FixtureDef();

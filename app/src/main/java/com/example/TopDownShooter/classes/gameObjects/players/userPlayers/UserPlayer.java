@@ -32,7 +32,5 @@ public abstract class UserPlayer<T extends Pawn> extends Player<T> {
        if(velocity.isEmpty()){return;}
        pawn.updateDirection(velocity.getDirection());
 
-
-
    }
 }

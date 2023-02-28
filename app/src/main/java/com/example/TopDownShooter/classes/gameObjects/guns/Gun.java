@@ -22,7 +22,7 @@ import java.util.TimerTask;
  */
 public abstract class Gun extends GameObject {
     private Shooter owner;
-    private final PhysicalSpecification<Bullet> bulletPhysicalSpecification;
+    private final PhysicalSpecification bulletPhysicalSpecification;
     private final BitmapLoader bulletBitmapLoader;
     private final int shootSound;
     private final int reloadSound;
@@ -58,7 +58,7 @@ public abstract class Gun extends GameObject {
         this.owner = owner;
     }
 
-    public Gun(Game myGame, PhysicalSpecification<Bullet> bulletPhysicalSpecification, BitmapLoader bulletBitmapLoader, @RawRes int shootSoundResId, @RawRes int reloadSoundResId, float launchingPower, boolean isAutomatic, int reloadTime, int coolDownTime, int maxAmmo, float damage) {
+    public Gun(Game myGame, PhysicalSpecification bulletPhysicalSpecification, BitmapLoader bulletBitmapLoader, @RawRes int shootSoundResId, @RawRes int reloadSoundResId, float launchingPower, boolean isAutomatic, int reloadTime, int coolDownTime, int maxAmmo, float damage) {
         super(myGame);
         this.bulletPhysicalSpecification = bulletPhysicalSpecification;
         this.bulletBitmapLoader = bulletBitmapLoader;

@@ -11,14 +11,14 @@ import com.example.TopDownShooter.classes.games.Game;
  * Generally a ShooterUserPlayer should be suitable for each type of character that use the regular shoot button on the screen
  * for shooting
  */
-public class ShooterUserPlayer extends UserPlayer<Shooter>{
+public abstract class ShooterUserPlayer<T extends Shooter> extends UserPlayer<T>{
 
     public ShooterUserPlayer(Game myGame) {
         super(myGame);
     }
 
     @Override
-    public void updatePawn(Shooter shooter, UpdateTrace updateTrace) {
+    public void updatePawn(T shooter, UpdateTrace updateTrace) {
         super.updatePawn(shooter, updateTrace);
 
         if(updateTrace.getIsShoot()){

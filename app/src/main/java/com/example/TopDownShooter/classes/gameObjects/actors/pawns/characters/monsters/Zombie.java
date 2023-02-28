@@ -14,8 +14,9 @@ import java.util.TimerTask;
  */
 public class Zombie extends Monster {
 
-    private final float BITE_DAMAGE;
-    private static final float MAX_SPEED = 30;//conf
+    private static final int MAX_HEALTH = 1;
+    private static final float BITE_DAMAGE = 20;
+    private static final int MAX_SPEED = 30;//conf
     public static final float BITE_COOLDOWN_TIME = 1500;//conf
     public static final float BITE_RANGE = 100;// The maximal distance from a character in order to bite(inclusive)
 
@@ -25,11 +26,7 @@ public class Zombie extends Monster {
 
     public Zombie(Game myGame, Position initPosition){
         // TODO replace null
-        super(myGame, initPosition);
-
-        this.health = 1;//conf
-        this.BITE_DAMAGE = 20;//conf
-
+        super(myGame, initPosition, MAX_HEALTH);
 
         this.canBite = true;
         this.chasingBitmap = new BitmapLoader(R.drawable.zoimbie1_hold, myGame.getResources(), 0);
@@ -58,7 +55,7 @@ public class Zombie extends Monster {
 
 
     @Override
-    public float getSpeed() {
+    public int getSpeed() {
         return MAX_SPEED;
     }
 

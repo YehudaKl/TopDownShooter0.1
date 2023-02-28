@@ -13,14 +13,14 @@ import org.jbox2d.dynamics.contacts.Contact;
 
 public class OnCollisionStart extends OnEvent {
 
-    PhysicalBody<?> bodyA;
-    PhysicalBody<?> bodyB;
+    PhysicalBody bodyA;
+    PhysicalBody bodyB;
 
-    public PhysicalBody<?> getBodyA() {
+    public PhysicalBody getBodyA() {
         return bodyA;
     }
 
-    public PhysicalBody<?> getBodyB() {
+    public PhysicalBody getBodyB() {
         return bodyB;
     }
 
@@ -28,8 +28,8 @@ public class OnCollisionStart extends OnEvent {
         super(game);
 
         try{
-            bodyA = (PhysicalBody<?>) contact.getFixtureA().getBody().getUserData();
-            bodyB = (PhysicalBody<?>) contact.getFixtureB().getBody().getUserData();
+            bodyA = (PhysicalBody) contact.getFixtureA().getBody().getUserData();
+            bodyB = (PhysicalBody) contact.getFixtureB().getBody().getUserData();
         }catch (ClassCastException e){
 
         }

@@ -17,24 +17,12 @@ import com.example.TopDownShooter.dataTypes.Position;
 
 public abstract class Actor extends GameObject {
 
-    protected Position position;
-    protected float direction;// In radians only!!
     private boolean isVisible;
 
-    public void setDirection(float direction) {
-        this.direction = direction;
-    }
-
-    public float getDirection() {
-        return direction;
-    }
-
     // Constructor with direction param
-    public Actor(Game myGame, Position initPosition, float direction){
+    public Actor(Game myGame){
         super(myGame);
-        this.position = initPosition;
         isVisible = true;
-        this.direction = direction;
 
         // Subscribing to the OnDraw
         subscribeToObservable(myGame.getOnDrawObservable().subscribe(this::onDraw));
@@ -61,15 +49,9 @@ public abstract class Actor extends GameObject {
         }
     }
 
-    // The function returns a copy! of the actors' position.
-    // For updating the position the function update position must be used!
-    public Position viewPosition(){
-        return new Position(position);
-    }
+    public abstract Position viewPosition();
+    public abstract float viewDirection();
 
-    public void updatePosition(Position position){
-        this.position = position;
-    }
 
     // Returns the distance between this actor and another actor
     public float getDistanceBetween(Actor other){

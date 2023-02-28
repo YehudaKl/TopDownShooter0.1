@@ -9,20 +9,14 @@ import androidx.annotation.NonNull;
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.Team;
-import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
-import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Hero;
-import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
+import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Survivor;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Zombie;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Shooter;
 import com.example.TopDownShooter.classes.gameObjects.players.AIPlayers.ZombiePlayer;
 import com.example.TopDownShooter.classes.gameObjects.players.userPlayers.ShooterUserPlayer;
-import com.example.TopDownShooter.classes.gameObjects.players.userPlayers.UserPlayer;
+import com.example.TopDownShooter.classes.gameObjects.players.userPlayers.SurvivorUserPlayer;
 import com.example.TopDownShooter.dataTypes.Position;
-
-import org.jbox2d.callbacks.ContactImpulse;
-import org.jbox2d.collision.Manifold;
-import org.jbox2d.dynamics.contacts.Contact;
 
 import java.util.HashMap;
 
@@ -33,8 +27,8 @@ import java.util.HashMap;
 public class SurvivalGame extends Game implements TeamsGame{
 
     private HashMap<String, Team> teams;
-    private Hero hero;
-    private ShooterUserPlayer heroPlayer;
+    private Survivor survivor;
+    private SurvivorUserPlayer survivorPlayer;
     private ZombiePlayer zombiesPlayer;
 
 
@@ -53,12 +47,12 @@ public class SurvivalGame extends Game implements TeamsGame{
         setIsDebugging(true);
 
         teams = initializeTeams();
-        heroPlayer = new ShooterUserPlayer(this);
+        survivorPlayer = new SurvivorUserPlayer(this);
         zombiesPlayer = new ZombiePlayer(this);
 
 
-        hero = new Hero(this, new Position(400, 400));
-        hero.setOwner(heroPlayer);
+        survivor = new Survivor(this, new Position(400, 400));
+        survivor.setOwner(survivorPlayer);
         spawnZombie(new Position(800, 800));
         startGame();
     }
@@ -75,7 +69,7 @@ public class SurvivalGame extends Game implements TeamsGame{
     }
 
 
-    public Hero getHero(){return this.hero;}
+    public Survivor getHero(){return this.survivor;}
 
     @Override
     protected void startGame() {

@@ -20,8 +20,8 @@ public abstract class Projectile extends Actor{
         return sourceCharacter;
     }
 
-    public Projectile(Game myGame, Character sourceCharacter, Position initPosition){
-        super(myGame, initPosition,0);
+    public Projectile(Game myGame, Character sourceCharacter){
+        super(myGame);
         this.sourceCharacter = sourceCharacter;
     }
 

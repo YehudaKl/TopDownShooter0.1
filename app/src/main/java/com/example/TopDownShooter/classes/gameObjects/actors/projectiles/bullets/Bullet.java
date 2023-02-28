@@ -22,7 +22,7 @@ import com.example.TopDownShooter.dataTypes.Vector;
  */
 public class Bullet extends Projectile implements CollisionListener {
 
-    private final PhysicalBody<Bullet> physicalBody;
+    private final PhysicalBody physicalBody;
     protected float damage;
     private final BitmapLoader bitmapLoader;
 
@@ -34,9 +34,9 @@ public class Bullet extends Projectile implements CollisionListener {
         this.damage = damage;
     }
 
-    public Bullet(Game myGame, Shooter sourceCharacter, PhysicalSpecification<Bullet> physicalSpecification, BitmapLoader bitmapLoader, float damage, float launchingPower){
-        super(myGame, sourceCharacter, sourceCharacter.getBulletSpawnPosition());
-        this.physicalBody = new PhysicalBody(myGame, this, physicalSpecification);
+    public Bullet(Game myGame, Shooter sourceCharacter, PhysicalSpecification physicalSpecification, BitmapLoader bitmapLoader, float damage, float launchingPower){
+        super(myGame, sourceCharacter);
+        this.physicalBody = new PhysicalBody(myGame, this, sourceCharacter.getBulletSpawnPosition(), physicalSpecification);
         this.physicalBody.setCollisionListener(this);
         this.bitmapLoader = bitmapLoader;
         this.damage = damage;
@@ -50,6 +50,8 @@ public class Bullet extends Projectile implements CollisionListener {
 
 
     }
+
+
 
     @Override
     protected void draw(Canvas canvas) {
@@ -90,6 +92,11 @@ public class Bullet extends Projectile implements CollisionListener {
     @Override
     public Position viewPosition() {
         return physicalBody.getPosition();
+    }
+
+    @Override
+    public float viewDirection() {
+        return physicalBody.getAngle();
     }
 
 

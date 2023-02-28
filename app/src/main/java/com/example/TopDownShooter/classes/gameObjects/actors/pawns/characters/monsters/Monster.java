@@ -9,7 +9,7 @@ import com.example.TopDownShooter.dataTypes.Position;
  * Instead, Monsters have their own special attack.
  */
 public abstract class Monster extends Character {
-    public Monster(Game myGame, Position initPosition) {
-        super(myGame, initPosition);
+    public Monster(Game myGame, Position initPosition, int maxHealth) {
+        super(myGame, initPosition, maxHealth);
     }
 }
