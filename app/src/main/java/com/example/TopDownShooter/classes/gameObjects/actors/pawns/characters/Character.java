@@ -69,7 +69,7 @@ public abstract class Character extends Pawn {
             return;
         }
         // Creating the drawable
-        BitmapDrawable drawable = new BitmapDrawable(myGame.getResources(), getCurrentStateBitmapLoader().getBitmap(physicalBody.getAngle()));
+        BitmapDrawable drawable = new BitmapDrawable(myGame.getResources(), getCurrentStateBitmapLoader().getBitmap(viewDirection()));
 
         // Draw from the center
         final int WIDTH = drawable.getIntrinsicWidth();

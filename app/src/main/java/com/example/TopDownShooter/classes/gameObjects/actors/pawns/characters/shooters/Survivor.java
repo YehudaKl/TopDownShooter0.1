@@ -15,7 +15,7 @@ public class Survivor extends Shooter {
 
 
     public Survivor(Game myGame, Position initPosition){
-        super(myGame, initPosition, MAX_HEALTH, new BitmapLoader(R.drawable.womangreen_gun, myGame.getResources()), new BitmapLoader(R.drawable.womangreen_stand, myGame.getResources()), new Pistol(myGame));
+        super(myGame, initPosition, MAX_HEALTH, new BitmapLoader(R.drawable.womangreen_gun, myGame.getResources()), new BitmapLoader(R.drawable.womangreen_reload_gun, myGame.getResources()), new Pistol(myGame));
     }
 
 

@@ -1,10 +1,15 @@
 package com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters;
 
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.assets.BitmapLoader;
+import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.Character;
 import com.example.TopDownShooter.classes.games.Game;
 import com.example.TopDownShooter.dataTypes.Position;
+import com.example.TopDownShooter.dataTypes.enums.PawnMotionState;
 
 import java.util.TimerTask;
 
@@ -20,8 +25,12 @@ public class Zombie extends Monster {
     public static final float BITE_COOLDOWN_TIME = 1500;//conf
     public static final float BITE_RANGE = 100;// The maximal distance from a character in order to bite(inclusive)
 
-    private BitmapLoader chasingBitmap;
+    private final BitmapLoader chasingBitmap;
+    private final int deathSound;
+    private final int biteSound;
+
     private boolean canBite;// If zombie in bite-cooldown false, else true
+
 
 
     public Zombie(Game myGame, Position initPosition){
@@ -30,6 +39,8 @@ public class Zombie extends Monster {
 
         this.canBite = true;
         this.chasingBitmap = new BitmapLoader(R.drawable.zoimbie1_hold, myGame.getResources(), 0);
+        this.deathSound = myGame.getSoundPool().load(myGame.getContext(), R.raw.zombie_sqash, 1);
+        this.biteSound = myGame.getSoundPool().load(myGame.getContext(), R.raw.zomibe_bite, 1);
 
     }
 
@@ -38,11 +49,19 @@ public class Zombie extends Monster {
         return chasingBitmap;
     }
 
+    @Override
+    protected void die() {
+        super.die();
+        myGame.getSoundPool().play(deathSound, 1, 1, 0, 0, 2);
+
+    }
+
     public void bite(Character character){
         double distance = getDistanceBetween(character);
         if(distance >= BITE_RANGE || !canBite){ return;}
 
         character.reduceHealth(BITE_DAMAGE);
+        myGame.getSoundPool().play(biteSound, 1, 1,0, 0, 1);
 
         // Start the cooldown process
         //TODO adam do it with lambda
