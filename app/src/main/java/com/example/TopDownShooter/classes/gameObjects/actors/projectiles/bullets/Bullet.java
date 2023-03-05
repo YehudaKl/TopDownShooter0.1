@@ -56,18 +56,21 @@ public class Bullet extends Projectile implements CollisionListener {
     @Override
     protected void draw(Canvas canvas) {
 
+        Position relativePosition = myGame.getMap().getRelativePosition(viewPosition());
 
-
+        if(relativePosition == null){
+            return;
+        }
         // Creating the drawable
         BitmapDrawable drawable = new BitmapDrawable(myGame.getResources(), bitmapLoader.getBitmap(physicalBody.getAngle()));
 
 
         // Draw from the center
         final int WIDTH = drawable.getIntrinsicWidth();
-        final int HEIGHT = drawable.getMinimumHeight();
+        final int HEIGHT = drawable.getIntrinsicHeight();
 
-        int boundX = (int)(viewPosition().getX() - WIDTH/2);
-        int boundY = (int)(viewPosition().getY() - HEIGHT/2);
+        int boundX = (int)(relativePosition.getX() - WIDTH/2);
+        int boundY = (int)(relativePosition.getY() - HEIGHT/2);
 
         drawable.setBounds(boundX, boundY, WIDTH + boundX, HEIGHT + boundY);
 

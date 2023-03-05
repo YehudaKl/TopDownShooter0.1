@@ -1,6 +1,9 @@
 package com.example.TopDownShooter.classes.games;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
@@ -9,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.example.TopDownShooter.R;
 import com.example.TopDownShooter.classes.Team;
+import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.Pawn;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.shooters.Survivor;
 import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.monsters.Zombie;
@@ -32,12 +36,21 @@ public class SurvivalGame extends Game implements TeamsGame{
     private ZombiePlayer zombiesPlayer;
 
 
+
     public SurvivalGame(Context context){
         super(context);
+
     }
 
     public SurvivalGame(Context context, AttributeSet attrs){
         super(context, attrs);
+
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+
     }
 
     @Override
@@ -55,8 +68,6 @@ public class SurvivalGame extends Game implements TeamsGame{
         survivor.setOwner(survivorPlayer);
         spawnZombie(new Position(800, 800));
         spawnZombie(new Position(1000, 1000));
-        spawnZombie(new Position(100, 100));
-        spawnZombie(new Position(200, 200));
         startGame();
     }
 
@@ -72,11 +83,23 @@ public class SurvivalGame extends Game implements TeamsGame{
     }
 
 
+
+
     public Survivor getHero(){return this.survivor;}
 
     @Override
     protected void startGame() {
         super.startGame();
+    }
+
+    @Override
+    protected Actor getCurrentThemeActor() {
+        return survivor;
+    }
+
+    @Override
+    protected int getMapResourceId() {
+        return R.drawable.map1;
     }
 
     // The function adds a new enemy to the enemies array and to the actors-array of the parent class

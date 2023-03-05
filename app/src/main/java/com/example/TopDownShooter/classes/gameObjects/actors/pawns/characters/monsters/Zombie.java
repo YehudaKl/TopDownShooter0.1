@@ -21,7 +21,7 @@ public class Zombie extends Monster {
 
     private static final int MAX_HEALTH = 1;
     private static final float BITE_DAMAGE = 20;
-    private static final int MAX_SPEED = 30;//conf
+    private static final int MAX_SPEED = 10;//conf
     public static final float BITE_COOLDOWN_TIME = 1500;//conf
     public static final float BITE_RANGE = 100;// The maximal distance from a character in order to bite(inclusive)
 

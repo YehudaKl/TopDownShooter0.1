@@ -63,9 +63,9 @@ public abstract class Character extends Pawn {
     @Override
     protected void draw(Canvas canvas) {
         // Creating a rotated bitmap according to the direction
+        Position relativePosition = myGame.getMap().getRelativePosition(viewPosition());
 
-
-        if(physicalBody == null){
+        if(relativePosition == null){
             return;
         }
         // Creating the drawable
@@ -73,10 +73,10 @@ public abstract class Character extends Pawn {
 
         // Draw from the center
         final int WIDTH = drawable.getIntrinsicWidth();
-        final int HEIGHT = drawable.getMinimumHeight();
+        final int HEIGHT = drawable.getIntrinsicHeight();
 
-        int boundX = (int)(viewPosition().getX() - WIDTH/2);
-        int boundY = (int)(viewPosition().getY() - HEIGHT/2);
+        int boundX = (int)(relativePosition.getX() - WIDTH/2);
+        int boundY = (int)(relativePosition.getY() - HEIGHT/2);
 
         drawable.setBounds(boundX, boundY, WIDTH + boundX, HEIGHT + boundY);
 

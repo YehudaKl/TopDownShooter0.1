@@ -1,15 +1,21 @@
 package com.example.TopDownShooter.classes.games;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
@@ -25,7 +31,10 @@ import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorIn
 import com.example.TopDownShooter.classes.events.actorValidationEvents.OnActorValid;
 import com.example.TopDownShooter.classes.events.physicalEvents.OnCollisionEnd;
 import com.example.TopDownShooter.classes.events.physicalEvents.OnCollisionStart;
+import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.systems.GameLoop;
+import com.example.TopDownShooter.classes.systems.Map;
+import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
 
 import org.jbox2d.callbacks.ContactImpulse;
@@ -34,6 +43,7 @@ import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.contacts.Contact;
 
+import java.lang.ref.SoftReference;
 import java.util.Timer;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -64,6 +74,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
 
     private GameState state;
+    private Map map;
 
     private Box2DProcessing physicsManager;
 
@@ -120,6 +131,10 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         return timer;
     }
 
+    public Map getMap() {
+        return map;
+    }
+
     public SoundPool getSoundPool() {
         return soundPool;
     }
@@ -146,8 +161,6 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
-        gameLoop.startLoop();
-
     }
 
     @Override
@@ -185,7 +198,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-
+        map.draw(canvas);
         if(isDebugging){
             drawDebugInformation(canvas);
         }
@@ -199,6 +212,8 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         onPreUpdateObservable.onNext(new OnPreUpdate(this, updateTrace));
         updateTrace.deltaTimeNotify(gameLoop);
         onUpdateObservable.onNext(new OnUpdate(this, updateTrace));
+
+        map.updateMap(getCurrentThemeActor());
     }
 
     public Observable<OnDraw> getOnDrawObservable(){
@@ -214,6 +229,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     // It is recommended to call this method at the end of the constructor
     protected void startGame(){
         this.state = GameState.RUN;
+        gameLoop.startLoop();
         onGameStartObservable.onNext(new OnGameStart(this));
     }
 
@@ -270,7 +286,11 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.physicsManager.setContactListener(this);
 
         this.state = GameState.LOAD;
-
+        Bitmap mapOrigin = BitmapFactory.decodeResource(getResources(), R.drawable.map1);
+        int mapWidth = mapOrigin.getWidth();
+        int mapHeight = mapOrigin.getHeight();
+        mapOrigin = null;
+        this.map = new Map(this, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.map1), 4000, 4000, true));
         this.gameLoop = new GameLoop(this, surfaceHolder);
         this.context = getContext();
         this.isDebugging = false;
@@ -279,6 +299,10 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         this.updateTrace = new UpdateTrace();
 
     }
+
+    protected abstract Actor getCurrentThemeActor();
+
+    protected abstract int getMapResourceId();
 
     private SoundPool generateSoundPool(){
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
