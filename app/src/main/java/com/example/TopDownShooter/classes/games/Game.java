@@ -290,7 +290,7 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         int mapWidth = mapOrigin.getWidth();
         int mapHeight = mapOrigin.getHeight();
         mapOrigin = null;
-        this.map = new Map(this, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.map1), 4000, 4000, true));
+        this.map = new Map(this, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.map1), mapWidth/4, mapHeight/4, true));
         this.gameLoop = new GameLoop(this, surfaceHolder);
         this.context = getContext();
         this.isDebugging = false;
