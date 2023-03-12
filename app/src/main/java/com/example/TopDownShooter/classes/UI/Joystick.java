@@ -2,10 +2,13 @@ package com.example.TopDownShooter.classes.UI;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -13,6 +16,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
 import com.example.TopDownShooter.R;
@@ -30,8 +34,6 @@ import com.example.TopDownShooter.classes.games.Game;
 public class Joystick extends View{
 
     private Game myGame;
-
-    private static final float TOP_BASE_RATIO = 0.5f;
     private static final int defaultSize = 50;
     private int size;// The edge of the "box" that encapsulates the joystick. Equivalent to the min of view's width and height
     private float baseX;
@@ -40,10 +42,8 @@ public class Joystick extends View{
     private float topY;
     private float baseRadius;
     private float topRadius;
-    private Paint basePaint;
-    private Paint topPaint;
-
-    private float topBaseRatio;// The size ratio between the base and the top of the joystick
+    private Bitmap baseBitmap;
+    private Bitmap topBitmap;
 
     public void setMyGame(Game myGame){
         this.myGame = myGame;
@@ -51,14 +51,19 @@ public class Joystick extends View{
     }
 
 
-    public Joystick(Context context) {
+    public Joystick(Context context, @DrawableRes int baseDrawableId, @DrawableRes int topDrawableId) {
         super(context);
-        initJoystickView();
+        this.baseBitmap = BitmapFactory.decodeResource(getResources(), baseDrawableId);
+        this.topBitmap = BitmapFactory.decodeResource(getResources(), topDrawableId);
+
     }
 
     public Joystick(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initJoystickView();
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.joystick, 0, 0);
+
+        this.baseBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.joystick_base);
+        this.topBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.joystick_top);
 
     }
 
@@ -72,11 +77,9 @@ public class Joystick extends View{
     @Override
     public void onDraw(Canvas canvas) {
 
-       // Draw base
-        canvas.drawCircle(baseX, baseY, baseRadius, basePaint);
+        canvas.drawBitmap(baseBitmap, baseX - baseBitmap.getWidth()/2, baseY - baseBitmap.getHeight()/2, null);
 
-      // Draw paint         
-        canvas.drawCircle(topX, topY, topRadius, topPaint);
+        canvas.drawBitmap(topBitmap, topX - topBitmap.getWidth()/2, topY - topBitmap.getHeight()/2, null);
 
     }
 
@@ -126,16 +129,6 @@ public class Joystick extends View{
         return distanceY/baseRadius;
     }
 
-    private void initJoystickView(){
-
-        this.topBaseRatio = TOP_BASE_RATIO;
-
-        basePaint = new Paint();
-        basePaint.setColor(Color.RED);
-
-        topPaint = new Paint();
-        topPaint.setColor(Color.GRAY);
-    }
 
     // Method for generating a fixed size from the width/height specification
     private int measure(int measureSpec){
@@ -163,6 +156,10 @@ public class Joystick extends View{
         topX = baseX;
         topY = baseY;
 
+        float topBitmapSize = Math.min(topBitmap.getWidth(), topBitmap.getHeight());
+        float baseBitmapSize = Math.min(baseBitmap.getWidth(), baseBitmap.getHeight());
+        float topBaseRatio = topBitmapSize/baseBitmapSize;
+
         // Make sure that the joystick will not go outbound
         // The formula for the calculation of the radius was found using algebra on paper
         // (1) topRadius + baseRadius == size/2
@@ -171,6 +168,9 @@ public class Joystick extends View{
         topRadius = ((size * topBaseRatio)/(2 + 2 *topBaseRatio));
         baseRadius = size/2 - topRadius;
 
+        // Scaling the bitmaps
+        topBitmap = Bitmap.createScaledBitmap(topBitmap, (int)topRadius * 2, (int)topRadius * 2, true);
+        baseBitmap = Bitmap.createScaledBitmap(baseBitmap, (int)baseRadius * 2, (int)baseRadius *2, true);
     }
 
     // Update the position of the top of the joystick according to a touch position and render the joystick
@@ -212,5 +212,6 @@ public class Joystick extends View{
     private void parseAttributes(AttributeSet attrs) {
 
     }
+
 
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="joystick">
+        <attr name="base_drawable_id" format="reference"/>
+        <attr name="top_drawable_id" format="reference"/>
+    </declare-styleable>
+</resources>

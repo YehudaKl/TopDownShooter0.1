@@ -26,7 +26,7 @@ public class SurvivalGameActivity extends Activity {
 
         backgroundMusicPlayer = MediaPlayer.create(this, R.raw.survival_game_backgound_music);
         backgroundMusicPlayer.setVolume(0.1f, 0.1f);
-        backgroundMusicPlayer.start();
+        //backgroundMusicPlayer.start();
 
         setContentView(R.layout.survival_game_root);
 
