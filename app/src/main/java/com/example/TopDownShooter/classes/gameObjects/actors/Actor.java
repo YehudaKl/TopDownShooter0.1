@@ -49,6 +49,7 @@ public abstract class Actor extends GameObject {
         }
     }
 
+    protected abstract void draw(Canvas canvas);
     public abstract Position viewPosition();
     public abstract float viewDirection();
 
@@ -76,7 +77,6 @@ public abstract class Actor extends GameObject {
         this.isVisible = isVisible;
     }
 
-    protected abstract void draw(Canvas canvas);
 
 
 

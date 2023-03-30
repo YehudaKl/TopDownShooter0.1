@@ -1,7 +1,9 @@
 package com.example.TopDownShooter.classes.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +16,7 @@ import com.example.TopDownShooter.R;
  * The MainActivity is the entry point to the application and the first activity that
  * the user is shown when the app is opened.
  */
-public class MainActivity extends Activity implements View.OnClickListener {
+public class EnteringActivity extends Activity {
 
     public static final String EXTRA_PLAYER_NAME = "com.example.TopDownShooter";
 
@@ -24,35 +26,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.entering_activity);
 
         startGame = findViewById(R.id.btn_StartGame);
         enterName = findViewById(R.id.edtTxt_EnterName);
+        enterName.setText(getLastPlayerName());
 
-        startGame.setOnClickListener(this);
+        startGame.setOnClickListener(view -> {
+            navigateToMainMenu();
+        });
 
 
 
 
     }
 
-
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.btn_StartGame:
-                // Navigate to the mainMenu activity
-                // If no name was specified the navigation will fail
-                navigateToMainMenu();
-
-
-                break;
-
-            default:
-                break;
-
-        }
-    }
 
     /**
      *  Function that checks if navigation to main menu is valid. if so navigation will take action.
@@ -60,30 +48,45 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void navigateToMainMenu() {
 
         // Invalid player names
-        String[] invalidPlayerNames = {
+        String[] invalidUserNames = {
             "",
             "yourMother",
             "yourMama",
-            "Ronit"
+            "Ronit",
+            "Fuck you",
 
         };
-
-
-
-        Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
-
-        String playerName = enterName.getText().toString();
+        String userName = enterName.getText().toString();
 
         // Check that the playerName is valid
-        for(String name: invalidPlayerNames){
-            if(playerName.equals(name)){
+        for(String name: invalidUserNames){
+            if(userName.equals(name)){
                 Toast.makeText(this, "Please enter a valid player name", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
+
+
+
+        // Saving into the shared preferences
+        saveLastPlayerName(userName);
+        Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+
         intent.putExtra(EXTRA_PLAYER_NAME, enterName.getText().toString());
         startActivity(intent);
 
 
     }
+
+    private String getLastPlayerName(){
+        return getPreferences(Context.MODE_PRIVATE).getString("LastUserName", "");
+    }
+
+    private void saveLastPlayerName(String name){
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("LastUserName", name);
+        editor.apply();
+    }
+
 }

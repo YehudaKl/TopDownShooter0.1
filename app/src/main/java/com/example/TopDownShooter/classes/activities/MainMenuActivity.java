@@ -1,17 +1,15 @@
 package com.example.TopDownShooter.classes.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.TopDownShooter.R;
+import com.example.TopDownShooter.classes.systems.PremiumAuthenticator;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -19,8 +17,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private Button singlePlayer;
     private Button multiPlayer;
-    private Button settings;
-    private Button joystickTest;
+    private Button premium;
 
 
     @Override
@@ -32,14 +29,17 @@ public class MainMenuActivity extends AppCompatActivity {
         helloPlayer = findViewById(R.id.txt_helloPlayer);
         singlePlayer = findViewById(R.id.btn_singlePlayer);
         multiPlayer = findViewById(R.id.btn_multiPlayer);
-        settings = findViewById(R.id.btn_multiPlayer);
-        joystickTest = findViewById(R.id.btn_joystickTest);
+        premium = findViewById(R.id.btn_premium);
+
 
         singlePlayer.setOnClickListener(view -> navigateToSingleGame());
-
-        joystickTest.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), JoystickTestActivity.class);
-            startActivity(intent);
+        premium.setOnClickListener(view -> navigateToPlayRoom());
+        multiPlayer.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Missing content");
+            builder.setMessage("The multiplayer content is ont available please download full version");
+            builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+            builder.show();
         });
 
 
@@ -47,10 +47,21 @@ public class MainMenuActivity extends AppCompatActivity {
         // Setting the helloPlayer text to the player's name
         if(helloPlayer != null){
 
-            helloPlayer.setText("Hello " + getIntent().getStringExtra(MainActivity.EXTRA_PLAYER_NAME));
+            helloPlayer.setText("Hello " + getIntent().getStringExtra(EnteringActivity.EXTRA_PLAYER_NAME));
         }
 
 
+    }
+
+    private void navigateToPlayRoom() {
+        if(!isAuthenticatedForPlayroom()){return;}
+
+        Intent intent = new Intent(getApplicationContext(), PremiumActivity.class);
+        startActivity(intent);
+    }
+
+    private boolean isAuthenticatedForPlayroom(){
+        return PremiumAuthenticator.authenticate(this);
     }
 
 

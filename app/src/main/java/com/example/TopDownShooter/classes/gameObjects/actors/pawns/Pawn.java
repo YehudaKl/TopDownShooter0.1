@@ -92,8 +92,8 @@ public abstract class Pawn extends Actor{
         invalidate();
     }
 
-    public void onGameStatusChanged(OnGameStateChanged onGameStateChanged){
-        switch (onGameStateChanged.getNewState()){
+    public void onGameStatusChanged(OnGameStateChanged onGameStateChanged) {
+        switch (onGameStateChanged.getNewState()) {
             case RUN:
                 motionState = PawnMotionState.MOVING;
                 break;

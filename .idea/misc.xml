@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../../../layout/custom_preview.xml" value="0.4" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_phone.xml" value="0.216" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.228" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.228" />
         <entry key="app/src/main/res/drawable/ic_new_launcher_background.xml" value="0.228" />
@@ -13,11 +14,16 @@
         <entry key="app/src/main/res/layout-land/survival_game_root.xml" value="0.31338178708849934" />
         <entry key="app/src/main/res/layout-port/controller.xml" value="0.3185121846943138" />
         <entry key="app/src/main/res/layout/activity_main_menu.xml" value="0.3734375" />
+        <entry key="app/src/main/res/layout/activity_play_room.xml" value="0.3185121846943138" />
+        <entry key="app/src/main/res/layout/activity_premium.xml" value="0.3185121846943138" />
         <entry key="app/src/main/res/layout/controller.xml" value="0.3185121846943138" />
         <entry key="app/src/main/res/layout/joystick_test_activity.xml" value="0.258230012825994" />
         <entry key="app/src/main/res/layout/main_activity.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/main_menu_activity.xml" value="0.36385498046875" />
+        <entry key="app/src/main/res/layout/play_room_menu.xml" value="0.3185121846943138" />
+        <entry key="app/src/main/res/layout/simplerow.xml" value="0.3185121846943138" />
         <entry key="app/src/main/res/layout/single_game_activity.xml" value="0.3734375" />
+        <entry key="app/src/main/res/menu/play_room_menu.xml" value="0.3185121846943138" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.228" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.228" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_new_launcher.xml" value="0.228" />

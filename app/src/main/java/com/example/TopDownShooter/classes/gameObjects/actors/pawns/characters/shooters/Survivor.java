@@ -33,15 +33,15 @@ public class Survivor extends Shooter {
     }
 
     public void startScream(){
-        if(isScreaming){return;}
-        myGame.getSoundPool().play(breathingSound, 1, 1, 0, 1, 1);
-        isScreaming = true;
+//        if(isScreaming){return;}
+//        myGame.getSoundPool().play(breathingSound, 1, 1, 0, 1, 1);
+//        isScreaming = true;
     }
 
     public void stopScream(){
-        if(!isScreaming){return;}
-        myGame.getSoundPool().stop(breathingSound);
-        isScreaming = false;
+//        if(!isScreaming){return;}
+//        myGame.getSoundPool().stop(breathingSound);
+//        isScreaming = false;
     }
 
 
