@@ -54,8 +54,8 @@ public class PhysicalBody extends GameObject {
         body.setUserData(this);
 
         // Subscribing for collision events
-        subscribeToObservable(myGame.getOnCollisionStartObservable().subscribe(this::onCollisionStart));
-        subscribeToObservable(myGame.getOnCollisionEndObservable().subscribe(this::onCollisionEnd));
+        subscribeToObservable(myGame.getObservableProvider().getOnCollisionStartObservable().subscribe(this::onCollisionStart));
+        subscribeToObservable(myGame.getObservableProvider().getOnCollisionEndObservable().subscribe(this::onCollisionEnd));
 
     }
 

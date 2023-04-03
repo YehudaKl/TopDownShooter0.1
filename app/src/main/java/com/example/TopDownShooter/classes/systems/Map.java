@@ -32,6 +32,7 @@ public class Map {
         this.worldWidth = originMap.getWidth();
         this.worldHeight = originMap.getHeight();
         this.extendRange = calcExtendRange();
+        this.windowOrigin = new Position(0, 0);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) myGame.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);

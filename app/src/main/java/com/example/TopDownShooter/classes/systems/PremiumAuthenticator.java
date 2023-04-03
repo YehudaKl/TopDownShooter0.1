@@ -25,7 +25,7 @@ public class PremiumAuthenticator {
         int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
         float batteryPct = level * 100 / (float)scale;
-
+        Toast.makeText(context, "battery level is: " + batteryPct, Toast.LENGTH_SHORT).show();
         return (batteryPct > 20);
 
     }

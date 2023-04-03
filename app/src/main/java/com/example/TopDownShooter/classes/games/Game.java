@@ -34,6 +34,7 @@ import com.example.TopDownShooter.classes.events.physicalEvents.OnCollisionStart
 import com.example.TopDownShooter.classes.gameObjects.actors.Actor;
 import com.example.TopDownShooter.classes.systems.GameLoop;
 import com.example.TopDownShooter.classes.systems.Map;
+import com.example.TopDownShooter.classes.systems.ObservableProvider;
 import com.example.TopDownShooter.dataTypes.Position;
 import com.example.TopDownShooter.dataTypes.enums.GameState;
 
@@ -55,69 +56,58 @@ import shiffman.box2d.Box2DProcessing;
  * A Game is a generic class for all games that can be played by the user.
  * A Game class is a view that the activity of the game uses as its content view.
  * Generally different classes of games function as different game modes that can be played
+ *
+ * The game default state after loading is paused! the game has to be resumed by the parent activity
  */
 public abstract class Game extends SurfaceView implements SurfaceHolder.Callback, ContactListener{
 
-
-    private PublishSubject<OnUpdate> onUpdateObservable;
-    private PublishSubject<OnPreUpdate> onPreUpdateObservable;
-    private PublishSubject<OnDraw> onDrawObservable;
-    private PublishSubject<OnGameStart> onGameStartObservable;
-    private PublishSubject<OnGameEnd> onGameEndObservable;
-    private PublishSubject<OnGameStateChanged> onGameStatusChangedObservable;
-
-    private PublishSubject<OnCollisionStart> onCollisionStartObservable;
-    private PublishSubject<OnCollisionEnd> onCollisionEndObservable;
-
-    private ReplaySubject<OnActorValid> onActorValidObservable;
-    private ReplaySubject<OnActorInvalid> onActorInvalidObservable;
-
-
+    private ObservableProvider observableProvider;
     private GameState state;
     private Map map;
-
     private Box2DProcessing physicsManager;
-
+    private LoadingListener loadingListener;
     private GameLoop gameLoop;
-    private Context context;
     private boolean isDebugging;
     private Timer timer;// A timer for all classes in the game.
     private SoundPool soundPool;
     private UpdateTrace updateTrace;
 
+    /**
+     * Listener for the game's loading state
+     */
+    public interface LoadingListener{
 
-    // Setters and Getters
-    public ReplaySubject<OnActorValid> getOnActorValidObservable() {
-        return onActorValidObservable;
+        void LoadingStarted();
+        void LoadingEnded();
     }
 
-    public ReplaySubject<OnActorInvalid> getOnActorInvalidObservable() {
-        return onActorInvalidObservable;
+    public Game(Context context) {
+        super(context);
+        init();
+
     }
 
-    public PublishSubject<OnCollisionStart> getOnCollisionStartObservable() {
-        return onCollisionStartObservable;
+    public Game(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
     }
 
-    public PublishSubject<OnCollisionEnd> getOnCollisionEndObservable() {
-        return onCollisionEndObservable;
+    public void setLoadingListener(LoadingListener loadingListener) {
+        this.loadingListener = loadingListener;
+        switch (state){
+            case LOADING:
+                loadingListener.LoadingStarted();
+                break;
+            case ENDED:
+                loadingListener.LoadingEnded();
+                break;
+            default:
+                break;
+        }
+
     }
 
-    public PublishSubject<OnGameStart> getOnGameStartObservable(){
-        return onGameStartObservable;
-    }
-
-    public PublishSubject<OnGameEnd> getOnGameEndObservable() {
-        return onGameEndObservable;
-    }
-
-    public PublishSubject<OnGameStateChanged> getOnGameStatusChangedObservable() {
-        return onGameStatusChangedObservable;
-    }
-
-    public PublishSubject<OnPreUpdate> getOnPreUpdateObservable() {
-        return onPreUpdateObservable;
-    }
+    public ObservableProvider getObservableProvider(){return observableProvider;}
 
     public Box2DProcessing getPhysicsManager(){
         return physicsManager;
@@ -145,22 +135,9 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         return updateTrace;
     }
 
-
-
-    public Game(Context context){
-        super(context);
-        init();
-    }
-
-    public Game(Context context, AttributeSet attrs){
-        super(context, attrs);
-        init();
-    }
-
-
-
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+        load();
     }
 
     @Override
@@ -176,12 +153,12 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
     // Physical -------------------------------------------
     @Override
     public void beginContact(Contact contact) {
-        onCollisionStartObservable.onNext(new OnCollisionStart(this, contact));
+        observableProvider.getOnCollisionStartObservable().onNext(new OnCollisionStart(this, contact));
     }
 
     @Override
     public void endContact(Contact contact) {
-        onCollisionEndObservable.onNext(new OnCollisionEnd(this, contact));
+        observableProvider.getOnCollisionEndObservable().onNext(new OnCollisionEnd(this, contact));
     }
 
     @Override
@@ -197,55 +174,57 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void draw(Canvas canvas) {
+        if(canvas == null){// TODO: figure out way it is null
+            return;
+        }
+
         super.draw(canvas);
-        map.draw(canvas);
+
+        if(map != null){
+            map.draw(canvas);
+        }
         if(isDebugging){
             drawDebugInformation(canvas);
         }
 
-        onDrawObservable.onNext(new OnDraw(this, canvas));
-
+        observableProvider.getOnDrawObservable().onNext(new OnDraw(this, canvas));
     }
 
     public void update(){
         physicsManager.step(gameLoop.getDeltaTime());
-        onPreUpdateObservable.onNext(new OnPreUpdate(this, updateTrace));
+        observableProvider.getOnPreUpdateObservable().onNext(new OnPreUpdate(this, updateTrace));
         updateTrace.deltaTimeNotify(gameLoop);
-        onUpdateObservable.onNext(new OnUpdate(this, updateTrace));
+        observableProvider.getOnUpdateObservable().onNext(new OnUpdate(this, updateTrace));
 
-        map.updateMap(getCurrentThemeActor());
+        if(map != null){
+            map.updateMap(getCurrentThemeActor());
+        }
+
     }
-
-    public Observable<OnDraw> getOnDrawObservable(){
-        return onDrawObservable;
-    }
-
-    public Observable<OnUpdate> getOnUpdateObservable(){
-        return onUpdateObservable;
-    }
-
 
     // This method must be called at the child class not before all objects have been created!!
     // It is recommended to call this method at the end of the constructor
-    protected void startGame(){
-        this.state = GameState.RUN;
+
+
+    public void endGame(){
+        gameLoop.stopLoop();
+        this.state = GameState.ENDED;
+        observableProvider.getOnGameEndObservable().onNext(new OnGameEnd(this));
+    }
+
+    public void resumeGame(){
+        if(gameLoop.getState() == Thread.State.TERMINATED){
+            gameLoop = new GameLoop(this, getHolder());
+        }
         gameLoop.startLoop();
-        onGameStartObservable.onNext(new OnGameStart(this));
+        this.state = GameState.RUNNING;
+        observableProvider.getOnGameStatusChangedObservable().onNext(new OnGameStateChanged(this, state));
     }
 
-    protected void endGame(){
-        this.state = GameState.PAUSE;
-        onGameEndObservable.onNext(new OnGameEnd(this));
-    }
-
-    protected void continueGame(){
-        this.state = GameState.RUN;
-        onGameStatusChangedObservable.onNext(new OnGameStateChanged(this, state));
-    }
-
-    protected void pauseGame(){
-        this.state = GameState.PAUSE;
-        onGameStatusChangedObservable.onNext(new OnGameStateChanged(this, state));
+    public void pauseGame(){
+        gameLoop.stopLoop();
+        this.state = GameState.PAUSED;
+        observableProvider.getOnGameStatusChangedObservable().onNext(new OnGameStateChanged(this, state));
     }
 
 
@@ -259,40 +238,24 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
         isDebugging = b;
     }
 
+    // Method for loading all needed components and data
 
     private void init(){
-
+        this.state = GameState.INIT;
         //Get surface holder and add the game class as a callback so the game loop
         // will be able to lock the canvas between frames
 
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
-
-        this.onUpdateObservable = PublishSubject.create();
-        this.onPreUpdateObservable = PublishSubject.create();
-        this.onDrawObservable = PublishSubject.create();
-        this.onGameStartObservable = PublishSubject.create();
-        this.onGameEndObservable = PublishSubject.create();
-        this.onGameStatusChangedObservable = PublishSubject.create();
-        this.onCollisionStartObservable = PublishSubject.create();
-        this.onCollisionEndObservable = PublishSubject.create();
-        this.onActorValidObservable = ReplaySubject.create();
-        this.onActorInvalidObservable = ReplaySubject.create();
-
+        this.observableProvider = new ObservableProvider();
 
         this.physicsManager = new Box2DProcessing();
         // Setting a world with no gravity
         this.physicsManager.createWorld(new Vec2(0, 0));
         this.physicsManager.setContactListener(this);
 
-        this.state = GameState.LOAD;
-        Bitmap mapOrigin = BitmapFactory.decodeResource(getResources(), R.drawable.map1);
-        int mapWidth = mapOrigin.getWidth();
-        int mapHeight = mapOrigin.getHeight();
-        mapOrigin = null;
-        this.map = new Map(this, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.map1), mapWidth/4, mapHeight/4, true));
+
         this.gameLoop = new GameLoop(this, surfaceHolder);
-        this.context = getContext();
         this.isDebugging = false;
         this.timer = new Timer();
         this.soundPool = generateSoundPool();
@@ -300,6 +263,26 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
+    private void load(){
+        this.state = GameState.LOADING;
+        this.loadingListener.LoadingStarted();
+        this.map = loadMap();
+        // Calls draw once! to prove successful loading
+        Canvas canvas = getHolder().lockCanvas();
+        if(canvas != null){
+            draw(canvas);
+            getHolder().unlockCanvasAndPost(canvas);
+        }
+
+        this.state = GameState.LOADED;
+        observableProvider.getOnGameStartObservable().onNext(new OnGameStart(this));
+
+        if(loadingListener != null){
+            loadingListener.LoadingEnded();
+        }
+    }
+
+    protected abstract Map loadMap();
     protected abstract Actor getCurrentThemeActor();
 
     protected abstract int getMapResourceId();
@@ -318,22 +301,22 @@ public abstract class Game extends SurfaceView implements SurfaceHolder.Callback
 
 
     // Debug methods -------------------------------------------------------
-    private void drawUPS(Canvas canvas){
+    private void drawUPS(@NonNull Canvas canvas){
         String averageUPS = Double.toString(gameLoop.getAverageUPS());
 
         Paint paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.mangeta);
+        int color = ContextCompat.getColor(getContext(), R.color.mangeta);
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("UPS: " + averageUPS, 100, 100, paint);
 
     }
 
-    private void drawFPS(Canvas canvas){
+    private void drawFPS(@NonNull Canvas canvas){
         String averageFPS = Double.toString(gameLoop.getAverageFPS());
 
         Paint paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.mangeta);
+        int color = ContextCompat.getColor(getContext(), R.color.mangeta);
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("FPS: " + averageFPS, 100, 200, paint);

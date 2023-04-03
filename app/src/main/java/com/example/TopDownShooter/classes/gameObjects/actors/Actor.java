@@ -25,21 +25,18 @@ public abstract class Actor extends GameObject {
         isVisible = true;
 
         // Subscribing to the OnDraw
-        subscribeToObservable(myGame.getOnDrawObservable().subscribe(this::onDraw));
+        subscribeToObservable(myGame.getObservableProvider().getOnDrawObservable().subscribe(this::onDraw));
         // Declare the new actor as valid
-        myGame.getOnActorValidObservable().onNext(new OnActorValid(myGame, this));
+        myGame.getObservableProvider().getOnActorValidObservable().onNext(new OnActorValid(myGame, this));
 
 
     }
 
 
 
-
-
-
     @Override
     public void invalidate() {
-        myGame.getOnActorInvalidObservable().onNext(new OnActorInvalid(myGame, this));
+        myGame.getObservableProvider().getOnActorInvalidObservable().onNext(new OnActorInvalid(myGame, this));
         super.invalidate();
     }
 

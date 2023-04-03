@@ -24,6 +24,7 @@ import com.example.TopDownShooter.classes.events.GameLoopEvents.OnPreUpdate;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnUpdate;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.UpdateTrace;
 import com.example.TopDownShooter.classes.games.Game;
+import com.example.TopDownShooter.classes.systems.ObservableProvider;
 
 /**
  * Joystick that can be used in xml file as a view subclass.
@@ -45,9 +46,9 @@ public class Joystick extends View{
     private Bitmap baseBitmap;
     private Bitmap topBitmap;
 
-    public void setMyGame(Game myGame){
-        this.myGame = myGame;
-        myGame.getOnPreUpdateObservable().subscribe(this::onPreUpdate);
+    public void setMyGame(ObservableProvider observableProvider){
+
+        observableProvider.getOnPreUpdateObservable().subscribe(this::onPreUpdate);
     }
 
 

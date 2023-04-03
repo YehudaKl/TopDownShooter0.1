@@ -54,12 +54,11 @@ public abstract class Pawn extends Actor{
     public Pawn(Game myGame){
         super(myGame);
 
-        this.motionState = PawnMotionState.FROZE;
+        this.motionState = PawnMotionState.MOVING;
 
-        subscribeToObservable(myGame.getOnUpdateObservable().subscribe(this::onUpdate));
-        subscribeToObservable(myGame.getOnGameStartObservable().subscribe(this::onGameStart));
-        subscribeToObservable(myGame.getOnGameEndObservable().subscribe(this::onGameEnd));
-        subscribeToObservable(myGame.getOnGameStatusChangedObservable().subscribe(this::onGameStatusChanged));
+        subscribeToObservable(myGame.getObservableProvider().getOnUpdateObservable().subscribe(this::onUpdate));
+        subscribeToObservable(myGame.getObservableProvider().getOnGameStartObservable().subscribe(this::onGameStart));
+        subscribeToObservable(myGame.getObservableProvider().getOnGameStatusChangedObservable().subscribe(this::onGameStatusChanged));
     }
 
 
@@ -80,27 +79,14 @@ public abstract class Pawn extends Actor{
 
 
     public void onGameStart(OnGameStart onGameStart){
-        motionState = PawnMotionState.MOVING;
         if(myGame instanceof TeamsGame){
 
             myTeam = ((TeamsGame) myGame).generateMeTeam(this);
         }
     }
 
-    public void onGameEnd(OnGameEnd onGameEnd){
-        motionState = PawnMotionState.FROZE;
-        invalidate();
-    }
 
     public void onGameStatusChanged(OnGameStateChanged onGameStateChanged) {
-        switch (onGameStateChanged.getNewState()) {
-            case RUN:
-                motionState = PawnMotionState.MOVING;
-                break;
-            case PAUSE:
-                motionState = PawnMotionState.FROZE;
-                break;
-        }
     }
 
     public abstract int getSpeed();

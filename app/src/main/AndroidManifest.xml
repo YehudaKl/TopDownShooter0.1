@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.TopDownShooter">
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    package="com.example.TopDownShooter" >
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_new_launcher_round"
@@ -9,10 +11,16 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_new_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Top_downShooter">
+        android:theme="@style/Theme.Top_downShooter" >
+        <service
+            android:name=".classes.services.MusicPlayer"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
         <activity
             android:name=".classes.activities.EnteringActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,25 +29,18 @@
         </activity>
         <activity
             android:name=".classes.activities.MainMenuActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".classes.activities.SingleGameActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".classes.activities.PremiumActivity"
-            android:exported="true"
-            />
+            android:exported="true" />
         <activity
             android:name=".classes.activities.gameActivities.SurvivalGameActivity"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.Design.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.Design.NoActionBar" />
     </application>
 
 </manifest>

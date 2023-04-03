@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.TopDownShooter.R;
+import com.example.TopDownShooter.classes.services.MusicPlayer;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,9 @@ public class PremiumActivity extends AppCompatActivity{
         this.tipsListView = findViewById(R.id.lst_tips);
         this.tipsListView.setAdapter(new ArrayAdapter<>(this, R.layout.simplerow, tipsList));
 
+        Intent serviceIntent = new Intent();
+        serviceIntent.setClass(this, MusicPlayer.class);
+        startService(serviceIntent);
 
 
 

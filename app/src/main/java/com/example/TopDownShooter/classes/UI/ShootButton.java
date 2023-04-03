@@ -9,7 +9,9 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import com.example.TopDownShooter.classes.events.GameLoopEvents.OnPreUpdate;
 import com.example.TopDownShooter.classes.events.UIEvents.OnShoot;
 import com.example.TopDownShooter.classes.games.Game;
+import com.example.TopDownShooter.classes.systems.ObservableProvider;
 
+import java.util.Timer;
 import java.util.TimerTask;
 
 import io.reactivex.rxjava3.subjects.PublishSubject;
@@ -22,7 +24,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 public class ShootButton extends AppCompatImageButton {
     public static final float DEFAULT_RELOAD_TIME = 500;
 
-    private Game myGame;
+    private Timer timer;
     private boolean isReload;
     private float reloadTime;
     private boolean isShoot;
@@ -48,9 +50,8 @@ public class ShootButton extends AppCompatImageButton {
         return isShoot;
     }
 
-    public void setMyGame(Game myGame){
-        this.myGame = myGame;
-        myGame.getOnPreUpdateObservable().subscribe(this::onPreUpdate);
+    public void setMyGame(ObservableProvider observableProvider){
+        observableProvider.getOnPreUpdateObservable().subscribe(this::onPreUpdate);
     }
 
     public ShootButton(Context context) {
@@ -85,6 +86,7 @@ public class ShootButton extends AppCompatImageButton {
     }
 
     private void init(){
+        timer = new Timer();
         reloadTime = DEFAULT_RELOAD_TIME;
         isReload = false;
         isShoot = false;
@@ -95,7 +97,7 @@ public class ShootButton extends AppCompatImageButton {
 
         isReload = true;
 
-        myGame.getTimer().schedule(new TimerTask() { public void run() { isReload  = false; }},(long)reloadTime);
+        timer.schedule(new TimerTask() { public void run() { isReload  = false; }},(long)reloadTime);
     }
 
 

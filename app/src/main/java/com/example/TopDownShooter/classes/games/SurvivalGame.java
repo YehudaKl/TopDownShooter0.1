@@ -20,6 +20,7 @@ import com.example.TopDownShooter.classes.gameObjects.actors.pawns.characters.sh
 import com.example.TopDownShooter.classes.gameObjects.players.AIPlayers.ZombiePlayer;
 import com.example.TopDownShooter.classes.gameObjects.players.userPlayers.ShooterUserPlayer;
 import com.example.TopDownShooter.classes.gameObjects.players.userPlayers.SurvivorUserPlayer;
+import com.example.TopDownShooter.classes.systems.Map;
 import com.example.TopDownShooter.dataTypes.Position;
 
 import java.util.HashMap;
@@ -39,23 +40,22 @@ public class SurvivalGame extends Game implements TeamsGame{
 
     public SurvivalGame(Context context){
         super(context);
-
+        init();
     }
 
     public SurvivalGame(Context context, AttributeSet attrs){
         super(context, attrs);
-
+        init();
     }
+
 
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-
     }
 
-    @Override
-    public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
-        super.surfaceCreated(surfaceHolder);
+
+    private void init() {
 
         setIsDebugging(true);
 
@@ -68,7 +68,16 @@ public class SurvivalGame extends Game implements TeamsGame{
         survivor.setOwner(survivorPlayer);
         spawnZombie(new Position(800, 800));
         spawnZombie(new Position(1000, 1000));
-        startGame();
+    }
+
+    @Override
+    protected Map loadMap() {
+
+        Bitmap mapOrigin = BitmapFactory.decodeResource(getResources(), R.drawable.map1);
+        int mapWidth = mapOrigin.getWidth();
+        int mapHeight = mapOrigin.getHeight();
+        return new Map(this, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.map1), mapWidth/4, mapHeight/4, true));
+
     }
 
     @Override
@@ -88,11 +97,6 @@ public class SurvivalGame extends Game implements TeamsGame{
     public Survivor getHero(){return this.survivor;}
 
     @Override
-    protected void startGame() {
-        super.startGame();
-    }
-
-    @Override
     protected Actor getCurrentThemeActor() {
         return survivor;
     }
@@ -107,9 +111,6 @@ public class SurvivalGame extends Game implements TeamsGame{
 
         Zombie zombie = new Zombie(this, position);
         zombie.setOwner(zombiesPlayer);
-
-
-
     }
 
 

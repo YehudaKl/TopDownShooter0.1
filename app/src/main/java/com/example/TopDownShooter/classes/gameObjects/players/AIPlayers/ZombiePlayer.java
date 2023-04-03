@@ -32,7 +32,7 @@ public class ZombiePlayer extends AIPlayer<Zombie> {
 
         this.repository = new ActorsRepository<>(myGame, Character.class);
         repository.start();
-        subscribeToObservable(myGame.getOnGameEndObservable().subscribe(this::onGameEnd));
+        subscribeToObservable(myGame.getObservableProvider().getOnGameEndObservable().subscribe(this::onGameEnd));
 
     }
 
